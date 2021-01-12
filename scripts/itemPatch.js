@@ -42,11 +42,14 @@ export function patchItemRollDamage() {
                 renderedRolls.push(rendered);
             }
 
-            // Assemble combined message
+            // Begin assembling combined message
             const content = $("<div class=\"mre-damage-card\">");
             content.append(renderedRolls);
 
+            // This decoy roll is used to convince foundry that the message has ROLL type
             const decoyRoll = new Roll("0").roll();
+
+            // Set up data for the final message to be sent
             const messageData = {
                 user: game.user._id,
                 content: content.prop("outerHTML"),
@@ -56,22 +59,27 @@ export function patchItemRollDamage() {
                 type: CONST.CHAT_MESSAGE_TYPES.ROLL,
                 "flags.dnd5e.roll": {type: "damage", itemId: this.id },
             };
-            if (!game.dice3d) {
-                messageData.sound = CONFIG.sounds.dice;
-            }
+
             if (critical) {
                 messageData.flavor += ` (${game.i18n.localize("DND5E.Critical")})`;
                 messageData["flags.dnd5e.roll"].critical = true;
             }
+
             const rollMode = options.rollMode ?? game.settings.get("core", "rollMode");
             ChatMessage.applyRollMode(messageData, rollMode);
+
+            // Merge with data passed into the function call
             mergeObject(messageData, options, { insertKeys: false });
             mergeObject(messageData, options.messageData);
 
             // Show DSN 3d dice if available
-            if (game.dice3d) await Promise.all(partRolls.map(roll =>
-                game.dice3d.showForRoll(roll, game.user, true, messageData.whisper, messageData.blind)
-            ));
+            if (game.dice3d) {
+                const rollAnims =
+                    partRolls.map(roll => game.dice3d.showForRoll(roll, game.user, true, messageData.whisper, messageData.blind));
+                await Promise.all(rollAnims);
+            } else {
+                messageData.sound = CONFIG.sounds.dice;
+            }
 
             await ChatMessage.create(messageData);
 
