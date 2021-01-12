@@ -9,8 +9,8 @@ A key philosophy for this module is to remain as non-disruptive as possible to m
 ### Attack Rolls
 
 - Setting: Auto roll attacks.
-- In-card attack rolls (toggleable on a per-item basis in item details).
-- Side-by-side advantage and disadvantage.
+- ❓ In-card attack rolls (toggleable on a per-item basis in item details).
+- ❓ Side-by-side advantage and disadvantage.
 
 ### Damage Rolls
 
@@ -24,8 +24,8 @@ A key philosophy for this module is to remain as non-disruptive as possible to m
 
 ### Other
 
-- Default to fast-forward (skip the dialog unless a modifier key is pressed).
-- Configurable modifier keys for advantage, disadvantage, and fast-forward.
+- ✅ Default to fast-forward (skip the dialog unless a modifier key is pressed).
+- ✅ Configurable modifier keys for advantage, disadvantage, and fast-forward.
 
 ## Compatibility
 
