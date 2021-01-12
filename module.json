@@ -11,6 +11,13 @@
   "styles": [
     "./mre-styles.css"
   ],
+  "languages": [
+    {
+      "lang": "en",
+      "name": "English",
+      "path": "lang/en.json"
+    }
+  ],
   "minimumCoreVersion": "0.7.9",
   "compatibleCoreVersion": "0.7.9",
 	"url": "https://github.com/schultzcole/FVTT-Minimal-Rolling-Enhancements-DND5E",

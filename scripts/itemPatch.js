@@ -1,5 +1,6 @@
 import { libWrapper } from "../lib/libWrapper/shim.js";
 import { MODULE_NAME } from "./const.js";
+import { getSettingLocalOrDefault } from "./settings.js";
 
 export function patchItemRollDamage() {
     libWrapper.register(MODULE_NAME, "CONFIG.Item.entityClass.prototype.rollDamage", async function (wrapped, ...args) {
@@ -7,8 +8,10 @@ export function patchItemRollDamage() {
 
         let {critical=false, /** @type MouseEvent */ event=null, spellLevel=null, versatile=false, options={}} = args[0];
 
+        let noFastForwardModifier = getSettingLocalOrDefault("showRollDialogModifier");
+
         const optionsOverride = {
-            fastForward: !event.altKey,
+            fastForward: !event[noFastForwardModifier],
         };
 
         options = mergeObject(optionsOverride, options, { inplace: false });
@@ -76,7 +79,7 @@ export function patchItemRollDamage() {
             if (game.dice3d) {
                 const rollAnims =
                     partRolls.map(roll => game.dice3d.showForRoll(roll, game.user, true, messageData.whisper, messageData.blind));
-                await Promise.all(rollAnims);
+                await Promise.race(rollAnims);
             } else {
                 messageData.sound = CONFIG.sounds.dice;
             }
@@ -89,4 +92,11 @@ export function patchItemRollDamage() {
 
         return wrapped(...args);
     }, "WRAPPER");
+}
+
+export function patchItemRollAttack() {
+
+    let noFastForwardModifier = getSettingLocalOrDefault("showRollDialogModifier");
+    let advModifier = getSettingLocalOrDefault("advModifier");
+    let disAdvModifier = getSettingLocalOrDefault("disAdvModifier");
 }

@@ -1,0 +1,20 @@
+{
+  "mre-dnd5e": {
+    "SETTINGS": {
+      "GlobalDefault": "Global Default",
+      "GlobalHint": "This setting sets the default setting for all players.",
+      "LocalOverride": "Local Override",
+      "LocalHint": "This setting overrides the server default for this client only.",
+      "AdvModifierLabel": "Advantage Modifier",
+      "AdvModifierHint": "When holding this modifier key, MRE will roll with advantage.",
+      "DisAdvModifierLabel": "Disadvantage Modifier",
+      "DisAdvModifierHint": "When holding this modifier key, MRE will roll with disadvantage.",
+      "ShowRollDialogLabel": "Show Roll Dialog Modifier",
+      "ShowRollDialogHint": "When holding this modifier key, MRE will show the roll dialog, rather than skipping it.",
+      "default": "Use Server Default",
+      "altKey": "Alt/Option",
+      "ctrlKey": "Control/Command",
+      "shiftKey": "Shift"
+    }
+  }
+}
