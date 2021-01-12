@@ -16,7 +16,7 @@ export function patchItemRollAttack() {
             disadvantage: options.event[disAdvModifier],
         };
 
-        options = mergeObject(optionsOverride, options, { inplace: false });
+        mergeObject(options, optionsOverride);
 
         return wrapper(options);
     }, "WRAPPER");
