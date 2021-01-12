@@ -23,7 +23,7 @@ export function patchItemRollDamage() {
             for (let [ formula, type ] of itemDamageParts) {
                 const partOptions = {
                     parts: [formula],
-                    flavor: `${CONFIG.DND5E.damageTypes[type]}`,
+                    flavor: `${ CONFIG.DND5E.damageTypes[type] ?? CONFIG.DND5E.healingTypes[type] }`,
                     chatMessage: false,
                 }
                 /** @type Roll */ const roll = await wrapped({
@@ -37,8 +37,8 @@ export function patchItemRollDamage() {
                 partRolls.push(roll);
 
                 const rendered = $(await roll.render());
-                const damageFlavor = $(`<span class="damage-type">${partOptions.flavor}</span>`);
-                rendered.find(".dice-formula").append(damageFlavor);
+                const formulaElement = rendered.find(".dice-total");
+                formulaElement.attr("data-damage-type", partOptions.flavor);
                 renderedRolls.push(rendered);
             }
 
@@ -48,11 +48,10 @@ export function patchItemRollDamage() {
             // Assemble combined message
             const content = $("<div class=\"mre-damage-card\">");
             content.append(renderedRolls);
-            if (itemDamageParts.length > 1) content.find(".dice-roll").addClass(".multi-roll");
 
             const messageData = {
                 user: game.user._id,
-                content: content.html(),
+                content: content.prop("outerHTML"),
                 flavor: `${this.name} - ${game.i18n.localize("DND5E.DamageRoll")}`,
                 speaker: ChatMessage.getSpeaker({actor: this.actor}),
                 "flags.dnd5e.roll": {type: "damage", itemId: this.id },

@@ -1,0 +1,12 @@
+.mre-damage-card > *:not(:last-child) {
+    margin-bottom: .5rem;
+}
+
+.mre-damage-card .dice-total::after {
+    content: attr(data-damage-type);
+    display: block;
+    margin-bottom: .25rem;
+    font-size: .8rem;
+    line-height: .8rem;
+    color: dimgray;
+}
