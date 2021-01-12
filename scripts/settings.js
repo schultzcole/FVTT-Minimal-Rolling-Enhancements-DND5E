@@ -28,8 +28,8 @@ function _registerModifierKeySettings() {
     };
 
     const localModifierChoices = mergeObject(
-        globalModifierChoices,
         { "default": game.i18n.localize(`${MODULE_NAME}.SETTINGS.default`) },
+        globalModifierChoices,
         { inplace: false },
     );
 
