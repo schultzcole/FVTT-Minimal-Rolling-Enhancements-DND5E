@@ -19,7 +19,7 @@ A key philosophy for this module is to remain as non-disruptive as possible to m
   - The versatile formula field is hidden (but not deleted), as the versatile damage can simply be added as a damage group.
     A migration macro is provided to convert all core versatile formulae to damage groups.
 - Setting: Auto roll damage.
-- Each damage formula rolled separately (rather than being combined into a single roll) and displayed in a combined card.
+- ✅ Each damage formula rolled separately (rather than being combined into a single roll) and displayed in a combined card.
   - This is done so that different damage types are not combined into a single roll and can therefore be applied selectively to account for resistances, etc.
 
 ### Other
