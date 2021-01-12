@@ -9,5 +9,6 @@ Hooks.on("setup", () => {
     registerSettings();
     patchItemRollDamage();
     patchItemRollAttack();
-    patchChatLogContextMenu();
+    // TODO Having some trouble getting the context menus to work, will revisit
+    // patchChatLogContextMenu();
 })
