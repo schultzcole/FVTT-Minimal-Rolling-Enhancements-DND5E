@@ -1,6 +1,7 @@
 import { MODULE_TITLE, MODULE_TITLE_SHORT } from "./scripts/const.js";
-import { patchItemRollAttack, patchItemRollDamage } from "./scripts/itemPatch.js";
 import { patchChatLogContextMenu } from "./scripts/chatLogPatch.js";
+import { patchItemRollAttack } from "./scripts/itemAttackPatch.js";
+import { patchItemRollDamage } from "./scripts/itemDamagePatch.js";
 import { registerSettings } from "./scripts/settings.js";
 
 Hooks.on("setup", () => {
