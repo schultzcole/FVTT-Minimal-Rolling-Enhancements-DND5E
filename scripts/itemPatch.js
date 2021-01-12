@@ -42,18 +42,18 @@ export function patchItemRollDamage() {
                 renderedRolls.push(rendered);
             }
 
-            // Show DSN 3d dice if available
-            if (game.dice3d) await Promise.all(partRolls.map(roll => game.dice3d.showForRoll(roll)));
-
             // Assemble combined message
             const content = $("<div class=\"mre-damage-card\">");
             content.append(renderedRolls);
 
+            const decoyRoll = new Roll("0").roll();
             const messageData = {
                 user: game.user._id,
                 content: content.prop("outerHTML"),
                 flavor: `${this.name} - ${game.i18n.localize("DND5E.DamageRoll")}`,
+                roll: decoyRoll,
                 speaker: ChatMessage.getSpeaker({actor: this.actor}),
+                type: CONST.CHAT_MESSAGE_TYPES.ROLL,
                 "flags.dnd5e.roll": {type: "damage", itemId: this.id },
             };
             if (!game.dice3d) {
@@ -63,8 +63,15 @@ export function patchItemRollDamage() {
                 messageData.flavor += ` (${game.i18n.localize("DND5E.Critical")})`;
                 messageData["flags.dnd5e.roll"].critical = true;
             }
+            const rollMode = options.rollMode ?? game.settings.get("core", "rollMode");
+            ChatMessage.applyRollMode(messageData, rollMode);
             mergeObject(messageData, options, { insertKeys: false });
             mergeObject(messageData, options.messageData);
+
+            // Show DSN 3d dice if available
+            if (game.dice3d) await Promise.all(partRolls.map(roll =>
+                game.dice3d.showForRoll(roll, game.user, true, messageData.whisper, messageData.blind)
+            ));
 
             await ChatMessage.create(messageData);
 
