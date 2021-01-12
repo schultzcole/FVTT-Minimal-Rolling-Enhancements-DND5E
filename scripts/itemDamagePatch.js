@@ -1,12 +1,12 @@
 import { MODULE_NAME } from "./const.js";
 import { libWrapper } from "../lib/libWrapper/shim.js";
-import { getSettingLocalOrDefault } from "./settings.js";
+import { getModifierSettingLocalOrDefault } from "./settings.js";
 
 export function patchItemRollDamage() {
     libWrapper.register(MODULE_NAME, "CONFIG.Item.entityClass.prototype.rollDamage", async function (wrapped, ...args) {
         let {/** @type MouseEvent */ event=null, options={}} = args[0];
 
-        let showDamageDialog = getSettingLocalOrDefault("showRollDialogModifier");
+        let showDamageDialog = getModifierSettingLocalOrDefault("showRollDialogModifier");
 
         const title = `${this.name} - ${game.i18n.localize("DND5E.DamageRoll")}`;
         let rollMode = options.rollMode ?? game.settings.get("core", "rollMode");
@@ -35,7 +35,10 @@ export function patchItemRollDamage() {
 
         if (!this.data.data.damage?.parts) throw new Error("You cannot roll damage for this item.");
 
+        // Roll each individual damage formula
         const partRolls = await _rollDamageParts(this, wrapped, args[0]);
+
+        // Add a situational bonus if one was provided
         if (bonus) {
             const bonusRoll = new Roll(bonus);
             if (critical) {
@@ -43,9 +46,11 @@ export function patchItemRollDamage() {
             }
             partRolls.push({ roll: bonusRoll.roll(), flavor: game.i18n.localize("DND5E.RollSituationalBonus").slice(0, -1) })
         }
-        const renderedRolls = await _renderCombinedDamageRollCard(partRolls);
 
-        const messageData = await _createCombinedDamageMessageData(this, title, renderedRolls, critical, rollMode, options);
+        // Prepare the chat message content
+        const renderedContent = await _renderCombinedDamageRollContent(partRolls);
+
+        const messageData = await _createCombinedDamageMessageData(this, title, renderedContent, critical, rollMode, options);
 
         // Show DSN 3d dice if available
         if (game.dice3d) {
@@ -108,7 +113,6 @@ async function _rollDamageParts(item, innerRollDamage, { critical, event, spellL
     const partRolls = [];
 
     // Roll each of the item's damage parts separately.
-    // Store the Roll results in `partRolls`, and the rendered roll html in `renderedRolls`
     for (let [formula, type] of itemDamageParts) {
         const partOptions = {
             parts: [formula],
@@ -128,7 +132,7 @@ async function _rollDamageParts(item, innerRollDamage, { critical, event, spellL
     return partRolls;
 }
 
-async function _renderCombinedDamageRollCard(rolls) {
+async function _renderCombinedDamageRollContent(rolls) {
     const renderedRolls = [];
 
     // Render all each of the rolls to html

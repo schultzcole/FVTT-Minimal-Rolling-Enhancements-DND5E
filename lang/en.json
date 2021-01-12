@@ -1,19 +1,25 @@
 {
   "mre-dnd5e": {
     "SETTINGS": {
+      "AutoRollAttacksLabel": "Automatically Roll Item Attacks",
+      "AutoRollAttacksHint": "When an item is activated from a character sheet or macro, automatically roll the attack roll for the item if it exists.",
+      "AutoRollDamageLabel": "Automatically Roll Item Damage",
+      "AutoRollDamageHint": "When an item is activated from a character sheet or macro, automatically roll the first damage group for the item if one exists.",
       "GlobalDefault": "World Default",
       "GlobalHint": "This setting sets the default setting for all players.",
       "LocalOverride": "Local Override",
       "LocalHint": "This setting overrides the world default for this client only.",
-      "AdvModifierLabel": "Advantage Modifier",
-      "AdvModifierHint": "When holding this modifier key, MRE will roll with advantage.",
-      "DisAdvModifierLabel": "Disadvantage Modifier",
-      "DisAdvModifierHint": "When holding this modifier key, MRE will roll with disadvantage.",
-      "ShowRollDialogLabel": "Show Roll Dialog Modifier",
-      "ShowRollDialogHint": "When holding this modifier key, MRE will show the roll dialog, rather than skipping it.",
-      "default": "Use World Default",
+      "ModifierAdvLabel": "Advantage Modifier",
+      "ModifierAdvHint": "When holding this modifier key, MRE will roll with advantage.",
+      "ModifierDisAdvLabel": "Disadvantage Modifier",
+      "ModifierDisAdvHint": "When holding this modifier key, MRE will roll with disadvantage.",
+      "ModifierShowRollDialogLabel": "Show Roll Dialog Modifier",
+      "ModifierShowRollDialogHint": "When holding this modifier key, MRE will show the roll dialog, rather than skipping it."
+    },
+    "MODIFIERS": {
       "altKey": "Alt/Option",
       "ctrlKey": "Control/Command",
+      "default": "Use World Default",
       "shiftKey": "Shift"
     }
   }
