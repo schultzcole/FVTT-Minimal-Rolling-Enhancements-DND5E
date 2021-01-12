@@ -14,26 +14,25 @@ export function patchItemRollDamage() {
 
         args[0].options = mergeObject(optionsOverride, critical, options);
 
-        const itemDamageParts = this.data.data.damage.parts;
-        if (itemDamageParts.length > 0) {
-            const partRolls = await _rollDamageParts(this, wrapped, args[0]);
-            const renderedRolls = await _renderCombinedDamageRollCard(partRolls);
+        if (!this.data.data.damage?.parts) throw new Error("You cannot roll damage for this item.");
 
-            const messageData = await _createCombinedDamageMessageData(this, renderedRolls, critical, options);
+        const partRolls = await _rollDamageParts(this, wrapped, args[0]);
+        const renderedRolls = await _renderCombinedDamageRollCard(partRolls);
 
-            // Show DSN 3d dice if available
-            if (game.dice3d) {
-                const rollAnims =
-                    partRolls.map(part => game.dice3d.showForRoll(part.roll, game.user, true, messageData.whisper, messageData.blind));
-                await Promise.all(rollAnims);
-            }
+        const messageData = await _createCombinedDamageMessageData(this, renderedRolls, critical, options);
 
-            await ChatMessage.create(messageData);
-
-            // Return the array of Roll objects
-            return partRolls;
+        // Show DSN 3d dice if available
+        if (game.dice3d) {
+            const rollAnims =
+                partRolls.map(part => game.dice3d.showForRoll(part.roll, game.user, true, messageData.whisper, messageData.blind));
+            await Promise.all(rollAnims);
         }
-    }, "WRAPPER");
+
+        await ChatMessage.create(messageData);
+
+        // Return the array of Roll objects
+        return partRolls;
+    }, "MIXED");
 }
 
 async function _rollDamageParts(item, innerRollDamage, { critical, event, spellLevel, versatile, options }) {
