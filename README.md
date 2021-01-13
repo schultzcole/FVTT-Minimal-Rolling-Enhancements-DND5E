@@ -9,12 +9,12 @@ A key philosophy for this module is to remain as non-disruptive as possible to m
 ### Attack Rolls
 
 - ✅ Setting: Auto roll attacks.
-- ❓ In-card attack rolls (toggleable on a per-item basis in item details).
+- ✅ In-card attack rolls (toggleable on a per-item basis in item details).
 - ❓ Side-by-side advantage and disadvantage.
 
 ### Damage Rolls
 
-- Damage Groups: assign any combination of damage formulae to a nameable damage group.
+- 🌀 Damage Groups: assign any combination of damage formulae to a nameable damage group.
   In the chat card, choose from any of the available damage groups to roll.
   - The versatile formula field is hidden (but not deleted), as the versatile damage can simply be added as a damage group.
     A migration macro is provided to convert all core versatile formulae to damage groups.

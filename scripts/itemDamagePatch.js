@@ -64,15 +64,6 @@ export function patchItemRollDamage() {
         // Return the array of Roll objects
         return partRolls;
     }, "MIXED");
-
-    // Prevent "dummy" chat damage cards from triggering DSN
-    Hooks.on("diceSoNiceRollStart", (messageId, context) => {
-        const message = game.messages.get(messageId);
-        const mreRolls = message?.getFlag(MODULE_NAME, "rolls");
-        if (mreRolls !== undefined) {
-            context.blind = true;
-        }
-    });
 }
 
 /**
