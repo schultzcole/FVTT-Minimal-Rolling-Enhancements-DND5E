@@ -35,33 +35,89 @@ export function patchItemBaseRoll() {
 
         const autoRollCheck = game.settings.get(MODULE_NAME, "autoCheck");
         const autoRollDamage = game.settings.get(MODULE_NAME, "autoDamage");
-        const showDialogModifier = getModifierSettingLocalOrDefault("showRollDialogModifier");
-        const shouldShowDialog = capturedModifiers[showDialogModifier];
-        const wrappedResult = wrapped(...args);
+
+        const extraOptions = { createMessage: false };
+        if (args.length) {
+            mergeObject(args[0], extraOptions);
+        } else {
+            args.push(extraOptions);
+        }
+
+        const messageData = await wrapped(...args);
 
         await pause(0);
 
-        let checkPromise, damagePromise;
+        let damagePromise;
         if (autoRollCheck) {
+            let checkRoll, title;
             if (this.hasAttack) {
-                // Need to get the interaction event that caused the item to be rolled so we can tell whether to show the dialog or roll with adv/disadv
-                // noinspection JSDeprecatedSymbols
-                checkPromise = this.rollAttack({ event: capturedModifiers });
-
-                if (this.hasDamage && autoRollDamage) {
-                    if (shouldShowDialog) await checkPromise;
-
-                    // Need to get the interaction event that caused the item to be rolled so we can tell whether to show the dialog
-                    // noinspection JSDeprecatedSymbols
-                    damagePromise = this.rollDamage({ event: capturedModifiers });
-                }
+                checkRoll = await this.rollAttack({ event: capturedModifiers, chatMessage: false });
+                title = _createWeaponTitle(this, checkRoll);
             } else if (this.type === "tool") {
-                checkPromise = this.rollToolCheck({ event: capturedModifiers });
+                checkRoll = await this.rollToolCheck({ event: capturedModifiers, chatMessage: false  });
+                title = _createToolTitle(this, checkRoll);
             }
+
+            await _replaceAbilityCheckButtonWithRollResult(messageData, checkRoll, title);
+
+            messageData.flavor = undefined;
+            messageData.roll = checkRoll;
+            messageData.type = CONST.CHAT_MESSAGE_TYPES.ROLL;
+        }
+        const result = ChatMessage.create(messageData);
+
+        if (this.hasDamage && autoRollDamage) {
+            damagePromise = this.rollDamage({ event: capturedModifiers });
         }
 
-        await Promise.all([checkPromise, damagePromise]);
+        await Promise.all([damagePromise]);
 
-        return wrappedResult;
+        return result;
     }, "WRAPPER");
+}
+
+function _createWeaponTitle(item, roll) {
+    let title = `${item.name} - ${game.i18n.localize("DND5E.AttackRoll")}`;
+
+    const itemData = item.data.data;
+    const consume = itemData.consume;
+    if (consume?.type === "ammo") {
+        const ammo = item.actor.items.get(consume.target);
+        if (ammo) {
+            title += ` [${ammo.name}]`;
+        }
+    }
+
+    if (roll.terms[0].options.advantage) {
+        title += ` (${game.i18n.localize("DND5E.Advantage")})`;
+    } else if (roll.terms[0].options.disadvantage) {
+        title += ` (${game.i18n.localize("DND5E.Disadvantage")})`;
+    }
+
+    return title;
+}
+
+function _createToolTitle(item, roll) {
+    let title = `Tool: ${item.name}`;
+
+    if (roll.terms[0].options.advantage) {
+        title += ` (${game.i18n.localize("DND5E.Advantage")})`;
+    } else if (roll.terms[0].options.disadvantage) {
+        title += ` (${game.i18n.localize("DND5E.Disadvantage")})`;
+    }
+
+    return title;
+}
+
+async function _replaceAbilityCheckButtonWithRollResult(messageData, roll, title) {
+    const content = $(messageData.content);
+    const cardContent = content.find(".card-content");
+    cardContent.after(await roll.render());
+    cardContent.after(`<span class="flavor-text">${title}</span>`);
+    cardContent.after("<hr />");
+    const buttonContainer = content.find(".card-buttons");
+    if (buttonContainer.find("button").length > 1) buttonContainer.before("<hr />");
+    content.find("[data-action=attack],[data-action=toolCheck]").remove();
+
+    messageData.content = content.prop("outerHTML");
 }
