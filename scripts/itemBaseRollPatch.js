@@ -1,6 +1,7 @@
 import { libWrapper } from "../lib/libWrapper/shim.js";
 import { MODULE_NAME } from "./const.js";
 import { getModifierSettingLocalOrDefault } from "./settings.js";
+import { pause } from "./utils.js";
 
 export function patchItemBaseRoll() {
     // A hacky way to determine if modifier keys are pressed
@@ -24,7 +25,7 @@ export function patchItemBaseRoll() {
         modifiers.clientX = event.clientX;
         modifiers.clientY = event.clientY;
     });
-    document.addEventListener("mouseup", event => {
+    document.addEventListener("mouseup", () => {
         modifiers.clientX = null;
         modifiers.clientY = null;
     });
@@ -36,8 +37,9 @@ export function patchItemBaseRoll() {
         const autoRollDamage = game.settings.get(MODULE_NAME, "autoDamage");
         const showDialogModifier = getModifierSettingLocalOrDefault("showRollDialogModifier");
         const shouldShowDialog = capturedModifiers[showDialogModifier];
-        const wrappedResult = await wrapped(...args);
-        console.log("MRE Base item roll", wrappedResult);
+        const wrappedResult = wrapped(...args);
+
+        await pause(0);
 
         let checkPromise, damagePromise;
         if (autoRollCheck) {
