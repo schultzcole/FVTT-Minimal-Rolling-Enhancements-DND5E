@@ -50,7 +50,7 @@ export function patchItemRollDamage() {
         // Prepare the chat message content
         const renderedContent = await _renderCombinedDamageRollContent(partRolls);
 
-        const messageData = await _createCombinedDamageMessageData(this, title, renderedContent, critical, rollMode, options);
+        const messageData = await _createCombinedDamageMessageData(this, title, renderedContent, partRolls, critical, rollMode, options);
 
         // Show DSN 3d dice if available
         if (game.dice3d) {
@@ -64,6 +64,15 @@ export function patchItemRollDamage() {
         // Return the array of Roll objects
         return partRolls;
     }, "MIXED");
+
+    // Prevent "dummy" chat damage cards from triggering DSN
+    Hooks.on("diceSoNiceRollStart", (messageId, context) => {
+        const message = game.messages.get(messageId);
+        const mreRolls = message?.getFlag(MODULE_NAME, "rolls");
+        if (mreRolls !== undefined) {
+            context.blind = true;
+        }
+    });
 }
 
 /**
@@ -151,7 +160,7 @@ async function _renderCombinedDamageRollContent(rolls) {
     return content.prop("outerHTML");
 }
 
-async function _createCombinedDamageMessageData(item, flavor, content, critical, rollMode, options) {
+async function _createCombinedDamageMessageData(item, flavor, content, rolls, critical, rollMode, options) {
     // This decoy roll is used to convince foundry that the message has ROLL type
     const decoyRoll = new Roll("0").roll();
 
@@ -164,9 +173,8 @@ async function _createCombinedDamageMessageData(item, flavor, content, critical,
         speaker: ChatMessage.getSpeaker({actor: item.actor}),
         type: CONST.CHAT_MESSAGE_TYPES.ROLL,
         "flags.dnd5e.roll": {type: "damage", itemId: item.id },
+        "flags.mre-dnd5e.rolls": rolls.map(r => r.roll.toJSON()),
     };
-
-    if (!game.dice3d) messageData.sound = CONFIG.sounds.dice;
 
     if (critical) {
         messageData.flavor += ` (${game.i18n.localize("DND5E.Critical")})`;
