@@ -52,14 +52,16 @@ export function patchItemRollDamage() {
 
         const messageData = await _createCombinedDamageMessageData(this, renderedContent, partRolls, critical, rollMode, options);
 
-        // Show DSN 3d dice if available
-        if (game.dice3d) {
-            const rollAnims =
-                partRolls.map(part => game.dice3d.showForRoll(part.roll, game.user, true, messageData.whisper, messageData.blind));
-            await Promise.all(rollAnims);
-        }
+        if (options.chatMessage) {
+            // Show DSN 3d dice if available
+            if (game.dice3d) {
+                const rollAnims =
+                    partRolls.map(part => game.dice3d.showForRoll(part.roll, game.user, true, messageData.whisper, messageData.blind));
+                await Promise.all(rollAnims);
+            }
 
-        await ChatMessage.create(messageData);
+            await ChatMessage.create(messageData);
+        }
 
         // Return the array of Roll objects
         return partRolls;

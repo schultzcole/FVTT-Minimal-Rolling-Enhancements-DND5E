@@ -13,8 +13,10 @@ export function patchItemBaseRoll() {
         // Ensure that the wrapped Item5e#roll method does not produce a chat message
         // because we want to modify the message prior to creating it.
         const extraOptions = { createMessage: false };
+        let originalOptions = {};
         if (args.length) {
-            mergeObject(args[0], extraOptions);
+            originalOptions = args[0];
+            mergeObject(originalOptions, extraOptions);
         } else {
             args.push(extraOptions);
         }
@@ -44,13 +46,12 @@ export function patchItemBaseRoll() {
                 messageData.type = CONST.CHAT_MESSAGE_TYPES.ROLL;
             }
         }
-        const result = ChatMessage.create(messageData);
 
         if (this.hasDamage && autoRollDamage) {
             await this.rollDamage({ event: capturedModifiers });
         }
 
-        return result;
+        return originalOptions.createMessage ? ChatMessage.create(messageData) : messageData;
     }, "WRAPPER");
 }
 
