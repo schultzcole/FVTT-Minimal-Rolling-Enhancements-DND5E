@@ -1,7 +1,7 @@
 # Minimal Rolling Enhancements (MRE) for D&D5e
 
 Some minimalist enhancements to the core D&D5e rolling workflow.
-Attempts to stay as close to core as possible while improving convenience.
+Attempts to stay as close to core behavior as possible while improving convenience.
 A key philosophy for this module is to remain as non-disruptive as possible to minimize conflicts with system and core updates.
 
 ## Planned Features
@@ -24,7 +24,7 @@ A key philosophy for this module is to remain as non-disruptive as possible to m
 
 ### Other
 
-- ✅ Default to fast-forward (skip the dialog unless a modifier key is pressed).
+- ✅ Default to fast-forward for all ability checks (skip the dialog unless a modifier key is pressed).
 - ✅ Configurable modifier keys for advantage, disadvantage, and fast-forward.
 
 ## Compatibility
