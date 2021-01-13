@@ -8,7 +8,7 @@
     color: #333333;
 }
 
-.mre-damage-card > *:not(:last-child) {
+.mre-damage-card .damage-group > *:not(:last-child) {
     margin-bottom: .4rem;
 }
 
