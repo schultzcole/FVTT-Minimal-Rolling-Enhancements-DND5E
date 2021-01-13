@@ -1,10 +1,10 @@
 {
   "mre-dnd5e": {
     "SETTINGS": {
-      "AutoRollAttacksLabel": "Automatically Roll Item Attacks",
-      "AutoRollAttacksHint": "When an item is activated from a character sheet or macro, automatically roll the attack roll for the item if it exists.",
+      "AutoRollChecksLabel": "Automatically Roll Item Checks",
+      "AutoRollChecksHint": "Automatically roll the attack roll or tool check for the item if it exists.",
       "AutoRollDamageLabel": "Automatically Roll Item Damage",
-      "AutoRollDamageHint": "When an item is activated from a character sheet or macro, automatically roll the first damage group for the item if one exists.",
+      "AutoRollDamageHint": "Automatically roll the first damage group for the item if it exists, the item has an attack roll, and \"Automatically Roll Item Checks\" is enabled.",
       "GlobalDefault": "World Default",
       "GlobalHint": "This setting sets the default setting for all players.",
       "LocalOverride": "Local Override",

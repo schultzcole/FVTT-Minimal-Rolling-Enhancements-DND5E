@@ -103,9 +103,9 @@ function _registerModifierKeySettings() {
 }
 
 function _registerAutoRollsSettings() {
-    game.settings.register(MODULE_NAME, "autoAttack", {
-        name: game.i18n.localize(`${MODULE_NAME}.SETTINGS.AutoRollAttacksLabel`),
-        hint: game.i18n.localize(`${MODULE_NAME}.SETTINGS.AutoRollAttacksHint`),
+    game.settings.register(MODULE_NAME, "autoCheck", {
+        name: game.i18n.localize(`${MODULE_NAME}.SETTINGS.AutoRollChecksLabel`),
+        hint: game.i18n.localize(`${MODULE_NAME}.SETTINGS.AutoRollChecksHint`),
         scope: "world",
         config: true,
         type: Boolean,

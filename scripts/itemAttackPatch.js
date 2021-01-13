@@ -16,6 +16,10 @@ export function patchItemRollAttack() {
             disadvantage: options.event[disAdvModifier],
         };
 
+        if (!options.event?.clientX || !options.event?.clientY) {
+            optionsOverride.dialogOptions = { top: null, left: null };
+        }
+
         mergeObject(options, optionsOverride);
 
         return wrapper(options);

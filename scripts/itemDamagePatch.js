@@ -14,10 +14,10 @@ export function patchItemRollDamage() {
         let bonus = null;
 
         // Show a custom dialog that applies to all damage parts
-        if (event[showDamageDialog]) {
+        if (event && event[showDamageDialog]) {
             const dialogOptions = {
-                top: event ? event.clientY - 80 : null,
-                left: window.innerWidth - 710,
+                top: event?.clientY ? event.clientY - 80 : null,
+                left: event?.clientX ? window.innerWidth - 710 : null,
             };
             const dialogData = await _damageDialog({ title, rollMode, dialogOptions });
 
