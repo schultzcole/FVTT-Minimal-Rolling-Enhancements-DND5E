@@ -26,8 +26,6 @@ function _registerModifierKeySettings() {
     const disAdvModifierLabel = game.i18n.localize(`${MODULE_NAME}.SETTINGS.ModifierDisAdvLabel`);
     const disAdvModifierHint = game.i18n.localize(`${MODULE_NAME}.SETTINGS.ModifierDisAdvHint`);
 
-    const makeName = (name, modifier) => `${name} (${modifier})`;
-    const makeHint = (hint, modifier) => `${hint} ${modifier}`;
 
     const globalModifierChoices = {
         "altKey": game.i18n.localize(`${MODULE_NAME}.MODIFIERS.altKey`),
@@ -41,66 +39,30 @@ function _registerModifierKeySettings() {
         { inplace: false },
     );
 
-    game.settings.register(MODULE_NAME, "showRollDialogModifierGlobal", {
-        name: makeName(showRollDialogLabel, globalDefault),
-        hint: makeHint(showRollDialogHint, globalHint),
-        scope: "world",
-        config: true,
-        type: String,
-        default: "shiftKey",
-        choices: globalModifierChoices,
-    });
+    const makeName = (name, modifier) => `${name} (${modifier})`;
+    const makeHint = (hint, modifier) => `${hint} ${modifier}`;
 
-    game.settings.register(MODULE_NAME, "advModifierGlobal", {
-        name: makeName(advModifierLabel, globalDefault),
-        hint: makeHint(advModifierHint, globalHint),
-        scope: "world",
-        config: true,
-        type: String,
-        default: "altKey",
-        choices: globalModifierChoices,
-    });
+    function _registerModifier(key, label, hint, isGlobal, defaultValue) {
+        game.settings.register(MODULE_NAME, key, {
+            name: makeName(label, isGlobal ? globalDefault : localOverride),
+            hint: makeHint(hint, isGlobal ? globalHint : localHint),
+            scope: isGlobal ? "world" : "client",
+            config: true,
+            type: String,
+            default: defaultValue,
+            choices: isGlobal ? globalModifierChoices : localModifierChoices,
+        });
+    }
 
-    game.settings.register(MODULE_NAME, "disAdvModifierGlobal", {
-        name: makeName(disAdvModifierLabel, globalDefault),
-        hint: makeHint(disAdvModifierHint, globalHint),
-        scope: "world",
-        config: true,
-        type: String,
-        default: "ctrlKey",
-        choices: globalModifierChoices,
-    });
+    _registerModifier("showRollDialogModifierGlobal", showRollDialogLabel, showRollDialogHint, true, "shiftKey");
+    _registerModifier("advModifierGlobal", advModifierLabel, advModifierHint, true, "altKey");
+    _registerModifier("disAdvModifierGlobal", disAdvModifierLabel, disAdvModifierHint, true, "ctrlKey");
 
-    game.settings.register(MODULE_NAME, "showRollDialogModifierLocal", {
-        name: makeName(showRollDialogLabel, localOverride),
-        hint: makeHint(showRollDialogHint, localHint),
-        scope: "client",
-        config: true,
-        type: String,
-        default: "default",
-        choices: localModifierChoices,
-    });
-
-    game.settings.register(MODULE_NAME, "advModifierLocal", {
-        name: makeName(advModifierLabel, localOverride),
-        hint: makeHint(advModifierHint, localHint),
-        scope: "client",
-        config: true,
-        type: String,
-        default: "default",
-        choices: localModifierChoices,
-    });
-
-    game.settings.register(MODULE_NAME, "disAdvModifierLocal", {
-        name: makeName(disAdvModifierLabel, localOverride),
-        hint: makeHint(disAdvModifierHint, localHint),
-        scope: "client",
-        config: true,
-        type: String,
-        default: "default",
-        choices: localModifierChoices,
-    });
+    _registerModifier("showRollDialogModifierLocal", showRollDialogLabel, showRollDialogHint, false, "default");
+    _registerModifier("advModifierLocal", advModifierLabel, advModifierHint, false, "default");
+    _registerModifier("disAdvModifierLocal", disAdvModifierLabel, disAdvModifierHint, false, "default");
 }
+
 
 function _registerAutoRollsSettings() {
     game.settings.register(MODULE_NAME, "autoCheck", {
