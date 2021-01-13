@@ -10,15 +10,14 @@ export function patchItemBaseRoll() {
         const autoRollCheck = game.settings.get(MODULE_NAME, "autoCheck");
         const autoRollDamage = game.settings.get(MODULE_NAME, "autoDamage");
 
-        // Ensure that the wrapped Item5e#roll method does not produce a chat message
-        // because we want to modify the message prior to creating it.
-        const extraOptions = { createMessage: false };
-        let originalOptions = {};
+        // Force our call to the original Item5e#roll to not show a chat card, but remember whether *our* caller wants a chat message or not
+        // If the caller above us set createMessage to false, we should not create a chat card and instead just return our message data.
+        let originalCreateMessage = true;
         if (args.length) {
-            originalOptions = args[0];
-            mergeObject(originalOptions, extraOptions);
+            originalCreateMessage = args[0].createMessage ?? originalCreateMessage;
+            mergeObject(args[0], { createMessage: false });
         } else {
-            args.push(extraOptions);
+            args.push({ createMessage: false });
         }
 
         // Call the original Item5e#roll and get the resulting message data
@@ -51,19 +50,13 @@ export function patchItemBaseRoll() {
             await this.rollDamage({ event: capturedModifiers });
         }
 
-        return originalOptions.createMessage ? ChatMessage.create(messageData) : messageData;
+        return originalCreateMessage ? ChatMessage.create(messageData) : messageData;
     }, "WRAPPER");
 }
 
 function _setupModifierListeners() {
     // A hacky way to determine if modifier keys are pressed
-    const modifiers = {
-        altKey: false,
-        ctrlKey: false,
-        shiftKey: false,
-        clientX: null,
-        clientY: null,
-    };
+    const modifiers = { altKey: false, ctrlKey: false, shiftKey: false, clientX: null, clientY: null };
 
     const updateModifiers = event => {
         modifiers.altKey = event.altKey;
