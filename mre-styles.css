@@ -28,3 +28,18 @@
 .dnd5e.chat-card .card-roll {
     margin-top: .5rem;
 }
+
+.dnd5e.chat-card.mre-damage-card .card-header img {
+    flex: 0 0 28px;
+    height: 28px;
+    width: 28px;
+}
+
+.dnd5e.chat-card.mre-damage-card .card-header h3 {
+    line-height: 28px;
+}
+
+.dnd5e.chat-card.mre-damage-card .card-header h3:hover {
+    color: unset;
+    text-shadow: unset;
+}

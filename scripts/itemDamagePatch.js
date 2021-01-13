@@ -147,10 +147,11 @@ async function _renderCombinedDamageRollContent(item, rolls, flavor) {
     const container = $(`<div class="dnd5e chat-card item-card mre-damage-card">`);
     container.append(
         `<header class="card-header flexrow">
-            <img src="${item.img}" title="${item.name}" width="36" height="36"/>
+            <img src="${item.img}" title="${item.name}" width="36" height="36" />
             <h3 class="item-name">${item.name}</h3>
         </header>`
     );
+    container.append(`<div class="card-content">`);
     const damageSection = $(`<div class="card-roll damage-group">`);
     damageSection.append(`<span class="flavor-text">${flavor}</span>`);
     damageSection.append(renderedRolls);

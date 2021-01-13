@@ -22,6 +22,10 @@ export function patchItemBaseRoll() {
         // Call the original Item5e#roll and get the resulting message data
         const messageData = await wrapped(...args);
 
+        // User quit out of the dialog workflow early (or some other failure)
+        if (!messageData) return;
+
+        // Make a roll if auto rolls is on, and replace the appropriate button in the item card with the rendered roll results
         if (autoRollCheck) {
             let checkRoll, title;
             if (this.hasAttack) {
@@ -32,11 +36,13 @@ export function patchItemBaseRoll() {
                 title = _createToolTitle(this, checkRoll);
             }
 
-            await _replaceAbilityCheckButtonWithRollResult(messageData, checkRoll, title);
+            if (checkRoll) {
+                await _replaceAbilityCheckButtonWithRollResult(messageData, checkRoll, title);
 
-            messageData.flavor = undefined;
-            messageData.roll = checkRoll;
-            messageData.type = CONST.CHAT_MESSAGE_TYPES.ROLL;
+                messageData.flavor = undefined;
+                messageData.roll = checkRoll;
+                messageData.type = CONST.CHAT_MESSAGE_TYPES.ROLL;
+            }
         }
         const result = ChatMessage.create(messageData);
 
