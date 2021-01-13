@@ -1,6 +1,5 @@
 import { libWrapper } from "../lib/libWrapper/shim.js";
 import { MODULE_NAME } from "./const.js";
-import { getModifierSettingLocalOrDefault } from "./settings.js";
 import { pause } from "./utils.js";
 
 export function patchItemBaseRoll() {
