@@ -17,6 +17,7 @@ export function patchAbilityChecks() {
     }
 }
 
+// Patches a d20 roll to use the modifier hotkeys set in the module settings
 function generateD20RollPatch(optionsIndex) {
     return function(wrapper, ...args) {
         let options = args[optionsIndex];
