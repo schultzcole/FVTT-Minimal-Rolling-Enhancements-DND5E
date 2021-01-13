@@ -78,7 +78,7 @@ function _setupModifierListeners() {
 }
 
 function _createWeaponTitle(item, roll) {
-    let title = `${item.name} - ${game.i18n.localize("DND5E.AttackRoll")}`;
+    let title = game.i18n.localize("DND5E.AttackRoll");
 
     const itemData = item.data.data;
     const consume = itemData.consume;
@@ -99,7 +99,7 @@ function _createWeaponTitle(item, roll) {
 }
 
 function _createToolTitle(item, roll) {
-    let title = `Tool: ${item.name}`;
+    let title = game.i18n.localize("DND5E.ToolCheck");
 
     if (roll.terms[0].options.advantage) {
         title += ` (${game.i18n.localize("DND5E.Advantage")})`;
@@ -113,9 +113,14 @@ function _createToolTitle(item, roll) {
 async function _replaceAbilityCheckButtonWithRollResult(messageData, roll, title) {
     const content = $(messageData.content);
     const cardContent = content.find(".card-content");
-    cardContent.after(await roll.render());
-    cardContent.after(`<span class="flavor-text">${title}</span>`);
-    cardContent.after("<hr />");
+    cardContent.append("<hr />");
+
+    const cardRoll = $(`<div class="card-roll">`);
+    cardRoll.append(`<span class="flavor-text">${title}</span>`);
+    cardRoll.append(await roll.render());
+
+    cardContent.after(cardRoll);
+
     const buttonContainer = content.find(".card-buttons");
     if (buttonContainer.find("button").length > 1) buttonContainer.before("<hr />");
     content.find("[data-action=attack],[data-action=toolCheck]").remove();

@@ -24,3 +24,7 @@
 .dnd5e.chat-card .dice-roll {
     font-size: 14px;
 }
+
+.dnd5e.chat-card .card-roll {
+    margin-top: .5rem;
+}
