@@ -1,33 +1,8 @@
 import { libWrapper } from "../lib/libWrapper/shim.js";
 import { MODULE_NAME } from "./const.js";
-import { pause } from "./utils.js";
 
 export function patchItemBaseRoll() {
-    // A hacky way to determine if modifier keys are pressed
-    const modifiers = {
-        altKey: false,
-        ctrlKey: false,
-        shiftKey: false,
-        clientX: null,
-        clientY: null,
-    }
-
-    const updateModifiers = event => {
-        modifiers.altKey = event.altKey;
-        modifiers.ctrlKey = event.ctrlKey;
-        modifiers.shiftKey = event.shiftKey;
-    }
-
-    document.addEventListener("keydown", updateModifiers);
-    document.addEventListener("keyup", updateModifiers);
-    document.addEventListener("mousedown", event => {
-        modifiers.clientX = event.clientX;
-        modifiers.clientY = event.clientY;
-    });
-    document.addEventListener("mouseup", () => {
-        modifiers.clientX = null;
-        modifiers.clientY = null;
-    });
+    const modifiers = _setupModifierListeners();
 
     libWrapper.register(MODULE_NAME, "CONFIG.Item.entityClass.prototype.roll", async function (wrapped, ...args) {
         const capturedModifiers = duplicate(modifiers);
@@ -35,6 +10,8 @@ export function patchItemBaseRoll() {
         const autoRollCheck = game.settings.get(MODULE_NAME, "autoCheck");
         const autoRollDamage = game.settings.get(MODULE_NAME, "autoDamage");
 
+        // Ensure that the wrapped Item5e#roll method does not produce a chat message
+        // because we want to modify the message prior to creating it.
         const extraOptions = { createMessage: false };
         if (args.length) {
             mergeObject(args[0], extraOptions);
@@ -42,11 +19,9 @@ export function patchItemBaseRoll() {
             args.push(extraOptions);
         }
 
+        // Call the original Item5e#roll and get the resulting message data
         const messageData = await wrapped(...args);
 
-        await pause(0);
-
-        let damagePromise;
         if (autoRollCheck) {
             let checkRoll, title;
             if (this.hasAttack) {
@@ -66,13 +41,40 @@ export function patchItemBaseRoll() {
         const result = ChatMessage.create(messageData);
 
         if (this.hasDamage && autoRollDamage) {
-            damagePromise = this.rollDamage({ event: capturedModifiers });
+            await this.rollDamage({ event: capturedModifiers });
         }
-
-        await Promise.all([damagePromise]);
 
         return result;
     }, "WRAPPER");
+}
+
+function _setupModifierListeners() {
+    // A hacky way to determine if modifier keys are pressed
+    const modifiers = {
+        altKey: false,
+        ctrlKey: false,
+        shiftKey: false,
+        clientX: null,
+        clientY: null,
+    };
+
+    const updateModifiers = event => {
+        modifiers.altKey = event.altKey;
+        modifiers.ctrlKey = event.ctrlKey;
+        modifiers.shiftKey = event.shiftKey;
+    };
+
+    document.addEventListener("keydown", updateModifiers);
+    document.addEventListener("keyup", updateModifiers);
+    document.addEventListener("mousedown", event => {
+        modifiers.clientX = event.clientX;
+        modifiers.clientY = event.clientY;
+    });
+    document.addEventListener("mouseup", () => {
+        modifiers.clientX = null;
+        modifiers.clientY = null;
+    });
+    return modifiers;
 }
 
 function _createWeaponTitle(item, roll) {
