@@ -1,5 +1,5 @@
 import { MODULE_NAME } from "../const.js";
-import { createEmptyDamageGroup } from "../damage-group.js";
+import { createNewDamageGroup } from "../damage-group.js";
 
 export class DamageGroupConfig extends BaseEntitySheet {
     /** @override */
@@ -64,7 +64,7 @@ export class DamageGroupConfig extends BaseEntitySheet {
 
     async _handleAddDamageGroup() {
         const groups = duplicate(this.entity.data.flags[MODULE_NAME].damageGroups);
-        groups.push(createEmptyDamageGroup(groups.length));
+        groups.push(createNewDamageGroup({ index: groups.length }));
         await this.entity.update({ [`flags.${MODULE_NAME}.damageGroups`]: groups });
         this.position.width = "auto";
         this.render(false);

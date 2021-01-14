@@ -8,12 +8,13 @@ import { MODULE_NAME } from "./const.js";
 
 /**
  * @param {int} index - The index of the newly created damage group in its containing item
+ * @param {String} label
  * @param {int[]} initialSet - A set of damage formula indices to initialize with
  * @returns {DamageGroup}
  */
-export function createEmptyDamageGroup(index, initialSet=[]) {
+export function createNewDamageGroup({ index=undefined, label=undefined, initialSet=[] }={}) {
     return {
-        label: game.i18n.localize(damageGroupNameKeys[index] ?? `${MODULE_NAME}.DAMAGE-GROUP.NewDamageGroup`),
+        label: label ?? game.i18n.localize(damageGroupNameKeys[index] ?? `${MODULE_NAME}.DAMAGE-GROUP.NewDamageGroup`),
         formulaSet: duplicate(initialSet),
     }
 }

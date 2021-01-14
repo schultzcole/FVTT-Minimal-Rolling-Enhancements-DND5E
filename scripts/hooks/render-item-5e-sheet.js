@@ -6,4 +6,6 @@ Hooks.on("renderItemSheet5e", (itemSheet, html, _) => {
     html.find(".tab.details .damage-header").prepend(`<a title="${tooltip}" class="config-damage-groups"><i class="fas fa-tasks"></i></a>`);
 
     html.find(".config-damage-groups").click(() => new DamageGroupConfig(itemSheet.entity, { editable: itemSheet.isEditable }).render(true) );
+
+    html.find(`.tab.details input[name="data.damage.versatile"]`).closest(".form-group").remove();
 });
