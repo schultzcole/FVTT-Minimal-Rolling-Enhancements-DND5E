@@ -1,6 +1,6 @@
-import { MODULE_NAME } from "./const.js";
-import { libWrapper } from "../lib/libWrapper/shim.js";
-import { getModifierSettingLocalOrDefault } from "./settings.js";
+import { MODULE_NAME } from "../const.js";
+import { libWrapper } from "../../lib/libWrapper/shim.js";
+import { getModifierSettingLocalOrDefault } from "../settings.js";
 
 export function patchItemRollDamage() {
     libWrapper.register(MODULE_NAME, "CONFIG.Item.entityClass.prototype.rollDamage", async function (wrapped, ...args) {

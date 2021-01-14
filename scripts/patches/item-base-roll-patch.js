@@ -1,5 +1,5 @@
-import { libWrapper } from "../lib/libWrapper/shim.js";
-import { MODULE_NAME } from "./const.js";
+import { libWrapper } from "../../lib/libWrapper/shim.js";
+import { MODULE_NAME } from "../const.js";
 
 export function patchItemBaseRoll() {
     const modifiers = _setupModifierListeners();

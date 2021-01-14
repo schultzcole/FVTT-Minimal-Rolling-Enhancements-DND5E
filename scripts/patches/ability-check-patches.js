@@ -1,6 +1,6 @@
-import { MODULE_NAME } from "./const.js";
-import { libWrapper } from "../lib/libWrapper/shim.js";
-import { getModifierSettingLocalOrDefault } from "./settings.js";
+import { MODULE_NAME } from "../const.js";
+import { libWrapper } from "../../lib/libWrapper/shim.js";
+import { getModifierSettingLocalOrDefault } from "../settings.js";
 
 const d20RollsToPatch = [
     { path: "CONFIG.Item.entityClass.prototype.rollAttack", optionsIndex: 0 },

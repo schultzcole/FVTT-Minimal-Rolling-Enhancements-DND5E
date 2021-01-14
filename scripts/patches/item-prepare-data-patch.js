@@ -1,6 +1,6 @@
-import { libWrapper } from "../lib/libWrapper/shim.js";
-import { MODULE_NAME } from "./const.js";
-import { createEmptyDamageGroup } from "./damage-group.js";
+import { libWrapper } from "../../lib/libWrapper/shim.js";
+import { MODULE_NAME } from "../const.js";
+import { createEmptyDamageGroup } from "../damage-group.js";
 
 export function patchItemPrepareData() {
     libWrapper.register(MODULE_NAME, "CONFIG.Item.entityClass.prototype.prepareData", function(wrapped, ...args) {

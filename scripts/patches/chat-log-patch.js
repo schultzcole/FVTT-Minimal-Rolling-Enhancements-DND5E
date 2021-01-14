@@ -1,5 +1,5 @@
-import { libWrapper } from "../lib/libWrapper/shim.js";
-import { MODULE_NAME } from "./const.js";
+import { libWrapper } from "../../lib/libWrapper/shim.js";
+import { MODULE_NAME } from "../const.js";
 
 export function patchChatLogContextMenu() {
     libWrapper.register(MODULE_NAME, "ChatLog.prototype._contextMenu", function (wrapped, ...args) {
