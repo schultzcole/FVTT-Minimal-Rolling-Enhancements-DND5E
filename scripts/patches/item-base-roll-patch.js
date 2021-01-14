@@ -116,11 +116,8 @@ async function _replaceAbilityCheckButtonWithRollResult(messageData, item, roll,
     content.find(".chat-card").addClass("mre-item-card");
     const cardContent = content.find(".card-content");
 
-    // Remove the attack/tool check button
-    content.find("[data-action=attack],[data-action=toolCheck]").remove();
-
-    // Remove existing damage/versatile buttons
-    content.find("[data-action=damage],[data-action=versatile]").remove();
+    // Remove existing attack, tool check, damage, and versatile buttons
+    content.find("[data-action=attack],[data-action=toolCheck],[data-action=damage],[data-action=versatile]").remove();
 
     // Add separator between item description and roll
     cardContent.append("<hr />");

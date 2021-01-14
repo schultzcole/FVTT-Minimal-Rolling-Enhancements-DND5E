@@ -2,6 +2,7 @@ import { MODULE_NAME } from "../const.js";
 import { createEmptyDamageGroup } from "../damage-group.js";
 
 export class DamageGroupConfig extends BaseEntitySheet {
+    /** @override */
     static get defaultOptions() {
         return mergeObject(super.defaultOptions, {
             classes: [ "dnd5e", "mre-damage-group-config" ],
@@ -14,15 +15,17 @@ export class DamageGroupConfig extends BaseEntitySheet {
         });
     }
 
+    /** @override */
     get title() { return `${game.i18n.localize(`${MODULE_NAME}.DAMAGE-GROUP.DialogTitle`)}: ${this.entity.name}`; }
 
+    /** @override */
     getData(options) {
         const itemData = this.entity.data.data;
         const dmgGroupData = this._getDamageGroupData();
-        console.log("getDamageGroupData", dmgGroupData);
+        const emptyString = game.i18n.localize(`${MODULE_NAME}.DAMAGE-GROUP.Empty`)
         return {
             formulas: itemData.damage.parts.map(p => ({
-                formula: p[0]?.trim()?.length ? p[0] : "<Empty>",
+                formula: p[0]?.trim()?.length ? p[0] : `<${emptyString}>`,
                 type: p[1],
                 typeLabel: CONFIG.DND5E.damageTypes[p[1]] ?? CONFIG.DND5E.healingTypes[p[1]] ?? game.i18n.localize("DND5E.None"),
             })),
@@ -40,12 +43,14 @@ export class DamageGroupConfig extends BaseEntitySheet {
         }));
     }
 
+    /** @override */
     _getHeaderButtons() {
         const existing = super._getHeaderButtons();
         existing[0].label = game.i18n.localize(`${MODULE_NAME}.DAMAGE-GROUP.SaveAndClose`);
         return existing;
     }
 
+    /** @override */
     activateListeners(html) {
         super.activateListeners(html);
 
@@ -70,8 +75,8 @@ export class DamageGroupConfig extends BaseEntitySheet {
         this.render(false);
     }
 
+    /** @override */
     async _updateObject(event, formData) {
-        console.log(formData);
         const groups = [];
         for (let [key, value] of Object.entries(formData)) {
             // key is expected to be of the form damageGroup[x].label OR damageGroup[x].containsFormula[y]
@@ -99,7 +104,6 @@ export class DamageGroupConfig extends BaseEntitySheet {
                     return acc;
                 }, []),
         }));
-        console.log(damageGroups);
         await this.entity.setFlag(MODULE_NAME, "damageGroups", damageGroups);
         this.position.width = "auto";
         this.render(true);

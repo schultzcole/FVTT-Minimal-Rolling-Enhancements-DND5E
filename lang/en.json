@@ -28,6 +28,7 @@
       "Primary": "Primary",
       "Secondary": "Secondary",
       "Tertiary":  "Tertiary",
+      "Empty": "Empty",
       "NewDamageGroup": "New Damage Group",
       "SaveAndClose": "Save & Close",
       "AddDamageGroup": "Add a New Damage Group",
