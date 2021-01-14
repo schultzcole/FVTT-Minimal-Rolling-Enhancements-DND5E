@@ -45,17 +45,21 @@ export class DamageGroupConfig extends BaseEntitySheet {
 
     /** @override */
     _getHeaderButtons() {
-        const existing = super._getHeaderButtons();
-        existing[0].label = game.i18n.localize(`${MODULE_NAME}.DAMAGE-GROUP.SaveAndClose`);
-        return existing;
+        // Remove all buttons except for the "Close" button, and re-label it to "Save & Close"
+        const existing = super._getHeaderButtons()
+        const closeButton = existing[existing.length - 1];
+        closeButton.label = game.i18n.localize(`${MODULE_NAME}.DAMAGE-GROUP.SaveAndClose`);
+        return [closeButton];
     }
 
     /** @override */
     activateListeners(html) {
         super.activateListeners(html);
 
-        html.find(".add-damage-group").click(this._handleAddDamageGroup.bind(this));
-        html.find(".delete-damage-group").click(this._handleDeleteDamageGroup.bind(this));
+        if (this.isEditable) {
+            html.find(".add-damage-group").click(this._handleAddDamageGroup.bind(this));
+            html.find(".delete-damage-group").click(this._handleDeleteDamageGroup.bind(this));
+        }
     }
 
     async _handleAddDamageGroup() {
@@ -77,6 +81,7 @@ export class DamageGroupConfig extends BaseEntitySheet {
 
     /** @override */
     async _updateObject(event, formData) {
+        if (!this.isEditable) return;
         const groups = [];
         for (let [key, value] of Object.entries(formData)) {
             // key is expected to be of the form damageGroup[x].label OR damageGroup[x].containsFormula[y]
