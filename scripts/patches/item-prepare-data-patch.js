@@ -20,10 +20,10 @@ export function patchItemPrepareData() {
 
         // If the item has a versatile damage value that hasn't been migrated to a damage group yet, migrate it to a damage group
         if (itemDamage.versatile?.length > 0 && !mreFlags.migratedVersatile) {
+            this.data.flags[MODULE_NAME].migratedVersatile = true;
             const len = itemDamage.parts.push([itemDamage.versatile, itemDamage.parts[0][1]]);
             let verstatileDamageGroup = createNewDamageGroup({ label: game.i18n.localize("DND5E.Versatile"), initialSet: [len - 1] });
             mreFlags.damageGroups.push(verstatileDamageGroup);
-            this.setFlag(MODULE_NAME, "migratedVersatile", true);
         }
     }, "WRAPPER");
 }
