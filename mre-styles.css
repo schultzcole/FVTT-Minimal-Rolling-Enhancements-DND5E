@@ -1,3 +1,5 @@
+
+
 .mre-damage-card .dice-total::after {
     content: attr(data-damage-type);
     display: block;
@@ -25,23 +27,12 @@
     font-size: 14px;
 }
 
-.dnd5e.chat-card .card-roll {
+.dnd5e.chat-card.mre-item-card .card-roll {
     margin-top: .5rem;
 }
 
-.dnd5e.chat-card.mre-damage-card .card-header img {
-    flex: 0 0 28px;
-    height: 28px;
-    width: 28px;
-}
-
-.dnd5e.chat-card.mre-damage-card .card-header h3 {
-    line-height: 28px;
-}
-
-.dnd5e.chat-card.mre-damage-card .card-header h3:hover {
-    color: unset;
-    text-shadow: unset;
+.mre-item-card .card-roll .flavor-text {
+    line-height: 20px;
 }
 
 .mre-damage-group-config input[type=text],

@@ -48,11 +48,11 @@ export function patchItemRollDamage() {
         }
 
         // Prepare the chat message content
-        const renderedContent = await _renderCombinedDamageRollContent(this, partRolls, title);
+        const renderedContent = await _renderCombinedDamageRollContent(this, partRolls);
 
-        const messageData = await _createCombinedDamageMessageData(this, renderedContent, partRolls, critical, rollMode, options);
+        const messageData = await _createCombinedDamageMessageData(this, renderedContent, title, partRolls, critical, rollMode, options);
 
-        if (options.chatMessage) {
+        if (options.chatMessage ?? true) {
             // Show DSN 3d dice if available
             if (game.dice3d) {
                 const rollAnims =
@@ -134,7 +134,7 @@ async function _rollDamageParts(item, innerRollDamage, { critical, event, spellL
     return partRolls;
 }
 
-async function _renderCombinedDamageRollContent(item, rolls, flavor) {
+async function _renderCombinedDamageRollContent(item, rolls) {
     const renderedRolls = [];
 
     // Render all each of the rolls to html
@@ -147,23 +147,16 @@ async function _renderCombinedDamageRollContent(item, rolls, flavor) {
 
     // Assemble them under one container div
     const container = $(`<div class="dnd5e chat-card item-card mre-damage-card">`);
-    container.append(
-        `<header class="card-header flexrow">
-            <img src="${item.img}" title="${item.name}" width="36" height="36" />
-            <h3 class="item-name">${item.name}</h3>
-        </header>`
-    );
     container.append(`<div class="card-content">`);
     const damageSection = $(`<div class="card-roll damage-group">`);
-    damageSection.append(`<span class="flavor-text">${flavor}</span>`);
     damageSection.append(renderedRolls);
     damageSection.find(".dice-roll:not(:last-child)").after("<hr />");
     container.append(damageSection);
 
-    return container.prop("outerHTML");
+    return damageSection.prop("outerHTML");
 }
 
-async function _createCombinedDamageMessageData(item, content, rolls, critical, rollMode, options) {
+async function _createCombinedDamageMessageData(item, content, flavor, rolls, critical, rollMode, options) {
     // This decoy roll is used to convince foundry that the message has ROLL type
     const decoyRoll = new Roll("0").roll();
 
@@ -171,8 +164,10 @@ async function _createCombinedDamageMessageData(item, content, rolls, critical, 
     const messageData = {
         user: game.user._id,
         content,
+        flavor,
         roll: decoyRoll,
         speaker: ChatMessage.getSpeaker({actor: item.actor}),
+        sound: CONFIG.sounds.dice,
         type: CONST.CHAT_MESSAGE_TYPES.ROLL,
         "flags.dnd5e.roll": {type: "damage", itemId: item.id },
         "flags.mre-dnd5e.rolls": rolls.map(r => r.roll.toJSON()),

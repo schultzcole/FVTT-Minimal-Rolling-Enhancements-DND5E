@@ -43,6 +43,7 @@ export function patchItemBaseRoll() {
                 messageData.flavor = undefined;
                 messageData.roll = checkRoll;
                 messageData.type = CONST.CHAT_MESSAGE_TYPES.ROLL;
+                messageData.sound = CONFIG.sounds.dice;
             }
         }
 
@@ -112,6 +113,7 @@ function _createToolTitle(item, roll) {
 
 async function _replaceAbilityCheckButtonWithRollResult(messageData, roll, title) {
     const content = $(messageData.content);
+    content.find(".chat-card").addClass("mre-item-card");
     const cardContent = content.find(".card-content");
     cardContent.append("<hr />");
 
