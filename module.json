@@ -7,7 +7,8 @@
   "systems": [ "dnd5e" ],
   "esmodules": [
     "./setup.js",
-    "./scripts/hooks/render-item-5e-sheet.js"
+    "./scripts/hooks/render-item-5e-sheet.js",
+    "./scripts/hooks/render-chat-log.js"
   ],
   "styles": [
     "./mre-styles.css"

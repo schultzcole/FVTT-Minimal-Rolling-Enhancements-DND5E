@@ -38,7 +38,7 @@ export function patchItemBaseRoll() {
             }
 
             if (checkRoll) {
-                await _replaceAbilityCheckButtonWithRollResult(messageData, checkRoll, title);
+                await _replaceAbilityCheckButtonWithRollResult(messageData, this, checkRoll, title);
 
                 messageData.flavor = undefined;
                 messageData.roll = checkRoll;
@@ -111,21 +111,37 @@ function _createToolTitle(item, roll) {
     return title;
 }
 
-async function _replaceAbilityCheckButtonWithRollResult(messageData, roll, title) {
+async function _replaceAbilityCheckButtonWithRollResult(messageData, item, roll, title) {
     const content = $(messageData.content);
     content.find(".chat-card").addClass("mre-item-card");
     const cardContent = content.find(".card-content");
+
+    // Remove the attack/tool check button
+    content.find("[data-action=attack],[data-action=toolCheck]").remove();
+
+    // Remove existing damage/versatile buttons
+    content.find("[data-action=damage],[data-action=versatile]").remove();
+
+    // Add separator between item description and roll
     cardContent.append("<hr />");
 
+    // Add the attack roll to the card
     const cardRoll = $(`<div class="card-roll">`);
     cardRoll.append(`<span class="flavor-text">${title}</span>`);
     cardRoll.append(await roll.render());
-
     cardContent.after(cardRoll);
 
-    const buttonContainer = content.find(".card-buttons");
-    if (buttonContainer.find("button").length > 1) buttonContainer.before("<hr />");
-    content.find("[data-action=attack],[data-action=toolCheck]").remove();
+    // Add separator between roll and roll buttons
+    const cardButtons = content.find(".card-buttons");
+    if (cardButtons.find("button").length > 1) cardButtons.before("<hr />");
+
+    // Inject damage group buttons
+    const damageGroups = item.getFlag(MODULE_NAME, "damageGroups");
+    const damageText = game.i18n.localize("DND5E.Damage");
+    const damageButtons = damageGroups.map((dg, i) =>
+        $(`<button data-action="damage-group" data-damage-group="${i}">${damageText} (${dg.label})</button>`)
+    );
+    cardButtons.prepend(damageButtons);
 
     messageData.content = content.prop("outerHTML");
 }

@@ -4,11 +4,13 @@ import { getModifierSettingLocalOrDefault } from "../settings.js";
 
 export function patchItemRollDamage() {
     libWrapper.register(MODULE_NAME, "CONFIG.Item.entityClass.prototype.rollDamage", async function (wrapped, ...args) {
-        let {/** @type MouseEvent */ event=null, options={}} = args[0];
+        let {/** @type MouseEvent */ event=null, damageGroup=0, options={}} = args[0];
+
+        if (!this.data.data.damage?.parts) throw new Error("You cannot roll damage for this item.");
 
         let showDamageDialog = getModifierSettingLocalOrDefault("showRollDialogModifier");
 
-        const title = `${game.i18n.localize("DND5E.DamageRoll")}`;
+        let title = `${this.name} - ${game.i18n.localize("DND5E.DamageRoll")}`;
         let rollMode = options.rollMode ?? game.settings.get("core", "rollMode");
         let critical = false;
         let bonus = null;
@@ -33,10 +35,12 @@ export function patchItemRollDamage() {
         args[0].options.fastForward = true;
         args[0].critical = critical;
 
-        if (!this.data.data.damage?.parts) throw new Error("You cannot roll damage for this item.");
-
         // Roll each individual damage formula
-        const partRolls = await _rollDamageParts(this, wrapped, args[0]);
+        const group = (this.getFlag(MODULE_NAME, "damageGroups"))[damageGroup];
+        if (!group) throw new Error(`Invalid damage group index provided: ${damageGroup}`);
+        title += ` (${group.label})`;
+        const itemFormulae = this.data.data.damage.parts;
+        const partRolls = await _rollDamageParts(group.formulaSet.map(f => itemFormulae[f]), wrapped, args[0]);
 
         // Add a situational bonus if one was provided
         if (bonus) {
@@ -110,8 +114,7 @@ function _parseDamageDialog(form) {
     } : {};
 }
 
-async function _rollDamageParts(item, innerRollDamage, { critical, event, spellLevel, versatile, options }) {
-    const itemDamageParts = item.data.data.damage.parts;
+async function _rollDamageParts(itemDamageParts, innerRollDamage, { critical, event, spellLevel, versatile, options }) {
     const partRolls = [];
 
     // Roll each of the item's damage parts separately.
