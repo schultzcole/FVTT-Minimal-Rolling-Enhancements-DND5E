@@ -128,9 +128,7 @@ async function _replaceAbilityCheckButtonWithRollResult(messageData, item, roll,
     cardRoll.append(await roll.render());
     cardContent.after(cardRoll);
 
-    // Add separator between roll and roll buttons
     const cardButtons = content.find(".card-buttons");
-    if (cardButtons.find("button").length > 1) cardButtons.before("<hr />");
 
     // Inject damage group buttons
     const damageGroups = item.getFlag(MODULE_NAME, "damageGroups");
@@ -139,6 +137,9 @@ async function _replaceAbilityCheckButtonWithRollResult(messageData, item, roll,
         $(`<button data-action="damage-group" data-damage-group="${i}">${damageText} (${dg.label})</button>`)
     );
     cardButtons.prepend(damageButtons);
+
+    // Add separator between roll and roll buttons
+    if (cardButtons.find("button").length > 0) cardButtons.before("<hr />");
 
     messageData.content = content.prop("outerHTML");
 }
