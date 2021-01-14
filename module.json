@@ -6,7 +6,8 @@
   "author": "Cole Schultz (cole#9640)",
   "systems": [ "dnd5e" ],
   "esmodules": [
-    "./setup.js"
+    "./setup.js",
+    "./scripts/hooks/render-item-5e-sheet.js"
   ],
   "styles": [
     "./mre-styles.css"

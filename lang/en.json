@@ -21,6 +21,18 @@
       "ctrlKey": "Control/Command",
       "default": "Use World Default",
       "shiftKey": "Shift"
+    },
+    "DAMAGE-GROUP": {
+      "DialogTitle": "Damage Group Configuration",
+      "DialogHint": "Configure damage groups and which groups each damage formula belongs to.",
+      "Primary": "Primary",
+      "Secondary": "Secondary",
+      "Tertiary":  "Tertiary",
+      "NewDamageGroup": "New Damage Group",
+      "SaveAndClose": "Save & Close",
+      "AddDamageGroup": "Add a New Damage Group",
+      "DeleteDamageGroup": "Delete This Damage Group",
+      "RenameDamageGroup": "Rename Damage Group"
     }
   }
 }

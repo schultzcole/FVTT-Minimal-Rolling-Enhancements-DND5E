@@ -1,0 +1,69 @@
+<form autocomplete="off">
+    <p class="notes">{{ localize "mre-dnd5e.DAMAGE-GROUP.DialogHint" }}</p>
+    <table>
+        <tr>
+            <td></td>
+            <td></td>
+            {{#each damageGroups}}
+                <td>
+                    <input
+                        title="{{localize "mre-dnd5e.DAMAGE-GROUP.RenameDamageGroup" }}"
+                        name="damageGroups[{{@index}}].label"
+                        type="text"
+                        value="{{this.label}}"
+                    />
+                </td>
+            {{/each}}
+            <td>
+                <a
+                    title="{{localize "mre-dnd5e.DAMAGE-GROUP.AddDamageGroup" }}"
+                    class="add-damage-group"
+                >
+                    <i class="far fa-plus-square"></i>
+                </a>
+            </td>
+        </tr>
+        {{#each formulas}}
+            <tr>
+                <td>
+                    <span class="formula-label">{{this.formula}}</span>
+                </td>
+                <td>
+                    <span class="formula-type-label">({{this.typeLabel}})</span>
+                </td>
+                {{#each ../damageGroups}}
+                    <td>
+                        {{log  }}
+                        <input
+                            name="damageGroups[{{@index}}].containsFormula[{{@../index}}]"
+                            type="checkbox"
+                            {{checked (lookup this.containsFormula @../index)}}
+                        />
+                    </td>
+                {{/each}}
+                <td></td>
+            </tr>
+        {{/each}}
+        <tr>
+            <td></td>
+            <td></td>
+            {{#each damageGroups}}
+                <td>
+                    {{#if (ne @index 0)}}
+                        <a
+                            title="{{localize "mre-dnd5e.DAMAGE-GROUP.DeleteDamageGroup" }}"
+                            class="delete-damage-group" data-group-index="{{@index}}"
+                        >
+                            <i class="far fa-minus-square"></i>
+                        </a>
+                    {{else}}
+                        <a class="disabled" data-group-index="{{@index}}">
+                            <i class="far fa-minus-square"></i>
+                        </a>
+                    {{/if}}
+                </td>
+            {{/each}}
+            <td></td>
+        </tr>
+    </table>
+</form>
