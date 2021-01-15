@@ -147,6 +147,7 @@
     border: none;
     background: transparent;
     margin: 5px 2px 5px 10px;
+    cursor: pointer;
 }
 
 .dnd5e.sheet.item .mre-auto-roll button.checkbox:hover,
