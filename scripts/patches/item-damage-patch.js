@@ -167,7 +167,7 @@ async function _renderCombinedDamageRollContent(item, rolls) {
     damageSection.find(".dice-roll:not(:last-child)").after("<hr />");
     container.append(damageSection);
 
-    return damageSection.prop("outerHTML");
+    return container.prop("outerHTML");
 }
 
 async function _createCombinedDamageMessageData(item, content, flavor, rolls, critical, rollMode, options) {

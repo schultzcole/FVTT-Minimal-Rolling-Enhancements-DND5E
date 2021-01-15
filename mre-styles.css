@@ -1,5 +1,3 @@
-
-
 .mre-damage-card .dice-total::after {
     content: attr(data-damage-type);
     display: block;
