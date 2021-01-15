@@ -32,40 +32,7 @@ Hooks.on("renderItemSheet5e", (itemSheet, html, _) => {
     otherFormula.after(_makeAutoRollCheckboxElement(itemSheet.entity, "Other", false));
 
     // Handle "checkbox" button clicks
-    html.find(`.tab.details button.checkbox`).click((event) => {
-        const el = event.currentTarget;
-        const target = el.dataset.autoRollTarget;
-        const button = $(el);
-        const isThreeWay = button.hasClass("three-way");
-
-        let newState;
-        if (isThreeWay) {
-            if (button.hasClass("checked")) {
-                newState = "unchecked";
-            } else if (button.hasClass("indeterminate")) {
-                newState = "checked";
-            } else {
-                newState = "indeterminate";
-            }
-        } else {
-            newState = button.hasClass("checked") ? "unchecked" : "checked";
-        }
-
-        console.log(`newState: ${newState}`);
-        switch (newState) {
-            case "unchecked":
-                itemSheet.entity.setFlag(MODULE_NAME, `autoRoll${target}`, false);
-                break;
-            case "indeterminate":
-                itemSheet.entity.unsetFlag(MODULE_NAME, `autoRoll${target}`);
-                break;
-            case "checked":
-                itemSheet.entity.setFlag(MODULE_NAME, `autoRoll${target}`, true);
-                break;
-            default:
-                throw new Error(`Unrecognized button checkbox state %{newClass}`);
-        }
-    });
+    html.find(`.tab.details button.checkbox`).click((event) => _handleCheckboxButtonPress(event, itemSheet));
 });
 
 function _makeAutoRollCheckboxElement(item, target, threeWay) {
@@ -108,4 +75,39 @@ function _stateFromNullableBoolean(bool) {
         state,
         tooltip: _threeWayTooltipKeys[state],
     };
+}
+
+function _handleCheckboxButtonPress(event, itemSheet) {
+    const el = event.currentTarget;
+    const target = el.dataset.autoRollTarget;
+    const button = $(el);
+    const isThreeWay = button.hasClass("three-way");
+
+    let newState;
+    if (isThreeWay) {
+        if (button.hasClass("checked")) {
+            newState = "unchecked";
+        } else if (button.hasClass("indeterminate")) {
+            newState = "checked";
+        } else {
+            newState = "indeterminate";
+        }
+    } else {
+        newState = button.hasClass("checked") ? "unchecked" : "checked";
+    }
+
+    console.log(`newState: ${newState}`);
+    switch (newState) {
+        case "unchecked":
+            itemSheet.entity.setFlag(MODULE_NAME, `autoRoll${target}`, false);
+            break;
+        case "indeterminate":
+            itemSheet.entity.unsetFlag(MODULE_NAME, `autoRoll${target}`);
+            break;
+        case "checked":
+            itemSheet.entity.setFlag(MODULE_NAME, `autoRoll${target}`, true);
+            break;
+        default:
+            throw new Error(`Unrecognized button checkbox state %{newClass}`);
+    }
 }
