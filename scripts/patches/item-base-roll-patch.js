@@ -1,10 +1,13 @@
 import { libWrapper } from "../../lib/libWrapper/shim.js";
 import { MODULE_NAME } from "../const.js";
+import { initializeDamageGroups } from "./initialize-damage-groups.js";
 
 export function patchItemBaseRoll() {
     const modifiers = _setupModifierListeners();
 
     libWrapper.register(MODULE_NAME, "CONFIG.Item.entityClass.prototype.roll", async function (wrapped, ...args) {
+        await initializeDamageGroups(this);
+
         const capturedModifiers = duplicate(modifiers);
 
         const autoRollCheck = game.settings.get(MODULE_NAME, "autoCheck");

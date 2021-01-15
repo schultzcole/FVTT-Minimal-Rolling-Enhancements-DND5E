@@ -45,8 +45,10 @@ export class DamageGroupConfig extends BaseEntitySheet {
 
     /** @override */
     _getHeaderButtons() {
-        // Remove all buttons except for the "Close" button, and re-label it to "Save & Close"
         const existing = super._getHeaderButtons()
+        if (!this.isEditable) return existing;
+
+        // Remove all buttons except for the "Close" button, and re-label it to "Save & Close"
         const closeButton = existing[existing.length - 1];
         closeButton.label = game.i18n.localize(`${MODULE_NAME}.DAMAGE-GROUP.SaveAndClose`);
         return [closeButton];
