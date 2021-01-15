@@ -1,6 +1,7 @@
 import { libWrapper } from "../../lib/libWrapper/shim.js";
 import { MODULE_NAME } from "../const.js";
 import { initializeDamageGroups } from "./initialize-damage-groups.js";
+import { pause } from "../utils.js";
 
 export function patchItemBaseRoll() {
     const modifiers = _setupModifierListeners();
@@ -10,8 +11,11 @@ export function patchItemBaseRoll() {
 
         const capturedModifiers = duplicate(modifiers);
 
-        const autoRollCheck = game.settings.get(MODULE_NAME, "autoCheck");
-        const autoRollDamage = game.settings.get(MODULE_NAME, "autoDamage");
+        const autoRollCheckSetting = game.settings.get(MODULE_NAME, "autoCheck");
+        const autoRollDamageSetting = game.settings.get(MODULE_NAME, "autoDamage");
+        const autoRollCheckWithOverride = this.getFlag(MODULE_NAME, "autoRollAttack") ?? autoRollCheckSetting;
+        const autoRollDamageWithOverride = this.getFlag(MODULE_NAME, "autoRollDamage") ?? autoRollDamageSetting;
+        const autoRollOther = this.getFlag(MODULE_NAME, "autoRollOther");
 
         // Force our call to the original Item5e#roll to not show a chat card, but remember whether *our* caller wants a chat message or not
         // If the caller above us set createMessage to false, we should not create a chat card and instead just return our message data.
@@ -30,7 +34,7 @@ export function patchItemBaseRoll() {
         if (!messageData) return;
 
         // Make a roll if auto rolls is on, and replace the appropriate button in the item card with the rendered roll results
-        if (autoRollCheck) {
+        if (autoRollCheckWithOverride) {
             let checkRoll, title;
             if (this.hasAttack) {
                 checkRoll = await this.rollAttack({ event: capturedModifiers, chatMessage: false });
@@ -50,11 +54,27 @@ export function patchItemBaseRoll() {
             }
         }
 
-        if (this.hasDamage && autoRollDamage) {
-            await this.rollDamage({ event: capturedModifiers });
+        _replaceDamageButtons(messageData, this);
+
+        const result = originalCreateMessage ? await ChatMessage.create(messageData) : messageData;
+
+        if (this.hasDamage && autoRollDamageWithOverride) {
+            await pause(100);
+
+            // Extract spell level from the message data created by the wrapped call to Item#roll
+            const spellLevel = parseInt($(messageData.content).attr("data-spell-level"));
+
+            const options = { event: capturedModifiers, spellLevel };
+            if (args.length && Number.isNumeric(args[0].spellLevel)) options.spellLevel = args[0].spellLevel;
+            await this.rollDamage(options);
         }
 
-        return originalCreateMessage ? ChatMessage.create(messageData) : messageData;
+        if (this.data.data.formula?.length && autoRollOther) {
+            await pause(100);
+            await this.rollFormula({ event: capturedModifiers });
+        }
+
+        return result;
     }, "WRAPPER");
 }
 
@@ -119,8 +139,8 @@ async function _replaceAbilityCheckButtonWithRollResult(messageData, item, roll,
     content.find(".chat-card").addClass("mre-item-card");
     const cardContent = content.find(".card-content");
 
-    // Remove existing attack, tool check, damage, and versatile buttons
-    content.find("[data-action=attack],[data-action=toolCheck],[data-action=damage],[data-action=versatile]").remove();
+    // Remove existing attack and tool check buttons
+    content.find("[data-action=attack],[data-action=toolCheck]").remove();
 
     // Add separator between item description and roll
     cardContent.append("<hr />");
@@ -131,6 +151,20 @@ async function _replaceAbilityCheckButtonWithRollResult(messageData, item, roll,
     cardRoll.append(await roll.render());
     cardContent.after(cardRoll);
 
+    // Add separator between roll and roll buttons
+    const cardButtons = content.find(".card-buttons");
+    if (cardButtons.find("button").length > 0) cardButtons.before("<hr />");
+
+    messageData.content = content.prop("outerHTML");
+}
+
+function _replaceDamageButtons(messageData, item) {
+    const content = $(messageData.content);
+    content.find(".chat-card").addClass("mre-item-card");
+
+    // Remove existing damage and versatile buttons
+    content.find("[data-action=damage],[data-action=versatile]").remove();
+
     const cardButtons = content.find(".card-buttons");
 
     // Inject damage group buttons
@@ -140,9 +174,6 @@ async function _replaceAbilityCheckButtonWithRollResult(messageData, item, roll,
         $(`<button data-action="damage-group" data-damage-group="${i}">${damageText} (${dg.label})</button>`)
     );
     cardButtons.prepend(damageButtons);
-
-    // Add separator between roll and roll buttons
-    if (cardButtons.find("button").length > 0) cardButtons.before("<hr />");
 
     messageData.content = content.prop("outerHTML");
 }

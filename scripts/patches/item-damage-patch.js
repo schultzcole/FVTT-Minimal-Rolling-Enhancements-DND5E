@@ -40,13 +40,13 @@ export function patchItemRollDamage() {
         if (!group) throw new Error(`Invalid damage group index provided: ${damageGroup}`);
         title += ` (${group.label})`;
         const itemFormulae = this.data.data.damage.parts;
-        const damageParts = group.formulaSet.map(f => itemFormulae[f]);
-        if (damageParts.every(p => p === undefined)) {
+        const groupDamageParts = group.formulaSet.map(f => itemFormulae[f]);
+        if (groupDamageParts.every(p => p === undefined)) {
             const msg = game.i18n.format(`${MODULE_NAME}.DAMAGE-GROUP.GroupEmptyError`, group);
             ui.notifications.error(msg);
             throw new Error(msg);
         }
-        const partRolls = await _rollDamageParts(damageParts, wrapped, args[0]);
+        const partRolls = await _rollDamageParts(this.data.data.damage, groupDamageParts, wrapped, args[0]);
 
         // Add a situational bonus if one was provided
         if (bonus) {
@@ -120,26 +120,31 @@ function _parseDamageDialog(form) {
     } : {};
 }
 
-async function _rollDamageParts(itemDamageParts, innerRollDamage, { critical, event, spellLevel, versatile, options }) {
+async function _rollDamageParts(itemDamage, groupDamageParts, innerRollDamage, { critical, event, spellLevel, versatile, options }) {
     const partRolls = [];
 
+    const originalItemDamageParts = duplicate(itemDamage.parts);
+
     // Roll each of the item's damage parts separately.
-    for (let [formula, type] of itemDamageParts) {
-        const partOptions = {
-            parts: [formula],
-            flavor: `${CONFIG.DND5E.damageTypes[type] ?? CONFIG.DND5E.healingTypes[type]}`,
-            chatMessage: false,
-        };
-        /** @type Roll */ const roll = await innerRollDamage({
+    for (let [formula, type] of groupDamageParts) {
+        const partOptions = duplicate(options);
+        partOptions.chatMessage = false;
+
+        // Override the item's damage so that the original roll damage function only rolls one "part" at a time.
+        itemDamage.parts = [[formula, type]];
+        /** @type Roll */
+        const roll = await innerRollDamage({
             critical,
             event,
             spellLevel,
             versatile,
-            options: mergeObject(options, partOptions, { inplace: false }),
+            options: partOptions,
         });
         if (!roll) continue;
-        partRolls.push({ roll, flavor: partOptions.flavor });
+        partRolls.push({ roll, flavor: `${CONFIG.DND5E.damageTypes[type] ?? CONFIG.DND5E.healingTypes[type]}` });
     }
+
+    itemDamage.parts = originalItemDamageParts;
     return partRolls;
 }
 
