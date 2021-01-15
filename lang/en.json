@@ -35,6 +35,14 @@
       "DeleteDamageGroup": "Delete This Damage Group",
       "RenameDamageGroup": "Rename Damage Group",
       "GroupEmptyError": "Damage Group \"{label}\" is empty."
+    },
+    "AUTO-ROLL": {
+      "AutoRoll": "Auto Roll",
+      "OverrideFalse": "Force Auto Roll OFF for this item",
+      "OverrideTrue": "Force Auto Roll ON for this item",
+      "Default": "Use the default Auto Roll setting",
+      "False": "Auto Roll OFF for this item",
+      "True": "Auto Roll ON for this item"
     }
   }
 }

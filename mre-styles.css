@@ -101,3 +101,78 @@
     width: 16px;
     height: 16px;
 }
+
+.dnd5e.sheet.item .damage-header-container {
+    display: flex;
+}
+
+.dnd5e.sheet.item .damage-header-container .damage-header {
+    flex: 1;
+    display: inline-block;
+}
+
+.dnd5e.sheet.item .mre-auto-roll {
+    flex: 0 0 60px;
+    max-height: 24px;
+}
+
+.dnd5e.sheet.item .mre-auto-roll span.label {
+    display: inline-block;
+    position: relative;
+    width: 0;
+    margin: 2px;
+    line-height: .9;
+    text-transform: uppercase;
+    font-size: 11px;
+    font-weight: bold;
+    letter-spacing: .05rem;
+    color: #7a7971;
+}
+
+.dnd5e.sheet.item .damage-header-container .mre-auto-roll {
+    display: inline-block;
+}
+
+.dnd5e.sheet.item .mre-auto-roll button.checkbox {
+    position: relative;
+    width: 16px;
+    height: 16px;
+    top: -2px;
+    border: none;
+    background: transparent;
+    margin: 5px 2px 5px 10px;
+}
+
+.dnd5e.sheet.item .mre-auto-roll button.checkbox:hover {
+    box-shadow: none;
+    text-shadow: 0 0 8px red;
+}
+
+.dnd5e.sheet.item .mre-auto-roll button.checkbox:before {
+    font-family: "Font Awesome 5 Free";
+    display: inline-block;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: antialiased;
+    font-weight: 900;
+    font-style: normal;
+    font-variant: normal;
+    text-rendering: auto;
+    line-height: 1;
+    position: absolute;
+    left: 0;
+    top: 1px;
+    color: #7a7971;
+}
+
+.dnd5e.sheet.item .mre-auto-roll button.checkbox.unchecked:before {
+    content: "\f057"; /* times */
+}
+
+.dnd5e.sheet.item .mre-auto-roll button.checkbox.indeterminate:before {
+    content: "\f056"; /* minus */
+}
+
+.dnd5e.sheet.item .mre-auto-roll button.checkbox.checked:before {
+    content: "\f058"; /* check */
+}
+
