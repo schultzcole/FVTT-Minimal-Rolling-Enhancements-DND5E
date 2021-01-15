@@ -33,7 +33,8 @@
       "SaveAndClose": "Save & Close",
       "AddDamageGroup": "Add a New Damage Group",
       "DeleteDamageGroup": "Delete This Damage Group",
-      "RenameDamageGroup": "Rename Damage Group"
+      "RenameDamageGroup": "Rename Damage Group",
+      "GroupEmptyError": "Damage Group \"{label}\" is empty."
     }
   }
 }

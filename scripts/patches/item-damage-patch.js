@@ -40,7 +40,13 @@ export function patchItemRollDamage() {
         if (!group) throw new Error(`Invalid damage group index provided: ${damageGroup}`);
         title += ` (${group.label})`;
         const itemFormulae = this.data.data.damage.parts;
-        const partRolls = await _rollDamageParts(group.formulaSet.map(f => itemFormulae[f]), wrapped, args[0]);
+        const damageParts = group.formulaSet.map(f => itemFormulae[f]);
+        if (damageParts.every(p => p === undefined)) {
+            const msg = game.i18n.format(`${MODULE_NAME}.DAMAGE-GROUP.GroupEmptyError`, group);
+            ui.notifications.error(msg);
+            throw new Error(msg);
+        }
+        const partRolls = await _rollDamageParts(damageParts, wrapped, args[0]);
 
         // Add a situational bonus if one was provided
         if (bonus) {
