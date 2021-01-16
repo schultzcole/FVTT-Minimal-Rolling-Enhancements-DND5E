@@ -170,9 +170,12 @@ function _replaceDamageButtons(messageData, item) {
     // Inject formula group buttons
     const formulaGroups = item.getFlag(MODULE_NAME, "formulaGroups");
     const damageText = game.i18n.localize("DND5E.Damage");
-    const damageButtons = formulaGroups.map((dg, i) =>
-        $(`<button data-action="formula-group" data-formula-group="${i}">${damageText} (${dg.label})</button>`)
-    );
+    const healingText = game.i18n.localize("DND5E.Healing");
+    const damageButtons = formulaGroups.map((group, i) => {
+        let buttonText = item.data.data.actionType === "heal" ? healingText : damageText;
+        if (formulaGroups.length > 1) buttonText += ` (${group.label})`;
+        return $(`<button data-action="formula-group" data-formula-group="${i}">${buttonText}</button>`);
+    });
     cardButtons.prepend(damageButtons);
 
     messageData.content = content.prop("outerHTML");

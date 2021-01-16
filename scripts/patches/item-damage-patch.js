@@ -10,7 +10,10 @@ export function patchItemRollDamage() {
 
         let showDamageDialog = getModifierSettingLocalOrDefault("showRollDialogModifier");
 
-        let title = `${this.name} - ${game.i18n.localize("DND5E.DamageRoll")}`;
+        const actionTypeDamageType = this.data.data.actionType === "heal"
+            ? game.i18n.localize("DND5E.Healing")
+            : game.i18n.localize("DND5E.DamageRoll");
+        let title = `${this.name} - ${actionTypeDamageType}`;
         let rollMode = options.rollMode ?? game.settings.get("core", "rollMode");
         let critical = false;
         let bonus = null;
@@ -36,9 +39,10 @@ export function patchItemRollDamage() {
         args[0].critical = critical;
 
         // Roll each individual damage formula
-        const group = (this.getFlag(MODULE_NAME, "formulaGroups"))[formulaGroup];
+        const groups = this.getFlag(MODULE_NAME, "formulaGroups");
+        const group = groups[formulaGroup];
         if (!group) throw new Error(`Invalid formula group index provided: ${formulaGroup}`);
-        title += ` (${group.label})`;
+        if (groups.length > 1) title += ` (${group.label})`;
         const itemFormulae = this.data.data.damage.parts;
         const groupDamageParts = group.formulaSet.map(f => itemFormulae[f]);
         if (groupDamageParts.every(p => p === undefined)) {
