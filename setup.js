@@ -5,6 +5,7 @@ import { patchItemBaseRoll } from "./scripts/patches/item-base-roll-patch.js";
 import { patchItemRollDamage } from "./scripts/patches/item-damage-patch.js";
 import { patchItemPrepareData } from "./scripts/patches/initialize-formula-groups.js";
 import { patchTokenFromActor } from "./scripts/patches/token-from-actor-patch.js";
+import { patchItemSheetGetData } from "./scripts/patches/item-sheet-get-data-patch.js";
 import { registerSettings } from "./scripts/settings.js";
 
 Hooks.on("setup", () => {
@@ -14,7 +15,8 @@ Hooks.on("setup", () => {
     patchItemBaseRoll()
     patchItemRollDamage();
     patchItemPrepareData();
+    patchItemSheetGetData();
     patchTokenFromActor();
     // TODO Having some trouble getting the context menus to work, will revisit
-    patchChatLogContextMenu();
+    // patchChatLogContextMenu();
 });

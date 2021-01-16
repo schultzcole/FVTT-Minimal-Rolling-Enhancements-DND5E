@@ -1,14 +1,7 @@
 import { MODULE_NAME } from "../const.js";
 import { FormulaGroupConfig } from "../apps/formula-group-config.js";
-import { initializeFormulaGroups } from "../patches/initialize-formula-groups.js";
 
 Hooks.on("renderItemSheet5e", (itemSheet, html, _) => {
-    if (itemSheet.isEditable) {
-        // It is ok to ignore the promise here; I'd rather not make this hook handler async
-        // noinspection JSIgnoredPromiseFromCall
-        initializeFormulaGroups(itemSheet.entity);
-    }
-
     // Add formula group config button
     const tooltip = game.i18n.localize(`${MODULE_NAME}.FORMULA-GROUP.DialogTitle`);
     html.find(".tab.details .damage-header").prepend(`<a title="${tooltip}" class="config-formula-groups"><i class="fas fa-tasks"></i></a>`);
