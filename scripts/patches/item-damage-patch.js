@@ -1,10 +1,14 @@
 import { MODULE_NAME } from "../const.js";
 import { libWrapper } from "../../lib/libWrapper/shim.js";
 import { getModifierSettingLocalOrDefault } from "../settings.js";
+import { modifiers } from "../modifiers.js";
 
 export function patchItemRollDamage() {
     libWrapper.register(MODULE_NAME, "CONFIG.Item.entityClass.prototype.rollDamage", async function (wrapped, ...args) {
-        let {/** @type MouseEvent */ event=null, formulaGroup=0, options={}} = args[0];
+        if (!args[0]) args[0] = {};
+
+        let { event = duplicate(modifiers), formulaGroup = 0, options = {} } = args[0];
+        if (!args[0].event) args[0].event = event;
 
         if (!this.data.data.damage?.parts) throw new Error("You cannot roll damage for this item.");
 
