@@ -1,5 +1,4 @@
 import { MODULE_TITLE, MODULE_TITLE_SHORT } from "./scripts/const.js";
-import { patchChatLogContextMenu } from "./scripts/patches/chat-log-patch.js";
 import { patchAbilityChecks } from "./scripts/patches/ability-check-patches.js";
 import { patchItemBaseRoll } from "./scripts/patches/item-base-roll-patch.js";
 import { patchItemRollDamage } from "./scripts/patches/item-damage-patch.js";
@@ -17,6 +16,4 @@ Hooks.on("setup", () => {
     patchItemPrepareData();
     patchItemSheetGetData();
     patchTokenFromActor();
-    // TODO Having some trouble getting the context menus to work, will revisit
-    // patchChatLogContextMenu();
 });

@@ -8,7 +8,8 @@
   "esmodules": [
     "./setup.js",
     "./scripts/hooks/render-item-5e-sheet.js",
-    "./scripts/hooks/render-chat-log.js"
+    "./scripts/hooks/render-chat-log.js",
+    "./scripts/hooks/damage-card-context-menu.js"
   ],
   "styles": [
     "./mre-styles.css"
