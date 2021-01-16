@@ -18,7 +18,8 @@
     },
     "MODIFIERS": {
       "altKey": "Alt/Option",
-      "ctrlKey": "Control/Command",
+      "ctrlKey": "Control",
+      "metaKey": "Command",
       "default": "Use World Default",
       "shiftKey": "Shift"
     },

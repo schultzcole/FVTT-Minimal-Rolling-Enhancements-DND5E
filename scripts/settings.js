@@ -30,6 +30,7 @@ function _registerModifierKeySettings() {
     const globalModifierChoices = {
         "altKey": game.i18n.localize(`${MODULE_NAME}.MODIFIERS.altKey`),
         "ctrlKey": game.i18n.localize(`${MODULE_NAME}.MODIFIERS.ctrlKey`),
+        "metaKey": game.i18n.localize(`${MODULE_NAME}.MODIFIERS.metaKey`),
         "shiftKey": game.i18n.localize(`${MODULE_NAME}.MODIFIERS.shiftKey`),
     };
 
