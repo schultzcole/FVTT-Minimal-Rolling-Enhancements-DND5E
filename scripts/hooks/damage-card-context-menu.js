@@ -1,6 +1,8 @@
+// TODO - This change *may* get absorbed into core, in which case this should be removed
+// https://gitlab.com/foundrynet/foundryvtt/-/issues/4495
 ContextMenu.prototype.bind = function patchedBind() {
     this.element.on(this.eventName, this.selector, event => {
-        event.stopPropagation();
+        event.preventDefault();
         let parent = $(event.currentTarget),
             menu = this.menu;
 
@@ -12,6 +14,7 @@ ContextMenu.prototype.bind = function patchedBind() {
 
         // If the new target element is different
         else {
+            event.stopPropagation();
             this.render(parent);
             ui.context = this;
         }
