@@ -1,14 +1,14 @@
 <form autocomplete="off">
-    <p class="notes">{{ localize "mre-dnd5e.DAMAGE-GROUP.DialogHint" }}</p>
+    <p class="notes">{{ localize "mre-dnd5e.FORMULA-GROUP.DialogHint" }}</p>
     <table>
         <tr>
             <td></td>
             <td></td>
-            {{#each damageGroups}}
+            {{#each formulaGroups}}
                 <td>
                     <input
-                        title="{{localize "mre-dnd5e.DAMAGE-GROUP.RenameDamageGroup" }}"
-                        name="damageGroups[{{@index}}].label"
+                        title="{{localize "mre-dnd5e.FORMULA-GROUP.RenameFormulaGroup" }}"
+                        name="formulaGroups[{{@index}}].label"
                         type="text"
                         value="{{this.label}}"
                     />
@@ -16,8 +16,8 @@
             {{/each}}
             <td>
                 <a
-                    title="{{localize "mre-dnd5e.DAMAGE-GROUP.AddDamageGroup" }}"
-                    class="add-damage-group"
+                    title="{{localize "mre-dnd5e.FORMULA-GROUP.AddFormulaGroup" }}"
+                    class="add-formula-group"
                 >
                     <i class="far fa-plus-square"></i>
                 </a>
@@ -31,11 +31,11 @@
                 <td>
                     <span class="formula-type-label">({{this.typeLabel}})</span>
                 </td>
-                {{#each ../damageGroups}}
+                {{#each ../formulaGroups}}
                     <td>
                         {{log  }}
                         <input
-                            name="damageGroups[{{@index}}].containsFormula[{{@../index}}]"
+                            name="formulaGroups[{{@index}}].containsFormula[{{@../index}}]"
                             type="checkbox"
                             {{checked (lookup this.containsFormula @../index)}}
                         />
@@ -47,12 +47,12 @@
         <tr>
             <td></td>
             <td></td>
-            {{#each damageGroups}}
+            {{#each formulaGroups}}
                 <td>
                     {{#if (ne @index 0)}}
                         <a
-                            title="{{localize "mre-dnd5e.DAMAGE-GROUP.DeleteDamageGroup" }}"
-                            class="delete-damage-group" data-group-index="{{@index}}"
+                            title="{{localize "mre-dnd5e.FORMULA-GROUP.DeleteFormulaGroup" }}"
+                            class="delete-formula-group" data-group-index="{{@index}}"
                         >
                             <i class="far fa-minus-square"></i>
                         </a>

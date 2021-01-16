@@ -1,20 +1,20 @@
 import { MODULE_NAME } from "../const.js";
-import { DamageGroupConfig } from "../apps/damage-group-config.js";
-import { initializeDamageGroups } from "../patches/initialize-damage-groups.js";
+import { FormulaGroupConfig } from "../apps/formula-group-config.js";
+import { initializeFormulaGroups } from "../patches/initialize-formula-groups.js";
 
 Hooks.on("renderItemSheet5e", (itemSheet, html, _) => {
     if (itemSheet.isEditable) {
         // It is ok to ignore the promise here; I'd rather not make this hook handler async
         // noinspection JSIgnoredPromiseFromCall
-        initializeDamageGroups(itemSheet.entity);
+        initializeFormulaGroups(itemSheet.entity);
     }
 
-    // Add damage group config button
-    const tooltip = game.i18n.localize(`${MODULE_NAME}.DAMAGE-GROUP.DialogTitle`);
-    html.find(".tab.details .damage-header").prepend(`<a title="${tooltip}" class="config-damage-groups"><i class="fas fa-tasks"></i></a>`);
+    // Add formula group config button
+    const tooltip = game.i18n.localize(`${MODULE_NAME}.FORMULA-GROUP.DialogTitle`);
+    html.find(".tab.details .damage-header").prepend(`<a title="${tooltip}" class="config-formula-groups"><i class="fas fa-tasks"></i></a>`);
 
-    // Open the damage group config when the user clicks on the button
-    html.find(".config-damage-groups").click(() => new DamageGroupConfig(itemSheet.entity, { editable: itemSheet.isEditable }).render(true) );
+    // Open the formula group config when the user clicks on the button
+    html.find(".config-formula-groups").click(() => new FormulaGroupConfig(itemSheet.entity, { editable: itemSheet.isEditable }).render(true) );
 
     // Remove versatile fields
     html.find(`.tab.details input[name="data.damage.versatile"]`).closest(".form-group").remove();

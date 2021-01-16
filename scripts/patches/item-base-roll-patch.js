@@ -1,13 +1,13 @@
 import { libWrapper } from "../../lib/libWrapper/shim.js";
 import { MODULE_NAME } from "../const.js";
-import { initializeDamageGroups } from "./initialize-damage-groups.js";
+import { initializeFormulaGroups } from "./initialize-formula-groups.js";
 import { pause } from "../utils.js";
 
 export function patchItemBaseRoll() {
     const modifiers = _setupModifierListeners();
 
     libWrapper.register(MODULE_NAME, "CONFIG.Item.entityClass.prototype.roll", async function (wrapped, ...args) {
-        await initializeDamageGroups(this);
+        await initializeFormulaGroups(this);
 
         const capturedModifiers = duplicate(modifiers);
 
@@ -167,11 +167,11 @@ function _replaceDamageButtons(messageData, item) {
 
     const cardButtons = content.find(".card-buttons");
 
-    // Inject damage group buttons
-    const damageGroups = item.getFlag(MODULE_NAME, "damageGroups");
+    // Inject formula group buttons
+    const formulaGroups = item.getFlag(MODULE_NAME, "formulaGroups");
     const damageText = game.i18n.localize("DND5E.Damage");
-    const damageButtons = damageGroups.map((dg, i) =>
-        $(`<button data-action="damage-group" data-damage-group="${i}">${damageText} (${dg.label})</button>`)
+    const damageButtons = formulaGroups.map((dg, i) =>
+        $(`<button data-action="formula-group" data-formula-group="${i}">${damageText} (${dg.label})</button>`)
     );
     cardButtons.prepend(damageButtons);
 

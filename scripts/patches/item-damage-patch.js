@@ -4,7 +4,7 @@ import { getModifierSettingLocalOrDefault } from "../settings.js";
 
 export function patchItemRollDamage() {
     libWrapper.register(MODULE_NAME, "CONFIG.Item.entityClass.prototype.rollDamage", async function (wrapped, ...args) {
-        let {/** @type MouseEvent */ event=null, damageGroup=0, options={}} = args[0];
+        let {/** @type MouseEvent */ event=null, formulaGroup=0, options={}} = args[0];
 
         if (!this.data.data.damage?.parts) throw new Error("You cannot roll damage for this item.");
 
@@ -36,13 +36,13 @@ export function patchItemRollDamage() {
         args[0].critical = critical;
 
         // Roll each individual damage formula
-        const group = (this.getFlag(MODULE_NAME, "damageGroups"))[damageGroup];
-        if (!group) throw new Error(`Invalid damage group index provided: ${damageGroup}`);
+        const group = (this.getFlag(MODULE_NAME, "formulaGroups"))[formulaGroup];
+        if (!group) throw new Error(`Invalid formula group index provided: ${formulaGroup}`);
         title += ` (${group.label})`;
         const itemFormulae = this.data.data.damage.parts;
         const groupDamageParts = group.formulaSet.map(f => itemFormulae[f]);
         if (groupDamageParts.every(p => p === undefined)) {
-            const msg = game.i18n.format(`${MODULE_NAME}.DAMAGE-GROUP.GroupEmptyError`, group);
+            const msg = game.i18n.format(`${MODULE_NAME}.FORMULA-GROUP.GroupEmptyError`, group);
             ui.notifications.error(msg);
             throw new Error(msg);
         }
@@ -162,7 +162,7 @@ async function _renderCombinedDamageRollContent(item, rolls) {
     // Assemble them under one container div
     const container = $(`<div class="dnd5e chat-card item-card mre-damage-card">`);
     container.append(`<div class="card-content">`);
-    const damageSection = $(`<div class="card-roll damage-group">`);
+    const damageSection = $(`<div class="card-roll formula-group">`);
     damageSection.append(renderedRolls);
     damageSection.find(".dice-roll:not(:last-child)").after("<hr />");
     container.append(damageSection);

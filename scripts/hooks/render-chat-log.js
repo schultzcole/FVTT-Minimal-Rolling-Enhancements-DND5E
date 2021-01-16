@@ -6,7 +6,7 @@ function _handleRenderChatLog(html) {
         const button = event.currentTarget;
         const action = button.dataset.action;
 
-        if (action !== "damage-group") return;
+        if (action !== "formula-group") return;
 
         const card = button.closest(".chat-card");
         const messageId = card.closest(".message").dataset.messageId;
@@ -24,7 +24,7 @@ function _handleRenderChatLog(html) {
         }
 
         const spellLevel = parseInt(card.dataset.spellLevel) || null;
-        const damageGroup = button.dataset.damageGroup;
-        item.rollDamage({ event, spellLevel, damageGroup });
+        const formulaGroup = button.dataset.formulaGroup;
+        item.rollDamage({ event, spellLevel, formulaGroup });
     });
 }

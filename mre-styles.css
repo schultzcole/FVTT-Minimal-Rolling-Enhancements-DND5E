@@ -8,7 +8,7 @@
     color: #333333;
 }
 
-.mre-damage-card .damage-group > *:not(:last-child) {
+.mre-damage-card .formula-group > *:not(:last-child) {
     margin-bottom: .4rem;
 }
 
@@ -33,69 +33,69 @@
     line-height: 20px;
 }
 
-.mre-damage-group-config input[type=text],
-.mre-damage-group-config input[type=number] {
+.mre-formula-group-config input[type=text],
+.mre-formula-group-config input[type=number] {
     border: 1px solid #7a7971;
 }
 
-.mre-damage-group-config a.disabled {
+.mre-formula-group-config a.disabled {
     cursor: not-allowed;
     opacity: 50%;
 }
 
-.mre-damage-group-config a.disabled:hover {
+.mre-formula-group-config a.disabled:hover {
     text-shadow: unset;
 }
 
-.mre-damage-group-config table {
+.mre-formula-group-config table {
     border: 0;
     width: auto;
 }
 
-.mre-damage-group-config table td {
+.mre-formula-group-config table td {
     padding-left: 0.5rem;
     padding-right: 0.5rem;
 }
 
-.mre-damage-group-config table td {
+.mre-formula-group-config table td {
     width: 100px;
 }
 
-.mre-damage-group-config table td:first-child {
+.mre-formula-group-config table td:first-child {
     min-width: 125px;
     width: unset;
     text-align: right;
     padding-right: 0.25rem;
 }
 
-.mre-damage-group-config table td:nth-child(2) {
+.mre-formula-group-config table td:nth-child(2) {
     width: auto;
     padding-left: 0.25rem;
 }
 
 
-.mre-damage-group-config table td:not(:first-child):not(:last-child) {
+.mre-formula-group-config table td:not(:first-child):not(:last-child) {
     border-right: 1px solid rgba(0,0,0,.1);
 }
 
 
-.mre-damage-group-config table td:last-child {
+.mre-formula-group-config table td:last-child {
     width: auto;
 }
 
-.mre-damage-group-config table td:not(:nth-child(1)):not(:nth-child(2)) {
+.mre-formula-group-config table td:not(:nth-child(1)):not(:nth-child(2)) {
     text-align: center;
 }
 
-.mre-damage-group-config .formula-label {
+.mre-formula-group-config .formula-label {
     font-weight: bold;
 }
 
-.mre-damage-group-config .formula-type-label {
+.mre-formula-group-config .formula-type-label {
     font-size: 12px;
 }
 
-.mre-damage-group-config input[type=checkbox] {
+.mre-formula-group-config input[type=checkbox] {
     width: 16px;
     height: 16px;
 }

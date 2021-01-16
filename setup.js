@@ -3,7 +3,7 @@ import { patchChatLogContextMenu } from "./scripts/patches/chat-log-patch.js";
 import { patchAbilityChecks } from "./scripts/patches/ability-check-patches.js";
 import { patchItemBaseRoll } from "./scripts/patches/item-base-roll-patch.js";
 import { patchItemRollDamage } from "./scripts/patches/item-damage-patch.js";
-import { patchItemPrepareData } from "./scripts/patches/initialize-damage-groups.js";
+import { patchItemPrepareData } from "./scripts/patches/initialize-formula-groups.js";
 import { patchTokenFromActor } from "./scripts/patches/token-from-actor-patch.js";
 import { registerSettings } from "./scripts/settings.js";
 

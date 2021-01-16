@@ -4,7 +4,7 @@
       "AutoRollChecksLabel": "Automatically Roll Item Checks",
       "AutoRollChecksHint": "Automatically roll the attack roll or tool check for the item if it exists.",
       "AutoRollDamageLabel": "Automatically Roll Item Damage",
-      "AutoRollDamageHint": "Automatically roll the first damage group for the item if it exists, the item has an attack roll, and \"Automatically Roll Item Checks\" is enabled.",
+      "AutoRollDamageHint": "Automatically roll the first formula group for the item if it exists.",
       "GlobalDefault": "World Default",
       "GlobalHint": "This setting sets the default setting for all players.",
       "LocalOverride": "Local Override",
@@ -22,19 +22,19 @@
       "default": "Use World Default",
       "shiftKey": "Shift"
     },
-    "DAMAGE-GROUP": {
-      "DialogTitle": "Damage Group Configuration",
-      "DialogHint": "Configure damage groups and which groups each damage formula belongs to.",
+    "FORMULA-GROUP": {
+      "DialogTitle": "Formula Group Configuration",
+      "DialogHint": "Configure formula groups and which formulae are included in each group.",
       "Primary": "Primary",
       "Secondary": "Secondary",
       "Tertiary":  "Tertiary",
       "Empty": "Empty",
-      "NewDamageGroup": "New Damage Group",
+      "NewFormulaGroup": "New Formula Group",
       "SaveAndClose": "Save & Close",
-      "AddDamageGroup": "Add a New Damage Group",
-      "DeleteDamageGroup": "Delete This Damage Group",
-      "RenameDamageGroup": "Rename Damage Group",
-      "GroupEmptyError": "Damage Group \"{label}\" is empty."
+      "AddFormulaGroup": "Add a New Formula Group",
+      "DeleteFormulaGroup": "Delete This Formula Group",
+      "RenameFormulaGroup": "Rename Formula Group",
+      "GroupEmptyError": "Formula Group \"{label}\" is empty."
     },
     "AUTO-ROLL": {
       "AutoRoll": "Auto Roll",

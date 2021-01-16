@@ -21,7 +21,7 @@ Visit the [User Guide](https://github.com/schultzcole/FVTT-Minimal-Rolling-Enhan
 - Settings to **automatically roll attack rolls** and/or **damage rolls** when an item is rolled from the character sheet or a macro.
   - These global settings can be overridden on a per-item basis for full configurability.
 - Attack rolls and tool checks **merged with item cards**.
-- **Damage groups** allow for you to configure sets of damage formulae to be rolled together.
+- **Formula groups** allow for you to configure sets of damage formulae to be rolled together.
 - Distinct damage formulae within a damage roll are **displayed separately**, for ease of selectively applying resistance/vulnerability.
 
 ## Compatibility

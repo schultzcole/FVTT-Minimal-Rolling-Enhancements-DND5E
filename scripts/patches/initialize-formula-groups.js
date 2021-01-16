@@ -1,6 +1,6 @@
 import { libWrapper } from "../../lib/libWrapper/shim.js";
 import { MODULE_NAME } from "../const.js";
-import { createNewDamageGroup } from "../damage-group.js";
+import { createNewFormulaGroup } from "../formula-group.js";
 
 export function patchItemPrepareData() {
     libWrapper.register(MODULE_NAME, "CONFIG.Item.entityClass.prototype.prepareData", function patchedPrepareData(wrapped, ...args) {
@@ -10,7 +10,7 @@ export function patchItemPrepareData() {
     }, "WRAPPER");
 }
 
-export async function initializeDamageGroups(item) {
+export async function initializeFormulaGroups(item) {
     const mreFlags = _createMreFlags(item._data);
     if (mreFlags) return item.update({ [`flags.${MODULE_NAME}`]: mreFlags });
 }
@@ -23,20 +23,20 @@ function _createMreFlags(itemData) {
 
     if (["loot", "class", "backpack"].includes(type)) return null;
 
-    // If the item doesn't already have damage groups initialized, initialize with a default group that uses every damage formula.
-    if (!mreFlags.damageGroups || !(mreFlags.damageGroups instanceof Array) || !mreFlags.damageGroups.length) {
+    // If the item doesn't already have formula groups initialized, initialize with a default group that uses every damage formula.
+    if (!mreFlags.formulaGroups || !(mreFlags.formulaGroups instanceof Array) || !mreFlags.formulaGroups.length) {
         const formulae = itemDamage?.parts;
         const initialSet = formulae ? Array.from(formulae.keys()) : [0];
-        mreFlags.damageGroups = [createNewDamageGroup({ index: 0, initialSet })];
+        mreFlags.formulaGroups = [createNewFormulaGroup({ index: 0, initialSet })];
 
         changed = true;
     }
 
-    // If the item has a versatile damage value that hasn't been migrated to a damage group yet, migrate it to a damage group
+    // If the item has a versatile damage value that hasn't been migrated to a formula group yet, migrate it to a formula group
     if (itemDamage?.versatile?.length > 0 && !mreFlags.migratedVersatile) {
         const len = itemDamage.parts.push([itemDamage.versatile, itemDamage.parts[0][1]]);
-        let verstatileDamageGroup = createNewDamageGroup({ label: game.i18n.localize("DND5E.Versatile"), initialSet: [len - 1] });
-        mreFlags.damageGroups.push(verstatileDamageGroup);
+        let verstatileFormulaGroup = createNewFormulaGroup({ label: game.i18n.localize("DND5E.Versatile"), initialSet: [len - 1] });
+        mreFlags.formulaGroups.push(verstatileFormulaGroup);
 
         mreFlags.migratedVersatile = true;
         changed = true;
