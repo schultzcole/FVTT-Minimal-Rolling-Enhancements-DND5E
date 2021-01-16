@@ -3,6 +3,8 @@ import { MODULE_NAME } from "../const.js";
 
 export function patchChatLogContextMenu() {
     libWrapper.register(MODULE_NAME, "ChatLog.prototype._contextMenu", function (wrapped, ...args) {
+        const result = wrapped(...args);
+
         let canApply = li => {
             const message = game.messages.get(li.closest(".chat-message").data("messageId"));
             return message.isContentVisible && canvas.tokens.controlled.length;
@@ -34,7 +36,7 @@ export function patchChatLogContextMenu() {
             },
         ];
         new ContextMenu(args[0], ".mre-damage-card .dice-result", contextOptions);
-        return wrapped(...args);
+        return result;
     }, "WRAPPER");
 }
 
