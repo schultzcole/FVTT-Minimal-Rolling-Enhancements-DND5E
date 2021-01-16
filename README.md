@@ -9,11 +9,9 @@ If you are looking for high levels of automation, you should consider using othe
 
 ## Features
 
-Visit the User Guide for more information on each feature and informative screenshots.
+Visit the [User Guide](https://github.com/schultzcole/FVTT-Minimal-Rolling-Enhancements-DND5E/wiki/User-Guide) for more information on each feature and informative screenshots.
 
 ![A screenshot of a weapon chat card displaying a variety of MRE features](https://f002.backblazeb2.com/file/cws-images/FVTT-MRE/flame-tongue.webp)
-
-### General
 
 - MRE **inverts the default dialog behavior** for attack rolls, ability check rolls, save rolls, skill rolls, and damage rolls.
   - With no modifier keys held, these rolls will happen instantly, rather than showing the dialog.
