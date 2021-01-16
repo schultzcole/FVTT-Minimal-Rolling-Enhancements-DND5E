@@ -92,7 +92,6 @@ function _handleCheckboxButtonPress(event, itemSheet) {
         newState = button.hasClass("checked") ? "unchecked" : "checked";
     }
 
-    console.log(`newState: ${newState}`);
     switch (newState) {
         case "unchecked":
             itemSheet.entity.setFlag(MODULE_NAME, `autoRoll${target}`, false);
