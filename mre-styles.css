@@ -178,7 +178,8 @@
 
 .dnd5e.sheet.item .mre-auto-roll button.checkbox.indeterminate:before,
 .tidy5e.sheet.item .mre-auto-roll button.checkbox.indeterminate:before {
-    content: "\f056"; /* minus */
+    content: "\f111"; /* minus */
+    font-weight: 400;
 }
 
 .dnd5e.sheet.item .mre-auto-roll button.checkbox.checked:before,
