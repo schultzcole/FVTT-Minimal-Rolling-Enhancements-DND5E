@@ -1,8 +1,8 @@
 # Minimal Rolling Enhancements (MRE) for D&D5e
 
 Some minimalist enhancements to the core D&D5e rolling workflow.
-MRE to stay as close to core behavior as possible while improving convenience.
-A key philosophy for this module is to remain as non-disruptive as possible to minimize conflicts with system and core updates.
+MRE is intended to stay as close as possible to core behavior while improving convenience.
+A key philosophy for this module is to remain non-disruptive to minimize conflicts with system and core updates.
 
 MRE is targeted at a low-automation workflow.
 If you are looking for high levels of automation, you should consider using other modules.
