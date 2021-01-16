@@ -12,10 +12,13 @@ Hooks.on("renderItemSheet5e", (itemSheet, html, _) => {
     // Remove versatile fields
     html.find(`.tab.details input[name="data.damage.versatile"]`).closest(".form-group").remove();
 
-    // Add auto-roll toggles
-    const actionType = html.find(`.tab.details`).find(`[name="data.actionType"]`);
-    actionType.wrap(`<div class="form-fields">`);
-    actionType.after(_makeAutoRollCheckboxElement(itemSheet.entity, "Attack", true));
+    // Add auto-roll checkbox buttons
+    if (itemSheet.item.data.data.actionType?.length) {
+        // Only show the auto-roll checkbox button if actionType is populated
+        const actionType = html.find(`.tab.details`).find(`[name="data.actionType"]`);
+        actionType.wrap(`<div class="form-fields">`);
+        actionType.after(_makeAutoRollCheckboxElement(itemSheet.entity, "Attack", true));
+    }
 
     const damageHeader = html.find(".tab.details .damage-header");
     damageHeader.wrap(`<div class="damage-header-container">`);
