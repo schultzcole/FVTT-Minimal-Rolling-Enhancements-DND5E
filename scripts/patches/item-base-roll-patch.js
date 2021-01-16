@@ -1,11 +1,10 @@
 import { libWrapper } from "../../lib/libWrapper/shim.js";
 import { MODULE_NAME } from "../const.js";
+import { modifiers } from"../modifiers.js";
 import { initializeFormulaGroups } from "./initialize-formula-groups.js";
 import { pause } from "../utils.js";
 
 export function patchItemBaseRoll() {
-    const modifiers = _setupModifierListeners();
-
     libWrapper.register(MODULE_NAME, "CONFIG.Item.entityClass.prototype.roll", async function (wrapped, ...args) {
         await initializeFormulaGroups(this);
 
@@ -76,29 +75,6 @@ export function patchItemBaseRoll() {
 
         return result;
     }, "WRAPPER");
-}
-
-function _setupModifierListeners() {
-    // A hacky way to determine if modifier keys are pressed
-    const modifiers = { altKey: false, ctrlKey: false, shiftKey: false, clientX: null, clientY: null };
-
-    const updateModifiers = event => {
-        modifiers.altKey = event.altKey;
-        modifiers.ctrlKey = event.ctrlKey;
-        modifiers.shiftKey = event.shiftKey;
-    };
-
-    document.addEventListener("keydown", updateModifiers);
-    document.addEventListener("keyup", updateModifiers);
-    document.addEventListener("mousedown", event => {
-        modifiers.clientX = event.clientX;
-        modifiers.clientY = event.clientY;
-    });
-    document.addEventListener("mouseup", () => {
-        modifiers.clientX = null;
-        modifiers.clientY = null;
-    });
-    return modifiers;
 }
 
 function _createWeaponTitle(item, roll) {

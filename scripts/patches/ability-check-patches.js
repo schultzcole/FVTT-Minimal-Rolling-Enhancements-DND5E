@@ -1,6 +1,7 @@
 import { MODULE_NAME } from "../const.js";
 import { libWrapper } from "../../lib/libWrapper/shim.js";
 import { getModifierSettingLocalOrDefault } from "../settings.js";
+import { modifiers } from "../modifiers.js";
 
 const d20RollsToPatch = [
     { path: "CONFIG.Item.entityClass.prototype.rollAttack", optionsIndex: 0 },
@@ -21,23 +22,25 @@ export function patchAbilityChecks() {
 function generateD20RollPatch(optionsIndex) {
     return function(wrapper, ...args) {
         let options = args[optionsIndex];
+        if (!options) args[optionsIndex] = options = {};
 
         let noFastForwardModifier = getModifierSettingLocalOrDefault("showRollDialogModifier");
         let advModifier = getModifierSettingLocalOrDefault("advModifier");
         let disAdvModifier = getModifierSettingLocalOrDefault("disAdvModifier");
 
-        const optionsOverride = {}
-        if (options.event) {
-            optionsOverride.fastForward = !options.event[noFastForwardModifier];
-            optionsOverride.advantage = options.event[advModifier];
-            optionsOverride.disadvantage = options.event[disAdvModifier];
+        if (!options.event) options.event = duplicate(modifiers);
 
-            if (!options.event?.clientX || !options.event?.clientY) {
-                optionsOverride.dialogOptions = { top: null, left: null };
-            }
+        const optionsOverride = {
+            fastForward: !options.event[noFastForwardModifier],
+            advantage: options.event[advModifier],
+            disadvantage: options.event[disAdvModifier],
         }
 
+        if (!options.event?.clientX || !options.event?.clientY) {
+            optionsOverride.dialogOptions = { top: null, left: null };
+        }
         mergeObject(options, optionsOverride);
+
 
         return wrapper(...args);
     }
