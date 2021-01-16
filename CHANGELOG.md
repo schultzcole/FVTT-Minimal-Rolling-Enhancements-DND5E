@@ -1,15 +1,5 @@
 # CHANGELOG
 
-## [VERSION] ISO DATE
+## [0.1.0] 2021-01-15
 
-### ADDED
-
-### REMOVED
-
-### CHANGED
-
-### FIXED
-
-### DEPRECATED
-
-### SECURITY
+First release!

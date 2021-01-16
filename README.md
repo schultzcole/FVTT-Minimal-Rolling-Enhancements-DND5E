@@ -1,38 +1,38 @@
 # Minimal Rolling Enhancements (MRE) for D&D5e
 
 Some minimalist enhancements to the core D&D5e rolling workflow.
-Attempts to stay as close to core behavior as possible while improving convenience.
+MRE to stay as close to core behavior as possible while improving convenience.
 A key philosophy for this module is to remain as non-disruptive as possible to minimize conflicts with system and core updates.
 
-## Planned Features
+MRE is targeted at a low-automation workflow.
+If you are looking for high levels of automation, you should consider using other modules.
 
-### Attack Rolls
+## Features
 
-- ✅ Setting: Auto roll attacks (global setting with per-item overrides).
-- ✅ In-card attack rolls.
+Visit the User Guide for more information on each feature and informative screenshots.
 
-### Damage Rolls
+![A screenshot of a weapon chat card displaying a variety of MRE features](https://f002.backblazeb2.com/file/cws-images/FVTT-MRE/flame-tongue.webp)
 
-- ✅ Damage Groups: assign any combination of damage formulae to a nameable damage group.
-  In the chat card, choose from any of the available damage groups to roll.
-  - The versatile formula field is hidden (but not deleted), as the versatile damage can simply be added as a damage group.
-    A migration macro is provided to convert all core versatile formulae to damage groups.
-- ✅ Setting: Auto roll damage (global setting with per-item overrides).
-- ✅ Each damage formula rolled separately (rather than being combined into a single roll) and displayed in a combined card.
-  - This is done so that different damage types are not combined into a single roll and can therefore be applied selectively to account for resistances, etc.
+### General
 
-### Other
-
-- ✅ Default to fast-forward for all ability checks (skip the dialog unless a modifier key is pressed).
-- ✅ Configurable modifier keys for advantage, disadvantage, and fast-forward.
+- MRE **inverts the default dialog behavior** for attack rolls, ability check rolls, save rolls, skill rolls, and damage rolls.
+  - With no modifier keys held, these rolls will happen instantly, rather than showing the dialog.
+    Holding the appropriate configurable modifier key will cause the dialog to appear when you need it.
+- **Configurable modifier keys** for rolling with advantage, disadvantage, and showing the roll dialog.
+  - You can set world-level default modifiers, but players may choose to set a local override if they wish.
+- Settings to **automatically roll attack rolls** and/or **damage rolls** when an item is rolled from the character sheet or a macro.
+  - These global settings can be overridden on a per-item basis for full configurability.
+- Attack rolls and tool checks **merged with item cards**.
+- **Damage groups** allow for you to configure sets of damage formulae to be rolled together.
+- Distinct damage formulae within a damage roll are **displayed separately**, for ease of selectively applying resistance/vulnerability.
 
 ## Compatibility
 
-Not compatible with other modules which modify D&D5e item rolls, period.
+Not compatible with other modules which modify D&D5e item rolls.
 
 Minimal Rolling Enhancements is compatible with [libWrapper](https://foundryvtt.com/packages/lib-wrapper/),
 however installing the libWrapper module is *optional*.
-You are not required to install libWrapper for MRE to work correctly.
+You are not required to install libWrapper for MRE to work correctly, however installing it may reduce conflicts with other modules.
 
 ## License
 
