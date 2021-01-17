@@ -149,7 +149,7 @@ async function _rollDamageParts(itemDamage, groupDamageParts, innerRollDamage, {
             options: partOptions,
         });
         if (!roll) continue;
-        const flavor = CONFIG.DND5E.damageTypes[type] ?? CONFIG.DND5E.healingTypes[type] ?? game.i18n.localize("DND5E.None");
+        const flavor = CONFIG.DND5E.damageTypes[type] ?? CONFIG.DND5E.healingTypes[type] ?? game.i18n.localize("DND5E.Damage");
         partRolls.push({ roll, flavor });
     }
 
