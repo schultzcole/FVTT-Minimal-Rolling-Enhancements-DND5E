@@ -36,11 +36,13 @@ function generateD20RollPatch(optionsIndex) {
             disadvantage: options.event[disAdvModifier],
         }
 
+        // The wrapped call will set the position of the dialog using dialogOptions, however if clientX and clientY are not defined,
+        // It will place it in a weird location. For this reason, when clientX and Y are not defined, we override the dialog to be at
+        // null, null, which will place it in the center of the window.
         if (!options.event?.clientX || !options.event?.clientY) {
             optionsOverride.dialogOptions = { top: null, left: null };
         }
         mergeObject(options, optionsOverride);
-
 
         return wrapper(...args);
     }
