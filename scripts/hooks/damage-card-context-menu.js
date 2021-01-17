@@ -31,31 +31,31 @@ Hooks.once("ready", async () => {
             name: game.i18n.localize("DND5E.ChatContextDamage"),
             icon: "<i class=\"fas fa-user-minus\"></i>",
             condition: canApply,
-            callback: li => _applyChatCardDamage(li, 1),
+            callback: li => _applyDiceResultDamage(li, 1),
         },
         {
             name: game.i18n.localize("DND5E.ChatContextHealing"),
             icon: "<i class=\"fas fa-user-plus\"></i>",
             condition: canApply,
-            callback: li => _applyChatCardDamage(li, -1),
+            callback: li => _applyDiceResultDamage(li, -1),
         },
         {
             name: game.i18n.localize("DND5E.ChatContextDoubleDamage"),
             icon: "<i class=\"fas fa-user-injured\"></i>",
             condition: canApply,
-            callback: li => _applyChatCardDamage(li, 2),
+            callback: li => _applyDiceResultDamage(li, 2),
         },
         {
             name: game.i18n.localize("DND5E.ChatContextHalfDamage"),
             icon: "<i class=\"fas fa-user-shield\"></i>",
             condition: canApply,
-            callback: li => _applyChatCardDamage(li, 0.5),
+            callback: li => _applyDiceResultDamage(li, 0.5),
         },
     ];
     new ContextMenu(ui.chat.element, ".mre-damage-card .dice-result", contextOptions);
 });
 
-function _applyChatCardDamage(roll, multiplier) {
+function _applyDiceResultDamage(roll, multiplier) {
     const amount = roll.find('.dice-total').text();
     return Promise.all(canvas.tokens.controlled.map(t => {
         const a = t.actor;

@@ -4,7 +4,7 @@ import { getModifierSettingLocalOrDefault } from "../settings.js";
 import { modifiers } from "../modifiers.js";
 
 export function patchItemRollDamage() {
-    libWrapper.register(MODULE_NAME, "CONFIG.Item.entityClass.prototype.rollDamage", async function (wrapped, ...args) {
+    libWrapper.register(MODULE_NAME, "CONFIG.Item.entityClass.prototype.rollDamage", async function patchedRollDamage(wrapped, ...args) {
         if (!args[0]) args[0] = {};
 
         let { event = duplicate(modifiers), formulaGroup = 0, options = {} } = args[0];
@@ -42,11 +42,13 @@ export function patchItemRollDamage() {
         args[0].options.fastForward = true;
         args[0].critical = critical;
 
-        // Roll each individual damage formula
+        // Prepare chosen formula group
         const groups = this.getFlag(MODULE_NAME, "formulaGroups");
         const group = groups[formulaGroup];
         if (!group) throw new Error(`Invalid formula group index provided: ${formulaGroup}`);
         if (groups.length > 1) title += ` (${group.label})`;
+
+        // Filter item damage parts according to the chosen group
         const itemFormulae = this.data.data.damage.parts;
         const groupDamageParts = group.formulaSet.map(f => itemFormulae[f]);
         if (groupDamageParts.every(p => p === undefined)) {
@@ -54,6 +56,8 @@ export function patchItemRollDamage() {
             ui.notifications.error(msg);
             throw new Error(msg);
         }
+
+        // Roll the filtered group damage parts
         const partRolls = await _rollDamageParts(this.data.data.damage, groupDamageParts, wrapped, args[0]);
 
         // Add a situational bonus if one was provided
