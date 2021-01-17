@@ -1,6 +1,8 @@
 import { MODULE_NAME } from "../const.js";
 import { createNewFormulaGroup } from "../formula-group.js";
 
+const MAX_FORMULA_GROUPS = 7;
+
 export class FormulaGroupConfig extends BaseEntitySheet {
     /** @override */
     static get defaultOptions() {
@@ -30,6 +32,7 @@ export class FormulaGroupConfig extends BaseEntitySheet {
                 typeLabel: CONFIG.DND5E.damageTypes[p[1]] ?? CONFIG.DND5E.healingTypes[p[1]] ?? game.i18n.localize("DND5E.None"),
             })),
             formulaGroups: formulaGroupData,
+            canAdd: formulaGroupData.length < MAX_FORMULA_GROUPS,
         };
     }
 

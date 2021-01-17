@@ -15,12 +15,12 @@
                 </td>
             {{/each}}
             <td>
-                <a
-                    title="{{localize "mre-dnd5e.FORMULA-GROUP.AddFormulaGroup" }}"
-                    class="add-formula-group"
-                >
-                    <i class="far fa-plus-square"></i>
-                </a>
+                    <a
+                        title="{{localize "mre-dnd5e.FORMULA-GROUP.AddFormulaGroup" }}"
+                        class="{{#if canAdd}}add-formula-group{{else}}disabled{{/if}}"
+                    >
+                        <i class="far fa-plus-square"></i>
+                    </a>
             </td>
         </tr>
         {{#each formulas}}
@@ -33,7 +33,6 @@
                 </td>
                 {{#each ../formulaGroups}}
                     <td>
-                        {{log  }}
                         <input
                             name="formulaGroups[{{@index}}].containsFormula[{{@../index}}]"
                             type="checkbox"
