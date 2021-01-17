@@ -37,10 +37,10 @@ export function patchItemBaseRoll() {
             let checkRoll, title;
             if (this.hasAttack) {
                 checkRoll = await this.rollAttack({ event: capturedModifiers, chatMessage: false });
-                title = _createWeaponTitle(this, checkRoll);
+                if (checkRoll) title = _createWeaponTitle(this, checkRoll);
             } else if (this.type === "tool") {
                 checkRoll = await this.rollToolCheck({ event: capturedModifiers, chatMessage: false  });
-                title = _createToolTitle(this, checkRoll);
+                if (checkRoll) title = _createToolTitle(this, checkRoll);
             }
 
             if (checkRoll) {
