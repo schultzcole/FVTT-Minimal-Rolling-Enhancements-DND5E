@@ -5,8 +5,8 @@ import { createNewFormulaGroup } from "../formula-group.js";
 export function patchItemPrepareData() {
     libWrapper.register(MODULE_NAME, "CONFIG.Item.entityClass.prototype.prepareData", function patchedPrepareData(wrapped, ...args) {
         wrapped(...args);
-        const mreFlags = _createMreFlags(this.data);
-        if (mreFlags) this.data.flags[MODULE_NAME] = mreFlags;
+        const updates = _createMreFlags(this.data);
+        if (updates) mergeObject(this.data, updates);
     }, "WRAPPER");
 }
 
@@ -36,9 +36,9 @@ function _createMreFlags(itemData) {
     }
 
     // If the item has a versatile damage value that hasn't been migrated to a formula group yet, migrate it to a formula group
-    if (itemDamage?.versatile?.length > 0 && !mreFlags.migratedVersatile) {
+    if (itemDamage?.versatile?.trim()?.length > 0 && !mreFlags.migratedVersatile) {
         updates.data = {
-            "damage.parts": [...itemDamage.parts, [itemDamage.versatile, itemDamage.parts[0][1]]]
+            "damage.parts": [...itemDamage.parts, [itemDamage.versatile, itemDamage.parts[0]?.[1] ?? "none"]],
         }
         let verstatileFormulaGroup = createNewFormulaGroup({ label: game.i18n.localize("DND5E.Versatile"), initialSet: [itemDamage.parts.length] });
         mreFlags.formulaGroups.push(verstatileFormulaGroup);
