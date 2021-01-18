@@ -10,6 +10,13 @@ export function patchItemPrepareData() {
     }, "WRAPPER");
 }
 
+export function patchItemSheetGetData() {
+    libWrapper.register(MODULE_NAME, "game.dnd5e.applications.ItemSheet5e.prototype.getData", async function patchedGetData(wrapped, ...args) {
+        if (this.isEditable) await initializeFormulaGroups(this.entity);
+        return wrapped(...args);
+    }, "WRAPPER");
+}
+
 export async function initializeFormulaGroups(item) {
     const updates = _createMreFlags(item._data);
     if (updates) return item.update(updates);
