@@ -1,5 +1,16 @@
 # CHANGELOG
 
+## [0.1.2] 2021-01-17
+
+### CHANGED
+
+- If an item damage formula does not have a type defined, default to "Damage" for the damage type in the damage chat card.
+- Prevent a user from adding more formula groups to an item if it already has 7 or more formula groups.
+
+### FIXED
+
+- Fix an issue that could occur if an item had a versatile formula defined, but no damage parts defined.
+
 ## [0.1.1] 2021-01-16
 
 ### ADDED
