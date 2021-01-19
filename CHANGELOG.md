@@ -1,5 +1,15 @@
 # CHANGELOG
 
+## [0.1.3] 2021-01-18
+
+### ADDED
+
+- When the "Advantage/Critical" modifier key is held while clicking on a damage roll, the damage will be rolled as a critical
+
+### FIXED
+
+- Fix an issue that would cause damage buttons to appear in item cards for items with no damage formulae defined
+
 ## [0.1.2] 2021-01-17
 
 ### CHANGED
