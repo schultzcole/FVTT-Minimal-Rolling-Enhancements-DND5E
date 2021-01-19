@@ -53,7 +53,7 @@ export function patchItemBaseRoll() {
             }
         }
 
-        _replaceDamageButtons(messageData, this);
+        if (this.hasDamage) _replaceDamageButtons(messageData, this);
 
         const result = originalCreateMessage ? await ChatMessage.create(messageData) : messageData;
 
