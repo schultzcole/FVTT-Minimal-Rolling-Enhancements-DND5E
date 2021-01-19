@@ -12,18 +12,19 @@ export function patchItemRollDamage() {
 
         if (!this.data.data.damage?.parts) throw new Error("You cannot roll damage for this item.");
 
-        let showDamageDialog = getModifierSettingLocalOrDefault("showRollDialogModifier");
+        let showDamageDialogModifier = getModifierSettingLocalOrDefault("showRollDialogModifier");
+        let advModifier = getModifierSettingLocalOrDefault("advModifier");
 
         const actionTypeDamageType = this.data.data.actionType === "heal"
             ? game.i18n.localize("DND5E.Healing")
             : game.i18n.localize("DND5E.DamageRoll");
         let title = `${this.name} - ${actionTypeDamageType}`;
         let rollMode = options.rollMode ?? game.settings.get("core", "rollMode");
-        let critical = false;
+        let critical = event[advModifier];
         let bonus = null;
 
         // Show a custom dialog that applies to all damage parts
-        if (event && event[showDamageDialog]) {
+        if (event && event[showDamageDialogModifier]) {
             const dialogOptions = {
                 top: event?.clientY ? event.clientY - 80 : null,
                 left: event?.clientX ? window.innerWidth - 710 : null,
