@@ -33,8 +33,9 @@ export function patchItemBaseRoll() {
         if (!messageData) return;
 
         // Make a roll if auto rolls is on, and replace the appropriate button in the item card with the rendered roll results
+        let checkRoll;
         if (autoRollCheckWithOverride) {
-            let checkRoll, title;
+            let title;
             if (this.hasAttack) {
                 checkRoll = await this.rollAttack({ event: capturedModifiers, chatMessage: false });
                 if (checkRoll) title = _createWeaponTitle(this, checkRoll);
@@ -60,11 +61,14 @@ export function patchItemBaseRoll() {
         if (this.hasDamage && autoRollDamageWithOverride) {
             await pause(100);
 
+            const attackWasCrit = !!checkRoll && checkRoll.results[0] >= checkRoll.terms[0].options.critical;
+
             // Extract spell level from the message data created by the wrapped call to Item#roll
             const spellLevel = parseInt($(messageData.content).attr("data-spell-level"));
 
             const options = { event: capturedModifiers, spellLevel };
             if (args.length && Number.isNumeric(args[0].spellLevel)) options.spellLevel = args[0].spellLevel;
+            if (attackWasCrit) options.critical = true;
             await this.rollDamage(options);
         }
 
