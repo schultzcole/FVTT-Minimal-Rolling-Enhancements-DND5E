@@ -100,13 +100,13 @@
     height: 16px;
 }
 
-.dnd5e.sheet.item .damage-header-container,
-.tidy5e.sheet.item .damage-header-container {
+.dnd5e.sheet.item .mre-damage-header-container,
+.tidy5e.sheet.item .mre-damage-header-container {
     display: flex;
 }
 
-.dnd5e.sheet.item .damage-header-container .damage-header,
-.tidy5e.sheet.item .damage-header-container .damage-header {
+.dnd5e.sheet.item .mre-damage-header-container .damage-header,
+.tidy5e.sheet.item .mre-damage-header-container .damage-header {
     flex: 1;
     display: inline-block;
 }
@@ -131,8 +131,8 @@
     color: #7a7971;
 }
 
-.dnd5e.sheet.item .damage-header-container .mre-auto-roll,
-.tidy5e.sheet.item .damage-header-container .mre-auto-roll {
+.dnd5e.sheet.item .mre-damage-header-container .mre-auto-roll,
+.tidy5e.sheet.item .mre-damage-header-container .mre-auto-roll {
     display: inline-block;
 }
 
@@ -188,6 +188,10 @@
 }
 
 /* Tidy5e Sheet compatibility for auto roll "checkboxes" */
+.tidy5e.sheet.item .mre-damage-header-container .damage-control {
+    display: inline-block;
+}
+
 .tidy5e.sheet.item .sheet-body .tab.details .form-group .mre-auto-roll button.checkbox {
     background: none;
     width: 16px;

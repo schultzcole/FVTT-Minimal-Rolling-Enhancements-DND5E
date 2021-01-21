@@ -21,7 +21,7 @@ Hooks.on("renderItemSheet5e", (itemSheet, html, _) => {
     }
 
     const damageHeader = html.find(".tab.details .damage-header");
-    damageHeader.wrap(`<div class="damage-header-container">`);
+    damageHeader.wrap(`<div class="mre-damage-header-container">`);
     damageHeader.after(_makeAutoRollCheckboxElement(itemSheet.entity, "Damage", true));
 
     const otherFormula = html.find(`.tab.details`).find(`[name="data.formula"]`);
