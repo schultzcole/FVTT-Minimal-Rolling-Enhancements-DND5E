@@ -2,6 +2,7 @@ import { MODULE_NAME } from "../const.js";
 import { libWrapper } from "../../lib/libWrapper/shim.js";
 import { getModifierSettingLocalOrDefault } from "../settings.js";
 import { modifiers } from "../modifiers.js";
+import { combineRolls } from "../utils.js";
 
 export function patchItemRollDamage() {
     libWrapper.register(MODULE_NAME, "CONFIG.Item.entityClass.prototype.rollDamage", async function patchedRollDamage(wrapped, ...args) {
@@ -73,18 +74,9 @@ export function patchItemRollDamage() {
         // Prepare the chat message content
         const renderedContent = await _renderCombinedDamageRollContent(this, partRolls);
 
-        const messageData = await _createCombinedDamageMessageData(this, renderedContent, title, partRolls, critical, rollMode, options);
+        const messageData = await _createCombinedDamageMessageData(this, renderedContent, title, partRolls.map(p => p.roll), critical, rollMode, options);
 
-        if (options.chatMessage ?? true) {
-            // Show DSN 3d dice if available
-            if (game.dice3d) {
-                const rollAnims =
-                    partRolls.map(part => game.dice3d.showForRoll(part.roll, game.user, true, messageData.whisper, messageData.blind));
-                await Promise.all(rollAnims);
-            }
-
-            await ChatMessage.create(messageData);
-        }
+        if (options.chatMessage ?? true) await ChatMessage.create(messageData);
 
         // Return the array of Roll objects
         return partRolls;
@@ -186,19 +178,19 @@ async function _renderCombinedDamageRollContent(item, rolls) {
 
 async function _createCombinedDamageMessageData(item, content, flavor, rolls, critical, rollMode, options) {
     // This decoy roll is used to convince foundry that the message has ROLL type
-    const decoyRoll = new Roll("0").roll();
+    const combinedRoll = combineRolls(...rolls);
 
     // Set up data for the final message to be sent
     const messageData = {
         user: game.user._id,
         content,
         flavor,
-        roll: decoyRoll,
+        roll: combinedRoll,
         speaker: ChatMessage.getSpeaker({actor: item.actor}),
         sound: CONFIG.sounds.dice,
         type: CONST.CHAT_MESSAGE_TYPES.ROLL,
         "flags.dnd5e.roll": {type: "damage", itemId: item.id },
-        "flags.mre-dnd5e.rolls": rolls.map(r => r.roll.toJSON()),
+        "flags.mre-dnd5e.rolls": rolls.map(r => duplicate(r)),
     };
 
     if (critical) {
