@@ -1,5 +1,20 @@
 # CHANGELOG
 
+## [0.1.4] 2021-01-20
+
+### ADDED
+
+- When auto roll checks *and* auto roll damage are both enabled,
+  MRE will now automatically roll critical damage when the attack roll was a critical hit.
+  
+### CHANGED
+
+- Improve styling and layout when used with Tidy5e Sheet
+
+### FIXED
+
+- Fixed an issue where applying damage via the context menu in a damage card would incorrectly apply no damage.
+
 ## [0.1.3] 2021-01-18
 
 ### ADDED
