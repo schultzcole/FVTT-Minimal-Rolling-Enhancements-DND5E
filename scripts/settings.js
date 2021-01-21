@@ -2,6 +2,7 @@ import { MODULE_NAME } from "./const.js";
 
 export function registerSettings() {
     _registerAutoRollsSettings();
+    _registerOtherSettings();
     _registerModifierKeySettings();
 }
 
@@ -10,6 +11,37 @@ export function getModifierSettingLocalOrDefault(settingKey) {
     const globalKey = `${settingKey}Global`;
     const value = game.settings.get(MODULE_NAME, localKey);
     return value === "default" ? game.settings.get(MODULE_NAME, globalKey) : value;
+}
+
+function _registerAutoRollsSettings() {
+    game.settings.register(MODULE_NAME, "autoCheck", {
+        name: game.i18n.localize(`${MODULE_NAME}.SETTINGS.AutoRollChecksLabel`),
+        hint: game.i18n.localize(`${MODULE_NAME}.SETTINGS.AutoRollChecksHint`),
+        scope: "world",
+        config: true,
+        type: Boolean,
+        default: false,
+    });
+
+    game.settings.register(MODULE_NAME, "autoDamage", {
+        name: game.i18n.localize(`${MODULE_NAME}.SETTINGS.AutoRollDamageLabel`),
+        hint: game.i18n.localize(`${MODULE_NAME}.SETTINGS.AutoRollDamageHint`),
+        scope: "world",
+        config: true,
+        type: Boolean,
+        default: false,
+    });
+}
+
+function _registerOtherSettings() {
+    game.settings.register(MODULE_NAME, "showTotalDamage", {
+        name: game.i18n.localize(`${MODULE_NAME}.SETTINGS.ShowDamageTotalLabel`),
+        hint: game.i18n.localize(`${MODULE_NAME}.SETTINGS.ShowDamageTotalHint`),
+        scope: "world",
+        config: true,
+        type: Boolean,
+        default: false,
+    });
 }
 
 function _registerModifierKeySettings() {
@@ -62,25 +94,4 @@ function _registerModifierKeySettings() {
     _registerModifier("showRollDialogModifierLocal", showRollDialogLabel, showRollDialogHint, false, "default");
     _registerModifier("advModifierLocal", advModifierLabel, advModifierHint, false, "default");
     _registerModifier("disAdvModifierLocal", disAdvModifierLabel, disAdvModifierHint, false, "default");
-}
-
-
-function _registerAutoRollsSettings() {
-    game.settings.register(MODULE_NAME, "autoCheck", {
-        name: game.i18n.localize(`${MODULE_NAME}.SETTINGS.AutoRollChecksLabel`),
-        hint: game.i18n.localize(`${MODULE_NAME}.SETTINGS.AutoRollChecksHint`),
-        scope: "world",
-        config: true,
-        type: Boolean,
-        default: false,
-    });
-
-    game.settings.register(MODULE_NAME, "autoDamage", {
-        name: game.i18n.localize(`${MODULE_NAME}.SETTINGS.AutoRollDamageLabel`),
-        hint: game.i18n.localize(`${MODULE_NAME}.SETTINGS.AutoRollDamageHint`),
-        scope: "world",
-        config: true,
-        type: Boolean,
-        default: false,
-    });
 }
