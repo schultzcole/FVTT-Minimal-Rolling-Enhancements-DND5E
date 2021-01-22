@@ -8,6 +8,21 @@
     color: #333333;
 }
 
+.mre-damage-card .card-total.dice-total {
+    flex: 0;
+    position: relative;
+    margin: 0;
+    line-height: 24px;
+    text-align: center;
+    background: rgba(0, 0, 0, 0.1);
+    border: 1px solid #999;
+    border-radius: 3px;
+    box-shadow: 0 0 2px #FFF inset;
+    word-break: break-all;
+    font-size: 20px;
+    font-weight: bold;
+}
+
 .mre-damage-card .formula-group > *:not(:last-child) {
     margin-bottom: .4rem;
 }

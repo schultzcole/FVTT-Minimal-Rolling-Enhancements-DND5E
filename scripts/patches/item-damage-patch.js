@@ -171,6 +171,16 @@ async function _renderCombinedDamageRollContent(item, rolls) {
     const damageSection = $(`<div class="card-roll formula-group">`);
     damageSection.append(renderedRolls);
     damageSection.find(".dice-roll:not(:last-child)").after("<hr />");
+
+    // Append the total result if the appropriate setting is enabled
+    const showTotal = game.settings.get(MODULE_NAME, "showTotalDamage");
+    if (showTotal && renderedRolls.length > 1) {
+        const rollTotal = rolls.reduce((acc, next) => acc + next.roll.total, 0);
+        const totalLabel = game.i18n.localize(`${MODULE_NAME}.OTHER.TotalDamage`);
+        damageSection.append("<hr />");
+        damageSection.append(`<h4 class="card-total dice-total" data-damage-type="${totalLabel}">${rollTotal}</h4>`);
+    }
+
     container.append(damageSection);
 
     return container.prop("outerHTML");
