@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## [0.1.5] 2021-01-20
+
+### ADDED
+
+- Add a setting which, when enabled, will show the total summed damage at the bottom of a combined damage card.
+
 ## [0.1.4] 2021-01-20
 
 ### ADDED
