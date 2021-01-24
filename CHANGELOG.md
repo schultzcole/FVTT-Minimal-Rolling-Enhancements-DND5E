@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## [1.0.0] 2021-01-24
+
+*First official release. No code or behavior changes*
+
 ## [0.1.5] 2021-01-20
 
 ### ADDED
