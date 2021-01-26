@@ -21,7 +21,7 @@
       "path": "lang/en.json"
     }
   ],
-  "minimumCoreVersion": "0.7.9",
+  "minimumCoreVersion": "0.7.5",
   "compatibleCoreVersion": "0.7.9",
 	"url": "https://github.com/schultzcole/FVTT-Minimal-Rolling-Enhancements-DND5E",
 	"manifest": "https://raw.githubusercontent.com/schultzcole/FVTT-Minimal-Rolling-Enhancements-DND5E/master/module.json",
