@@ -1,6 +1,6 @@
 import { MODULE_NAME } from "../const.js";
 import { libWrapper } from "../../lib/libWrapper/shim.js";
-import { getModifierSettingLocalOrDefault } from "../settings.js";
+import { getSettingLocalOrDefault, SETTING_NAMES } from "../settings.js";
 import { modifiers } from "../modifiers.js";
 
 const d20RollsToPatch = [
@@ -24,17 +24,23 @@ function generateD20RollPatch(optionsIndex) {
         let options = args[optionsIndex];
         if (!options) args[optionsIndex] = options = {};
 
-        let noFastForwardModifier = getModifierSettingLocalOrDefault("showRollDialogModifier");
-        let advModifier = getModifierSettingLocalOrDefault("advModifier");
-        let disAdvModifier = getModifierSettingLocalOrDefault("disAdvModifier");
+        let dialogBehaviorSetting = getSettingLocalOrDefault(SETTING_NAMES.ROLL_DLG_BHVR);
+        let noFastForwardModifier = getSettingLocalOrDefault(SETTING_NAMES.SHOW_ROLL_DLG_MOD);
+        let advModifier = getSettingLocalOrDefault(SETTING_NAMES.ADV_MOD);
+        let disAdvModifier = getSettingLocalOrDefault(SETTING_NAMES.DISADV_MOD);
 
         if (!options.event) options.event = duplicate(modifiers);
 
+        let fastForward = dialogBehaviorSetting === "skip"
+            ? !options.event[noFastForwardModifier]
+            : null;
+
         const optionsOverride = {
-            fastForward: !options.event[noFastForwardModifier],
             advantage: options.event[advModifier],
             disadvantage: options.event[disAdvModifier],
         }
+
+        optionsOverride.fastForward = optionsOverride.advantage || optionsOverride.disadvantage || fastForward;
 
         // The wrapped call will set the position of the dialog using dialogOptions, however if clientX and clientY are not defined,
         // It will place it in a weird location. For this reason, when clientX and Y are not defined, we override the dialog to be at

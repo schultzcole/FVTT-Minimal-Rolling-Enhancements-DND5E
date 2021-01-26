@@ -1,6 +1,6 @@
 import { MODULE_NAME } from "../const.js";
 import { libWrapper } from "../../lib/libWrapper/shim.js";
-import { getModifierSettingLocalOrDefault } from "../settings.js";
+import { getSettingLocalOrDefault, SETTING_NAMES } from "../settings.js";
 import { modifiers } from "../modifiers.js";
 import { combineRolls } from "../utils.js";
 
@@ -13,8 +13,9 @@ export function patchItemRollDamage() {
 
         if (!this.data.data.damage?.parts) throw new Error("You cannot roll damage for this item.");
 
-        let showDamageDialogModifier = getModifierSettingLocalOrDefault("showRollDialogModifier");
-        let advModifier = getModifierSettingLocalOrDefault("advModifier");
+        let rollDialogBehaviorSetting = getSettingLocalOrDefault(SETTING_NAMES.ROLL_DLG_BHVR);
+        let showDamageDialogModifier = getSettingLocalOrDefault(SETTING_NAMES.SHOW_ROLL_DLG_MOD);
+        let advModifier = getSettingLocalOrDefault(SETTING_NAMES.ADV_MOD);
 
         const actionTypeDamageType = this.data.data.actionType === "heal"
             ? game.i18n.localize("DND5E.Healing")
@@ -24,8 +25,11 @@ export function patchItemRollDamage() {
         let critical = event[advModifier];
         let bonus = null;
 
+        const shouldShowDialog = !critical && (rollDialogBehaviorSetting === "skip"
+            ? event[showDamageDialogModifier]
+            : !event[showDamageDialogModifier]);
         // Show a custom dialog that applies to all damage parts
-        if (event && event[showDamageDialogModifier]) {
+        if (shouldShowDialog) {
             const dialogOptions = {
                 top: event?.clientY ? event.clientY - 80 : null,
                 left: event?.clientX ? window.innerWidth - 710 : null,
@@ -59,17 +63,11 @@ export function patchItemRollDamage() {
             throw new Error(msg);
         }
 
+        // Add a situational bonus if one was provided
+        if (bonus) groupDamageParts.push([ bonus, "bonus" ]);
+
         // Roll the filtered group damage parts
         const partRolls = await _rollDamageParts(this.data.data.damage, groupDamageParts, wrapped, args[0]);
-
-        // Add a situational bonus if one was provided
-        if (bonus) {
-            const bonusRoll = new Roll(bonus);
-            if (critical) {
-                bonusRoll.alter(2, 0);
-            }
-            partRolls.push({ roll: bonusRoll.roll(), flavor: game.i18n.localize("DND5E.RollSituationalBonus").slice(0, -1) })
-        }
 
         // Prepare the chat message content
         const renderedContent = await _renderCombinedDamageRollContent(this, partRolls);
@@ -146,7 +144,9 @@ async function _rollDamageParts(itemDamage, groupDamageParts, innerRollDamage, {
             options: partOptions,
         });
         if (!roll) continue;
-        const flavor = CONFIG.DND5E.damageTypes[type] ?? CONFIG.DND5E.healingTypes[type] ?? game.i18n.localize("DND5E.Damage");
+        const flavor = type === "bonus"
+            ? game.i18n.localize("DND5E.RollSituationalBonus").slice(0, -1)
+            : CONFIG.DND5E.damageTypes[type] ?? CONFIG.DND5E.healingTypes[type] ?? game.i18n.localize("DND5E.Damage");
         partRolls.push({ roll, flavor });
     }
 
@@ -173,7 +173,7 @@ async function _renderCombinedDamageRollContent(item, rolls) {
     damageSection.find(".dice-roll:not(:last-child)").after("<hr />");
 
     // Append the total result if the appropriate setting is enabled
-    const showTotal = game.settings.get(MODULE_NAME, "showTotalDamage");
+    const showTotal = game.settings.get(MODULE_NAME, SETTING_NAMES.SHOW_TOTAL_DMG);
     if (showTotal && renderedRolls.length > 1) {
         const rollTotal = rolls.reduce((acc, next) => acc + next.roll.total, 0);
         const totalLabel = game.i18n.localize(`${MODULE_NAME}.OTHER.TotalDamage`);

@@ -1,5 +1,19 @@
 # CHANGELOG
 
+## [1.0.1] 2021-01-26
+
+### ADDED
+
+- Add a setting to toggle between skipping or showing the roll dialog when no modifier keys are held. This defaults to skipping the dialog.
+
+### FIXED
+
+- Fixed an issue which would cause the damage buttons to be placed above the attack button in an item card when auto roll checks was disabled.
+
+### CHANGED
+
+- Relaxed minimum core version to 0.7.5. This hasn't been tested, so use on versions lower than 0.7.9 at your own risk.
+
 ## [1.0.0] 2021-01-24
 
 *First official release. No code or behavior changes*

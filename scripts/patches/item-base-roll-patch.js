@@ -1,5 +1,6 @@
 import { libWrapper } from "../../lib/libWrapper/shim.js";
 import { MODULE_NAME } from "../const.js";
+import { SETTING_NAMES } from "../settings.js";
 import { modifiers } from"../modifiers.js";
 import { initializeFormulaGroups } from "./initialize-formula-groups.js";
 import { pause } from "../utils.js";
@@ -10,8 +11,8 @@ export function patchItemBaseRoll() {
 
         const capturedModifiers = duplicate(modifiers);
 
-        const autoRollCheckSetting = game.settings.get(MODULE_NAME, "autoCheck");
-        const autoRollDamageSetting = game.settings.get(MODULE_NAME, "autoDamage");
+        const autoRollCheckSetting = game.settings.get(MODULE_NAME, SETTING_NAMES.AUTO_CHECK);
+        const autoRollDamageSetting = game.settings.get(MODULE_NAME, SETTING_NAMES.AUTO_DMG);
         const autoRollCheckWithOverride = this.getFlag(MODULE_NAME, "autoRollAttack") ?? autoRollCheckSetting;
         const autoRollDamageWithOverride = this.getFlag(MODULE_NAME, "autoRollDamage") ?? autoRollDamageSetting;
         const autoRollOther = this.getFlag(MODULE_NAME, "autoRollOther");
@@ -51,6 +52,8 @@ export function patchItemBaseRoll() {
                 messageData.roll = checkRoll;
                 messageData.type = CONST.CHAT_MESSAGE_TYPES.ROLL;
                 messageData.sound = CONFIG.sounds.dice;
+            } else {
+                return;
             }
         }
 
@@ -145,9 +148,7 @@ function _replaceDamageButtons(messageData, item) {
     // Remove existing damage and versatile buttons
     content.find("[data-action=damage],[data-action=versatile]").remove();
 
-    const cardButtons = content.find(".card-buttons");
-
-    // Inject formula group buttons
+    // Create formula group buttons
     const formulaGroups = item.getFlag(MODULE_NAME, "formulaGroups");
     const damageText = game.i18n.localize("DND5E.Damage");
     const healingText = game.i18n.localize("DND5E.Healing");
@@ -156,7 +157,15 @@ function _replaceDamageButtons(messageData, item) {
         if (formulaGroups.length > 1) buttonText += ` (${group.label})`;
         return $(`<button data-action="formula-group" data-formula-group="${i}">${buttonText}</button>`);
     });
-    cardButtons.prepend(damageButtons);
+
+    // Inject formula group buttons
+    const attackButton = content.find("[data-action=attack],[data-action=toolCheck]").last();
+    const cardButtons = content.find(".card-buttons");
+    if (attackButton.length) {
+        attackButton.after(damageButtons);
+    } else {
+        cardButtons.prepend(damageButtons);
+    }
 
     messageData.content = content.prop("outerHTML");
 }
