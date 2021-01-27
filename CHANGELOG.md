@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## [1.0.2] 2021-01-26
+
+### FIXED
+
+- Fixed an issue that would cause items without an attack roll or tool check to fail to show an item card in chat when rolled.
+
 ## [1.0.1] 2021-01-26
 
 ### ADDED
