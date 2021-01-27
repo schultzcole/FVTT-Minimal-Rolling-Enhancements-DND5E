@@ -52,8 +52,6 @@ export function patchItemBaseRoll() {
                 messageData.roll = checkRoll;
                 messageData.type = CONST.CHAT_MESSAGE_TYPES.ROLL;
                 messageData.sound = CONFIG.sounds.dice;
-            } else {
-                return;
             }
         }
 
