@@ -2,8 +2,8 @@
     <p class="notes">{{ localize "mre-dnd5e.FORMULA-GROUP.DialogHint" }}</p>
     <table>
         <tr>
-            <td></td>
-            <td></td>
+            <td><!-- formula column --></td>
+            <td><!-- damage type column --></td>
             {{#each formulaGroups}}
                 <td>
                     <input
@@ -40,12 +40,12 @@
                         />
                     </td>
                 {{/each}}
-                <td></td>
+                <td><!-- add new formula group column --></td>
             </tr>
         {{/each}}
         <tr>
-            <td></td>
-            <td></td>
+            <td><!-- formula column --></td>
+            <td><!-- damage type column --></td>
             {{#each formulaGroups}}
                 <td>
                     {{#if (ne @index 0)}}
@@ -62,7 +62,7 @@
                     {{/if}}
                 </td>
             {{/each}}
-            <td></td>
+            <td><!-- add new formula group column --></td>
         </tr>
     </table>
 </form>
