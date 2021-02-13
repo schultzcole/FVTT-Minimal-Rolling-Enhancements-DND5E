@@ -1,5 +1,5 @@
-import { MODULE_NAME } from "../const.js";
-import { FormulaGroupConfig } from "../apps/formula-group-config.js";
+import { MODULE_NAME } from "../const.mjs";
+import { FormulaGroupConfig } from "../apps/formula-group-config.mjs";
 
 Hooks.on("renderItemSheet5e", (itemSheet, html, _) => {
     // Add formula group config button

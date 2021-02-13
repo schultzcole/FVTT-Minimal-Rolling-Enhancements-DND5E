@@ -1,9 +1,9 @@
 import { libWrapper } from "../../lib/libWrapper/shim.js";
-import { MODULE_NAME } from "../const.js";
-import { SETTING_NAMES } from "../settings.js";
-import { modifiers } from"../modifiers.js";
-import { initializeFormulaGroups } from "./initialize-formula-groups.js";
-import { pause } from "../utils.js";
+import { MODULE_NAME } from "../const.mjs";
+import { SETTING_NAMES } from "../settings.mjs";
+import { modifiers } from "../modifiers.mjs";
+import { initializeFormulaGroups } from "./initialize-formula-groups.mjs";
+import { pause } from "../utils.mjs";
 
 export function patchItemBaseRoll() {
     libWrapper.register(MODULE_NAME, "CONFIG.Item.entityClass.prototype.roll", async function patchedRoll(wrapped, ...args) {

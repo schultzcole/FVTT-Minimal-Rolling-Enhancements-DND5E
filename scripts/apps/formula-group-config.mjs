@@ -1,5 +1,5 @@
-import { MODULE_NAME } from "../const.js";
-import { createNewFormulaGroup } from "../formula-group.js";
+import { MODULE_NAME } from "../const.mjs";
+import { createNewFormulaGroup } from "../formula-group.mjs";
 
 const MAX_FORMULA_GROUPS = 7;
 

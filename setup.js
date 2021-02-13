@@ -1,10 +1,10 @@
-import { MODULE_TITLE, MODULE_TITLE_SHORT } from "./scripts/const.js";
-import { patchAbilityChecks } from "./scripts/patches/ability-check-patches.js";
-import { patchItemBaseRoll } from "./scripts/patches/item-base-roll-patch.js";
-import { patchItemRollDamage } from "./scripts/patches/item-damage-patch.js";
-import { patchItemPrepareData, patchItemSheetGetData } from "./scripts/patches/initialize-formula-groups.js";
-import { patchTokenFromActor } from "./scripts/patches/token-from-actor-patch.js";
-import { registerSettings } from "./scripts/settings.js";
+import { MODULE_TITLE, MODULE_TITLE_SHORT } from "./scripts/const.mjs";
+import { patchAbilityChecks } from "./scripts/patches/ability-check-patches.mjs";
+import { patchItemBaseRoll } from "./scripts/patches/item-base-roll-patch.mjs";
+import { patchItemRollDamage } from "./scripts/patches/item-damage-patch.mjs";
+import { patchItemPrepareData, patchItemSheetGetData } from "./scripts/patches/initialize-formula-groups.mjs";
+import { patchTokenFromActor } from "./scripts/patches/token-from-actor-patch.mjs";
+import { registerSettings } from "./scripts/settings.mjs";
 
 Hooks.on("setup", () => {
     console.log(`${MODULE_TITLE_SHORT} | Initializing ${MODULE_TITLE}`);

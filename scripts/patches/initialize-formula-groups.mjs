@@ -1,6 +1,6 @@
 import { libWrapper } from "../../lib/libWrapper/shim.js";
-import { MODULE_NAME } from "../const.js";
-import { createNewFormulaGroup } from "../formula-group.js";
+import { MODULE_NAME } from "../const.mjs";
+import { createNewFormulaGroup } from "../formula-group.mjs";
 
 export function patchItemPrepareData() {
     libWrapper.register(MODULE_NAME, "CONFIG.Item.entityClass.prototype.prepareData", function patchedPrepareData(wrapped, ...args) {

@@ -1,8 +1,8 @@
-import { MODULE_NAME } from "../const.js";
 import { libWrapper } from "../../lib/libWrapper/shim.js";
-import { getSettingLocalOrDefault, SETTING_NAMES } from "../settings.js";
-import { modifiers } from "../modifiers.js";
-import { combineRolls } from "../utils.js";
+import { MODULE_NAME } from "../const.mjs";
+import { getSettingLocalOrDefault, SETTING_NAMES } from "../settings.mjs";
+import { modifiers } from "../modifiers.mjs";
+import { combineRolls } from "../utils.mjs";
 
 export function patchItemRollDamage() {
     libWrapper.register(MODULE_NAME, "CONFIG.Item.entityClass.prototype.rollDamage", async function patchedRollDamage(wrapped, ...args) {

@@ -1,6 +1,6 @@
 import { libWrapper } from "../../lib/libWrapper/shim.js";
-import { MODULE_NAME } from "../const.js";
-import { initializeFormulaGroups } from "./initialize-formula-groups.js";
+import { MODULE_NAME } from "../const.mjs";
+import { initializeFormulaGroups } from "./initialize-formula-groups.mjs";
 
 export function patchTokenFromActor() {
     libWrapper.register(MODULE_NAME, "Token.fromActor", async function patchedFromActor(wrapped, ...args) {
