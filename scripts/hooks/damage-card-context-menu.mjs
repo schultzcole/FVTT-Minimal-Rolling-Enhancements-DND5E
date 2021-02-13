@@ -1,5 +1,4 @@
-// TODO - This change *may* get absorbed into core, in which case this should be removed
-// https://gitlab.com/foundrynet/foundryvtt/-/issues/4495
+// TODO remove after 0.8.0. See: https://gitlab.com/foundrynet/foundryvtt/-/issues/4495
 ContextMenu.prototype.bind = function patchedBind() {
     this.element.on(this.eventName, this.selector, event => {
         event.preventDefault();
@@ -21,6 +20,9 @@ ContextMenu.prototype.bind = function patchedBind() {
     });
 }
 
+/**
+ * Register a new context menu to be applied to individual damage rolls in a combined damage card
+ */
 Hooks.once("ready", async () => {
     let canApply = li => {
         const message = game.messages.get(li.closest(".chat-message").data("messageId"));

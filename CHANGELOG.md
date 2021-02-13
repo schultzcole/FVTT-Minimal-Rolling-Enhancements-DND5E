@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## [1.0.3] 2021-02-13
+
+### FIXED
+
+- Fixed an issue that would prevent items which had been destroyed on consumption from working correctly
+
 ## [1.0.2] 2021-01-26
 
 ### FIXED

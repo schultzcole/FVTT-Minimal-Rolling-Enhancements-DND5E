@@ -1,4 +1,4 @@
-import { MODULE_NAME } from "./const.js";
+import { MODULE_NAME } from "./const.mjs";
 
 export const SETTING_NAMES = {
     AUTO_CHECK: "autoCheck",

@@ -2,13 +2,13 @@
     <p class="notes">{{ localize "mre-dnd5e.FORMULA-GROUP.DialogHint" }}</p>
     <table>
         <tr>
-            <td></td>
-            <td></td>
+            <td><!-- formula column --></td>
+            <td><!-- damage type column --></td>
             {{#each formulaGroups}}
                 <td>
                     <input
                         title="{{localize "mre-dnd5e.FORMULA-GROUP.RenameFormulaGroup" }}"
-                        name="formulaGroups[{{@index}}].label"
+                        name="formulaGroupLabels"
                         type="text"
                         value="{{this.label}}"
                     />
@@ -34,18 +34,18 @@
                 {{#each ../formulaGroups}}
                     <td>
                         <input
-                            name="formulaGroups[{{@index}}].containsFormula[{{@../index}}]"
+                            name="formulaGroupContains.{{@index}}"
                             type="checkbox"
                             {{checked (lookup this.containsFormula @../index)}}
                         />
                     </td>
                 {{/each}}
-                <td></td>
+                <td><!-- add new formula group column --></td>
             </tr>
         {{/each}}
         <tr>
-            <td></td>
-            <td></td>
+            <td><!-- formula column --></td>
+            <td><!-- damage type column --></td>
             {{#each formulaGroups}}
                 <td>
                     {{#if (ne @index 0)}}
@@ -62,7 +62,7 @@
                     {{/if}}
                 </td>
             {{/each}}
-            <td></td>
+            <td><!-- add new formula group column --></td>
         </tr>
     </table>
 </form>
