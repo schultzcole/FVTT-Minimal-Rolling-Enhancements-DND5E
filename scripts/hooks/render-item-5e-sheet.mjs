@@ -36,9 +36,8 @@ function _makeAutoRollCheckboxElement(item, target, threeWay) {
     const element = $(`<div class="mre-auto-roll"><button class="checkbox"></button><span class="label">${text}</span></div>`);
 
     const flag = item.getFlag(MODULE_NAME, `autoRoll${target}`);
-    const state = threeWay
-        ? _stateFromNullableBoolean(flag)
-        : _stateFromBoolean(flag);
+    const state = threeWay ? _stateFromNullableBoolean(flag) : _stateFromBoolean(flag);
+
     const button = element.find("button")
         .addClass(`${state.state}`)
         .attr("data-auto-roll-target", target)
@@ -62,47 +61,28 @@ const _threeWayTooltipKeys = {
 }
 
 function _stateFromNullableBoolean(bool) {
-    const state= bool === undefined
-        ? "indeterminate"
-        : bool
-            ? "checked"
-            : "unchecked";
-    return {
-        state,
-        tooltip: _threeWayTooltipKeys[state],
-    };
+    const state= bool === undefined ? "indeterminate" : ( bool ? "checked" : "unchecked" );
+    return { state, tooltip: _threeWayTooltipKeys[state], };
 }
 
 function _handleCheckboxButtonPress(event, itemSheet) {
     const el = event.currentTarget;
     const target = el.dataset.autoRollTarget;
     const button = $(el);
-    const isThreeWay = button.hasClass("three-way");
 
     let newState;
-    if (isThreeWay) {
-        if (button.hasClass("checked")) {
-            newState = "unchecked";
-        } else if (button.hasClass("indeterminate")) {
-            newState = "checked";
-        } else {
-            newState = "indeterminate";
-        }
+    if (button.hasClass("checked")) {
+        newState = "unchecked";
+    } else if (button.hasClass("indeterminate")) {
+        newState = "checked";
     } else {
-        newState = button.hasClass("checked") ? "unchecked" : "checked";
+        newState = "indeterminate";
     }
 
     switch (newState) {
-        case "unchecked":
-            itemSheet.entity.setFlag(MODULE_NAME, `autoRoll${target}`, false);
-            break;
-        case "indeterminate":
-            itemSheet.entity.unsetFlag(MODULE_NAME, `autoRoll${target}`);
-            break;
-        case "checked":
-            itemSheet.entity.setFlag(MODULE_NAME, `autoRoll${target}`, true);
-            break;
-        default:
-            throw new Error(`Unrecognized button checkbox state %{newClass}`);
+        case "unchecked": itemSheet.entity.setFlag(MODULE_NAME, `autoRoll${target}`, false); break;
+        case "indeterminate": itemSheet.entity.unsetFlag(MODULE_NAME, `autoRoll${target}`); break;
+        case "checked": itemSheet.entity.setFlag(MODULE_NAME, `autoRoll${target}`, true); break;
+        default: throw new Error(`Unrecognized button checkbox state ${newState}`);
     }
 }
