@@ -87,33 +87,14 @@ export class FormulaGroupConfig extends BaseEntitySheet {
     /** @override */
     async _updateObject(event, formData) {
         if (!this.isEditable) return;
-        const groups = [];
-        for (let [key, value] of Object.entries(formData)) {
-            // key is expected to be of the form formulaGroups[x].label OR formulaGroups[x].containsFormula[y]
-            const [groupIdx, groupProp, formulaIdx] = key.split(/[.|\[\]]/).filter(s => s.trim().length).slice(1);
-            const parsedGroupIdx = parseInt(groupIdx);
-            const parsedFormulaIdx = parseInt(formulaIdx);
-            let group = groups[parsedGroupIdx] ?? {};
 
-            // No formula index provided, property must not be an array
-            if (isNaN(parsedFormulaIdx)) {
-                group[groupProp] = value;
+        formData = expandObject(formData);
 
-            // A formula index was provided, meaning that this property must be an array
-            } else {
-                if (!group[groupProp]) group[groupProp] = [];
-                group[groupProp][parsedFormulaIdx] = value;
-            }
-
-            groups[parsedGroupIdx] = group;
-        }
-        const formulaGroups = groups.map(group => ({
-            label: group.label,
-            formulaSet: group.containsFormula.reduce((acc, next, idx) => {
-                    if (next) acc.push(idx);
-                    return acc;
-                }, []),
+        const formulaGroups = formData.formulaGroupLabels.map((groupLabel, groupIdx) => ({
+            label: groupLabel,
+            formulaSet: formData.formulaGroupContains[groupIdx].map((x, i) => x ? i : null).filter(x => x != null),
         }));
+
         await this.entity.setFlag(MODULE_NAME, "formulaGroups", formulaGroups);
         this.position.width = "auto";
         this.render(true);
