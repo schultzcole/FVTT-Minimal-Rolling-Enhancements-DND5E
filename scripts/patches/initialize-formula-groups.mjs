@@ -35,11 +35,9 @@ function _createMreFlags(itemData) {
 
     if (["loot", "class", "backpack"].includes(type)) return null;
 
-    // If the item doesn't already have formula groups initialized, initialize with a default group that uses every damage formula.
+    // If the item doesn't already have formula groups initialized, initialize a new empty formula group
     if (!mreFlags.formulaGroups || !(mreFlags.formulaGroups instanceof Array) || !mreFlags.formulaGroups.length) {
-        const formulae = itemDamage?.parts;
-        const initialSet = formulae ? Array.from(formulae.keys()) : [0];
-        mreFlags.formulaGroups = [createNewFormulaGroup({ index: 0, initialSet })];
+        mreFlags.formulaGroups = [createNewFormulaGroup({ index: 0 })];
 
         changed = true;
     }
