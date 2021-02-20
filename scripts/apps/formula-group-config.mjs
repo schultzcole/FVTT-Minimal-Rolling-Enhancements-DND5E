@@ -90,6 +90,14 @@ export class FormulaGroupConfig extends BaseEntitySheet {
 
         formData = expandObject(formData);
 
+        // If there are no formula groups in the form or no formulae to be in groups, quit early
+        if (!formData.formulaGroupLabels?.length || !formData.formulaGroupContains) return;
+
+        // Ensure that things that should be arrays are actually arrays
+        formData.formulaGroupLabels = formData.formulaGroupLabels instanceof Array ? formData.formulaGroupLabels : [formData.formulaGroupLabels];
+        formData.formulaGroupContains = Object.values(formData.formulaGroupContains).map(x => x instanceof Array ? x : [x]);
+
+        // Create formula groups flag from properly formatted form data.
         const formulaGroups = formData.formulaGroupLabels.map((groupLabel, groupIdx) => ({
             label: groupLabel,
             formulaSet: formData.formulaGroupContains[groupIdx].map((x, i) => x ? i : null).filter(x => x != null),
