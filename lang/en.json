@@ -41,7 +41,8 @@
       "AddFormulaGroup": "Add a New Formula Group",
       "DeleteFormulaGroup": "Delete This Formula Group",
       "RenameFormulaGroup": "Rename Formula Group",
-      "GroupEmptyError": "Formula Group \"{label}\" is empty."
+      "GroupEmptyError": "Formula Group \"{label}\" is empty.",
+      "GroupsMustNotBeEmpty": "You must have at least one formula assigned to a formula group."
     },
     "AUTO-ROLL": {
       "AutoRoll": "Auto Roll",

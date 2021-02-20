@@ -28,6 +28,8 @@ function _createMreFlags(itemData) {
     const updates = {
         [`flags.${MODULE_NAME}`]: mreFlags
     };
+
+    /** @type {{ parts: string[], versatile: string }} */
     const itemDamage = duplicate(itemData.data?.damage ?? {});
     let changed = false;
 
@@ -44,13 +46,19 @@ function _createMreFlags(itemData) {
 
     // If the item has a versatile damage value that hasn't been migrated to a formula group yet, migrate it to a formula group
     if (itemDamage?.versatile?.trim()?.length > 0 && !mreFlags.migratedVersatile) {
-        updates.data = {
-            "damage.parts": [...itemDamage.parts, [itemDamage.versatile, itemDamage.parts[0]?.[1] ?? "none"]],
-        }
-        let verstatileFormulaGroup = createNewFormulaGroup({ label: game.i18n.localize("DND5E.Versatile"), initialSet: [itemDamage.parts.length] });
+        itemDamage.parts = [...itemDamage.parts, [itemDamage.versatile, itemDamage.parts[0]?.[1] ?? "none"]];
+        updates["data.damage.parts"] = itemDamage.parts;
+        let verstatileFormulaGroup = createNewFormulaGroup({ label: game.i18n.localize("DND5E.Versatile"), initialSet: [itemDamage.parts.length - 1] });
         mreFlags.formulaGroups.push(verstatileFormulaGroup);
 
         mreFlags.migratedVersatile = true;
+        changed = true;
+    }
+
+    // If the item has formula groups and none of them contain any formulae, but there are formulae on the item, add all of the formulae to the first formula group.
+    const allGroupsEmpty = mreFlags.formulaGroups.every(fg => !fg.formulaSet.length);
+    if (allGroupsEmpty && itemDamage?.parts.length && mreFlags.formulaGroups?.length) {
+        mreFlags.formulaGroups[0].formulaSet = Array.from(itemDamage.parts.keys());
         changed = true;
     }
 

@@ -103,6 +103,14 @@ export class FormulaGroupConfig extends BaseEntitySheet {
             formulaSet: formData.formulaGroupContains[groupIdx].map((x, i) => x ? i : null).filter(x => x != null),
         }));
 
+        // if this change would cause all formula groups to be empty, cancel
+        const allGroupsEmpty = formulaGroups.every(fg => !fg.formulaSet.length);
+        if (allGroupsEmpty) {
+            ui.notifications.warn(game.i18n.localize(`${MODULE_NAME}.FORMULA-GROUP.GroupsMustNotBeEmpty`));
+            this.render(true);
+            return;
+        }
+
         await this.entity.setFlag(MODULE_NAME, "formulaGroups", formulaGroups);
         this.position.width = "auto";
         this.render(true);
