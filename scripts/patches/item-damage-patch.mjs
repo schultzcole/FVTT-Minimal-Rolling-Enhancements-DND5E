@@ -59,7 +59,7 @@ export function patchItemRollDamage() {
         const groupDamageParts = group.formulaSet.map(f => itemFormulae[f]);
         if (groupDamageParts.every(p => p === undefined)) {
             const msg = game.i18n.format(`${MODULE_NAME}.FORMULA-GROUP.GroupEmptyError`, group);
-            ui.notifications.error(msg);
+            ui.notifications.warn(msg);
             throw new Error(msg);
         }
 
