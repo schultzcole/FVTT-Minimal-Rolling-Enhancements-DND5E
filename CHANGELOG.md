@@ -1,5 +1,15 @@
 # CHANGELOG
 
+## [1.0.4] 2021-02-19
+
+### FIXED
+
+- Fixed an issue that would prevent the formula group config from being edited if there was one or fewer formula groups, or one or fewer damage formulae on the item.
+
+### CHANGED
+
+- When the first damage formula is added to an item, or if an item does not have any formulae assigned to any formula groups, assign all formulae to the first formula group.
+
 ## [1.0.3] 2021-02-13
 
 ### FIXED
