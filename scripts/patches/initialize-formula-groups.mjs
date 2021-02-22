@@ -55,7 +55,7 @@ function _createMreFlags(itemData) {
 
     // If the item has formula groups and none of them contain any formulae, but there are formulae on the item, add all of the formulae to the first formula group.
     const allGroupsEmpty = mreFlags.formulaGroups.every(fg => !fg.formulaSet.length);
-    if (allGroupsEmpty && itemDamage?.parts.length && mreFlags.formulaGroups?.length) {
+    if (allGroupsEmpty && itemDamage?.parts?.length && mreFlags.formulaGroups?.length) {
         mreFlags.formulaGroups[0].formulaSet = Array.from(itemDamage.parts.keys());
         changed = true;
     }
