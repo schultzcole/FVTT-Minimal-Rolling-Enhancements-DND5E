@@ -6,23 +6,25 @@ import { combineRolls } from "../utils.mjs";
 
 export function patchItemRollDamage() {
     libWrapper.register(MODULE_NAME, "CONFIG.Item.entityClass.prototype.rollDamage", async function patchedRollDamage(wrapped, ...args) {
-        if (!args[0]) args[0] = {};
-
-        let { event = duplicate(modifiers), formulaGroup = 0, options = {} } = args[0];
-        if (!args[0].event) args[0].event = event;
-
+        // Check whether this item is capable of rolling damage
         if (!this.data.data.damage?.parts) throw new Error("You cannot roll damage for this item.");
 
+        // Grab related settings
         let rollDialogBehaviorSetting = getSettingLocalOrDefault(SETTING_NAMES.ROLL_DLG_BHVR);
         let showDamageDialogModifier = getSettingLocalOrDefault(SETTING_NAMES.SHOW_ROLL_DLG_MOD);
         let advModifier = getSettingLocalOrDefault(SETTING_NAMES.ADV_MOD);
 
+        // Initialize incoming parameters
+        if (!args[0]) args[0] = {};
+        let { event = duplicate(modifiers), formulaGroup = 0, critical = event[advModifier], options = {} } = args[0];
+        if (!args[0].event) args[0].event = event;
+
+        // Set up initial inner roll parameters
         const actionTypeDamageType = this.data.data.actionType === "heal"
             ? game.i18n.localize("DND5E.Healing")
             : game.i18n.localize("DND5E.DamageRoll");
         let title = `${this.name} - ${actionTypeDamageType}`;
         let rollMode = options.rollMode ?? game.settings.get("core", "rollMode");
-        let critical = event[advModifier];
         let bonus = null;
 
         const shouldShowDialog = !critical && (rollDialogBehaviorSetting === "skip"

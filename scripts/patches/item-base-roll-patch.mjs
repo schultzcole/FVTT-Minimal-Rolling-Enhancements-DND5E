@@ -69,7 +69,7 @@ export function patchItemBaseRoll() {
 
             const options = { event: capturedModifiers, spellLevel };
             if (args.length && Number.isNumeric(args[0].spellLevel)) options.spellLevel = args[0].spellLevel;
-            if (attackWasCrit) options.critical = true;
+            options.critical = attackWasCrit;
             await this.rollDamage(options);
         }
 
