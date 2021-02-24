@@ -1,5 +1,14 @@
 # CHANGELOG
 
+## [1.0.5] 2021-02-23
+
+### FIXED
+
+- Fixed an issue that would cause tools or other items that don't have damage to not show in character sheets
+- Fixed an issue that would cause weapons with versatile damage to have an empty primary formula group when MRE was first enabled or the item was first imported.
+- Fixed an issue that would prevent damage from rolling as critical damage when auto roll checks and auto roll damage were both enabled.
+- Fixed an issue that would cause auto damage to be rolled as critical when holding the advantage modifier key to roll the auto attack roll with advantage.
+
 ## [1.0.4] 2021-02-19
 
 ### FIXED
