@@ -67,14 +67,14 @@ export function patchItemBaseRoll() {
         if (this.hasDamage && autoRollDamageWithOverride) {
             await pause(100);
 
-            const attackWasCrit = !!checkRoll && checkRoll.results[0] >= checkRoll.terms[0].options.critical;
-
             // Extract spell level from the message data created by the wrapped call to Item#roll
             const spellLevel = parseInt($(messageData.content).attr("data-spell-level"));
 
             const options = { event: capturedModifiers, spellLevel };
             if (args.length && Number.isNumeric(args[0].spellLevel)) options.spellLevel = args[0].spellLevel;
-            options.critical = attackWasCrit;
+            if (checkRoll) {
+                options.critical = checkRoll.results[0] >= checkRoll.terms[0].options.critical;
+            }
             await this.rollDamage(options);
         }
 
