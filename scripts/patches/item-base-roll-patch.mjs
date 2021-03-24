@@ -35,12 +35,15 @@ export function patchItemBaseRoll() {
 
         // Make a roll if auto rolls is on, and replace the appropriate button in the item card with the rendered roll results
         let checkRoll;
+        let expectRoll;
         if (autoRollCheckWithOverride) {
             let title;
             if (this.hasAttack) {
+                expectRoll = true;
                 checkRoll = await this.rollAttack({ event: capturedModifiers, chatMessage: false });
                 if (checkRoll) title = _createWeaponTitle(this, checkRoll);
             } else if (this.type === "tool") {
+                expectRoll = true;
                 checkRoll = await this.rollToolCheck({ event: capturedModifiers, chatMessage: false  });
                 if (checkRoll) title = _createToolTitle(this, checkRoll);
             }
@@ -52,6 +55,8 @@ export function patchItemBaseRoll() {
                 messageData.roll = checkRoll;
                 messageData.type = CONST.CHAT_MESSAGE_TYPES.ROLL;
                 messageData.sound = CONFIG.sounds.dice;
+            } else if (expectRoll) {
+                return;
             }
         }
 
@@ -62,14 +67,14 @@ export function patchItemBaseRoll() {
         if (this.hasDamage && autoRollDamageWithOverride) {
             await pause(100);
 
-            const attackWasCrit = !!checkRoll && checkRoll.results[0] >= checkRoll.terms[0].options.critical;
-
             // Extract spell level from the message data created by the wrapped call to Item#roll
             const spellLevel = parseInt($(messageData.content).attr("data-spell-level"));
 
             const options = { event: capturedModifiers, spellLevel };
             if (args.length && Number.isNumeric(args[0].spellLevel)) options.spellLevel = args[0].spellLevel;
-            options.critical = attackWasCrit;
+            if (checkRoll) {
+                options.critical = checkRoll.results[0] >= checkRoll.terms[0].options.critical;
+            }
             await this.rollDamage(options);
         }
 
