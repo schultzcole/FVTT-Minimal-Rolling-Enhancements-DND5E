@@ -35,12 +35,15 @@ export function patchItemBaseRoll() {
 
         // Make a roll if auto rolls is on, and replace the appropriate button in the item card with the rendered roll results
         let checkRoll;
+        let expectRoll;
         if (autoRollCheckWithOverride) {
             let title;
             if (this.hasAttack) {
+                expectRoll = true;
                 checkRoll = await this.rollAttack({ event: capturedModifiers, chatMessage: false });
                 if (checkRoll) title = _createWeaponTitle(this, checkRoll);
             } else if (this.type === "tool") {
+                expectRoll = true;
                 checkRoll = await this.rollToolCheck({ event: capturedModifiers, chatMessage: false  });
                 if (checkRoll) title = _createToolTitle(this, checkRoll);
             }
@@ -52,7 +55,7 @@ export function patchItemBaseRoll() {
                 messageData.roll = checkRoll;
                 messageData.type = CONST.CHAT_MESSAGE_TYPES.ROLL;
                 messageData.sound = CONFIG.sounds.dice;
-            } else {
+            } else if (expectRoll) {
                 return;
             }
         }
