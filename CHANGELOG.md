@@ -1,5 +1,15 @@
 # CHANGELOG
 
+## [1.0.6] 2021-03-24
+
+### CHANGED
+
+- When auto roll checks is on, and the user quits out of the roll dialog for the check without rolling, abort the item roll.
+
+### FIXED
+
+- Fixed an issue that would cause items without attack rolls to ignore the critical modifier key for auto damage rolls.
+
 ## [1.0.5] 2021-02-23
 
 ### FIXED
