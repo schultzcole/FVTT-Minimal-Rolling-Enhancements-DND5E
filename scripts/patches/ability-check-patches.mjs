@@ -31,16 +31,10 @@ function generateD20RollPatch(optionsIndex) {
 
         if (!options.event) options.event = duplicate(modifiers);
 
-        let fastForward = dialogBehaviorSetting === "skip"
-            ? !options.event[noFastForwardModifier]
-            : null;
-
         const optionsOverride = {
             advantage: options.event[advModifier],
             disadvantage: options.event[disAdvModifier],
         }
-
-        optionsOverride.fastForward = optionsOverride.advantage || optionsOverride.disadvantage || fastForward;
 
         // The wrapped call will set the position of the dialog using dialogOptions, however if clientX and clientY are not defined,
         // It will place it in a weird location. For this reason, when clientX and Y are not defined, we override the dialog to be at
@@ -48,7 +42,13 @@ function generateD20RollPatch(optionsIndex) {
         if (!options.event?.clientX || !options.event?.clientY) {
             optionsOverride.dialogOptions = { top: null, left: null };
         }
-        mergeObject(options, optionsOverride);
+        mergeObject(options, optionsOverride, { overwrite: false });
+
+        let fastForward = dialogBehaviorSetting === "skip"
+            ? !options.event[noFastForwardModifier]
+            : null;
+
+        options.fastForward = options.advantage || options.disadvantage || fastForward;
 
         return wrapper(...args);
     }

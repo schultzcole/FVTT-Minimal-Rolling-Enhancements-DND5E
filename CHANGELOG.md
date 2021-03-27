@@ -1,5 +1,17 @@
 # CHANGELOG
 
+## [1.0.7] 2021-03-27
+
+### API
+
+-`patchedRollDamage` now matches the return signature of the original `rollDamage` method.
+  - Previously it would return an array of damage part rolls, now it returns a single roll containing the combined results of all individual part rolls.
+  - This is a breaking API change, but should not affect normal users.
+
+### FIXED
+
+- Fixed an issue that would cause some options passed to d20 roll functions to be overwritten.
+
 ## [1.0.6] 2021-03-24
 
 ### CHANGED
