@@ -79,7 +79,7 @@ export function patchItemRollDamage() {
         if (options.chatMessage ?? true) await ChatMessage.create(messageData);
 
         // Return the array of Roll objects
-        return partRolls;
+        return combineRolls(...partRolls.map(p => p.roll));
     }, "MIXED");
 }
 
