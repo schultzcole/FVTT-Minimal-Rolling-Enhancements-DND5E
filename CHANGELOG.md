@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## [1.0.8] 2021-03-31
+
+### CHANGED
+
+- Ensure that that item cards with embedded check rolls add the proper core dnd5e flags to indicate roll type.
+  - This should increase compatibility with other modules which key off of that flag
+
 ## [1.0.7] 2021-03-27
 
 ### API
