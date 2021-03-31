@@ -41,16 +41,23 @@ export function patchItemBaseRoll() {
             if (this.hasAttack) {
                 expectRoll = true;
                 checkRoll = await this.rollAttack({ event: capturedModifiers, chatMessage: false });
-                if (checkRoll) title = _createWeaponTitle(this, checkRoll);
+                if (checkRoll) {
+                    title = _createWeaponTitle(this, checkRoll);
+                    messageData["flags.dnd5e.roll.type"] = "attack";
+                }
             } else if (this.type === "tool") {
                 expectRoll = true;
                 checkRoll = await this.rollToolCheck({ event: capturedModifiers, chatMessage: false  });
-                if (checkRoll) title = _createToolTitle(this, checkRoll);
+                if (checkRoll) {
+                    title = _createToolTitle(this, checkRoll);
+                    messageData["flags.dnd5e.roll.type"] = "tool";
+                }
             }
 
             if (checkRoll) {
                 await _replaceAbilityCheckButtonWithRollResult(messageData, this, checkRoll, title);
 
+                messageData["flags.dnd5e.roll.itemId"] = this.id;
                 messageData.flavor = undefined;
                 messageData.roll = checkRoll;
                 messageData.type = CONST.CHAT_MESSAGE_TYPES.ROLL;
