@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## [1.0.9] 2021-04-07
+
+### FIXED
+
+- Fixed an issue that would cause the other formula "Auto Roll" button in the item sheet to not work correctly.
+
 ## [1.0.8] 2021-03-31
 
 ### CHANGED
@@ -11,7 +17,7 @@
 
 ### API
 
--`patchedRollDamage` now matches the return signature of the original `rollDamage` method.
+- `patchedRollDamage` now matches the return signature of the original `rollDamage` method.
   - Previously it would return an array of damage part rolls, now it returns a single roll containing the combined results of all individual part rolls.
   - This is a breaking API change, but should not affect normal users.
 
