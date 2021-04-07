@@ -28,7 +28,8 @@ Hooks.on("renderItemSheet5e", (itemSheet, html, _) => {
     otherFormula.after(_makeAutoRollCheckboxElement(itemSheet.entity, "Other", false));
 
     // Handle "checkbox" button clicks
-    html.find(`.tab.details button.checkbox`).click((event) => _handleCheckboxButtonPress(event, itemSheet));
+    html.find(`.tab.details button.checkbox:not(.three-way)`).click((event) => _handleTwoWayCheckboxButtonPress(event, itemSheet.entity));
+    html.find(`.tab.details button.checkbox.three-way`).click((event) => _handleThreeWayCheckboxButtonPress(event, itemSheet.entity));
 });
 
 function _makeAutoRollCheckboxElement(item, target, threeWay) {
@@ -65,24 +66,33 @@ function _stateFromNullableBoolean(bool) {
     return { state, tooltip: _threeWayTooltipKeys[state], };
 }
 
-function _handleCheckboxButtonPress(event, itemSheet) {
+function _handleTwoWayCheckboxButtonPress(event, item) {
     const el = event.currentTarget;
     const target = el.dataset.autoRollTarget;
     const button = $(el);
 
-    let newState;
     if (button.hasClass("checked")) {
-        newState = "unchecked";
-    } else if (button.hasClass("indeterminate")) {
-        newState = "checked";
+        // Checkbox is currently checked, next state is unchecked
+        item.unsetFlag(MODULE_NAME, `autoRoll${target}`);
     } else {
-        newState = "indeterminate";
+        // Checkbox is currently unchecked, next state is checked
+        item.setFlag(MODULE_NAME, `autoRoll${target}`, true);
     }
+}
 
-    switch (newState) {
-        case "unchecked": itemSheet.entity.setFlag(MODULE_NAME, `autoRoll${target}`, false); break;
-        case "indeterminate": itemSheet.entity.unsetFlag(MODULE_NAME, `autoRoll${target}`); break;
-        case "checked": itemSheet.entity.setFlag(MODULE_NAME, `autoRoll${target}`, true); break;
-        default: throw new Error(`Unrecognized button checkbox state ${newState}`);
+function _handleThreeWayCheckboxButtonPress(event, item) {
+    const el = event.currentTarget;
+    const target = el.dataset.autoRollTarget;
+    const button = $(el);
+
+    if (button.hasClass("checked")) {
+        // Checkbox is currently checked, next state is unchecked
+        item.setFlag(MODULE_NAME, `autoRoll${target}`, false);
+    } else if (button.hasClass("indeterminate")) {
+        // Checkbox is currently indeterminate, next state is checked
+        item.setFlag(MODULE_NAME, `autoRoll${target}`, true);
+    } else {
+        // Checkbox is currently unchecked, next state is indeterminate
+        item.unsetFlag(MODULE_NAME, `autoRoll${target}`);
     }
 }
