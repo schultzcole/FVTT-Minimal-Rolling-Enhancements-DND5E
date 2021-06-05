@@ -1,5 +1,15 @@
 # CHANGELOG
 
+## [2.0.0] 2021-06-05
+
+*Core 0.8.x and dnd5e 1.3.x compatibility*
+
+### FIXED
+
+- Fixed usages of a number of deprecated and renamed core functions.
+- Fixed some issues that would cause item cards with embedded rolls and combined damage roll cards from rendering in the chat log.
+- Fixed an issue that would cause the "show dialog" modifier key to not function if the default roll dialog behavior was set to "skip".
+
 ## [1.0.9] 2021-04-07
 
 ### FIXED
