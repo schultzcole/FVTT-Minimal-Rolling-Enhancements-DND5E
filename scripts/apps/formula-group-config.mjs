@@ -3,7 +3,7 @@ import { createNewFormulaGroup } from "../formula-group.mjs";
 
 const MAX_FORMULA_GROUPS = 7;
 
-export class FormulaGroupConfig extends BaseEntitySheet {
+export class FormulaGroupConfig extends DocumentSheet {
     /** @override */
     static get defaultOptions() {
         return foundry.utils.mergeObject(super.defaultOptions, {
@@ -18,11 +18,11 @@ export class FormulaGroupConfig extends BaseEntitySheet {
     }
 
     /** @override */
-    get title() { return `${game.i18n.localize(`${MODULE_NAME}.FORMULA-GROUP.DialogTitle`)}: ${this.entity.name}`; }
+    get title() { return `${game.i18n.localize(`${MODULE_NAME}.FORMULA-GROUP.DialogTitle`)}: ${this.document.name}`; }
 
     /** @override */
     getData(options) {
-        const itemData = this.entity.data.data;
+        const itemData = this.document.data.data;
         const formulaGroupData = this._getFormulaGroupData();
         const emptyString = game.i18n.localize(`${MODULE_NAME}.FORMULA-GROUP.Empty`)
         return {
@@ -38,8 +38,8 @@ export class FormulaGroupConfig extends BaseEntitySheet {
 
     _getFormulaGroupData() {
         /** @type FormulaGroup[] */
-        const groups = foundry.utils.deepClone(this.entity.getFlag(MODULE_NAME, "formulaGroups"));
-        const totalFormulaCount = this.entity.data.data.damage.parts.length;
+        const groups = foundry.utils.deepClone(this.document.getFlag(MODULE_NAME, "formulaGroups"));
+        const totalFormulaCount = this.document.data.data.damage.parts.length;
         return groups.map(g => ({
             label: g.label,
             containsFormula: (new Array(totalFormulaCount)).fill(false).map((_, i) => g.formulaSet.includes(i)),
@@ -68,18 +68,18 @@ export class FormulaGroupConfig extends BaseEntitySheet {
     }
 
     async _handleAddFormulaGroup() {
-        const groups = foundry.utils.deepClone(this.entity.data.flags[MODULE_NAME].formulaGroups);
+        const groups = foundry.utils.deepClone(this.document.data.flags[MODULE_NAME].formulaGroups);
         groups.push(createNewFormulaGroup({ index: groups.length }));
-        await this.entity.update({ [`flags.${MODULE_NAME}.formulaGroups`]: groups });
+        await this.document.update({ [`flags.${MODULE_NAME}.formulaGroups`]: groups });
         this.position.width = "auto";
         this.render(false);
     }
 
     async _handleDeleteFormulaGroup(event) {
         const index = event.currentTarget.dataset.groupIndex;
-        const groups = foundry.utils.deepClone(this.entity.data.flags[MODULE_NAME].formulaGroups);
+        const groups = foundry.utils.deepClone(this.document.data.flags[MODULE_NAME].formulaGroups);
         groups.splice(index, 1);
-        await this.entity.update({ [`flags.${MODULE_NAME}.formulaGroups`]: groups });
+        await this.document.update({ [`flags.${MODULE_NAME}.formulaGroups`]: groups });
         this.position.width = "auto";
         this.render(false);
     }
@@ -111,7 +111,7 @@ export class FormulaGroupConfig extends BaseEntitySheet {
             return;
         }
 
-        await this.entity.setFlag(MODULE_NAME, "formulaGroups", formulaGroups);
+        await this.document.setFlag(MODULE_NAME, "formulaGroups", formulaGroups);
         this.position.width = "auto";
         this.render(true);
     }

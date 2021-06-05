@@ -18,7 +18,7 @@ function _handleRenderChatLog(html) {
 
         // Get the Item from stored flag data or by the item ID on the Actor
         const storedData = message.getFlag("dnd5e", "itemData");
-        const item = storedData ? CONFIG.Item.documentClass.createOwned(storedData, actor) : actor.getOwnedItem(card.dataset.itemId);
+        const item = storedData ? new CONFIG.Item.documentClass(storedData, actor) : actor.items.get(card.dataset.itemId);
         if ( !item ) {
             return ui.notifications.error(game.i18n.format("DND5E.ActionWarningNoItem", {item: card.dataset.itemId, name: actor.name}))
         }

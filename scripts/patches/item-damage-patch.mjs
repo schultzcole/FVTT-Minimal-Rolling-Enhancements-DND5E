@@ -194,7 +194,7 @@ async function _createCombinedDamageMessageData(item, content, flavor, rolls, cr
 
     // Set up data for the final message to be sent
     const messageData = {
-        user: game.user._id,
+        user: game.user.id,
         content,
         flavor,
         roll: combinedRoll,
