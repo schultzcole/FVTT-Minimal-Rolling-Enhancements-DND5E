@@ -71,8 +71,7 @@ export class FormulaGroupConfig extends DocumentSheet {
         const groups = foundry.utils.deepClone(this.document.data.flags[MODULE_NAME].formulaGroups);
         groups.push(createNewFormulaGroup({ index: groups.length }));
         await this.document.update({ [`flags.${MODULE_NAME}.formulaGroups`]: groups });
-        this.position.width = "auto";
-        this.render(false);
+        this.renderResetWidth();
     }
 
     async _handleDeleteFormulaGroup(event) {
@@ -80,8 +79,7 @@ export class FormulaGroupConfig extends DocumentSheet {
         const groups = foundry.utils.deepClone(this.document.data.flags[MODULE_NAME].formulaGroups);
         groups.splice(index, 1);
         await this.document.update({ [`flags.${MODULE_NAME}.formulaGroups`]: groups });
-        this.position.width = "auto";
-        this.render(false);
+        this.renderResetWidth();
     }
 
     /** @override */
@@ -112,7 +110,11 @@ export class FormulaGroupConfig extends DocumentSheet {
         }
 
         await this.document.setFlag(MODULE_NAME, "formulaGroups", formulaGroups);
-        this.position.width = "auto";
+        this.renderResetWidth();
+    }
+
+    renderResetWidth() {
+        this.element[0].style.width = null
         this.render(true);
     }
 }
