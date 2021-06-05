@@ -3,34 +3,34 @@ import { MODULE_NAME } from "../const.mjs";
 import { createNewFormulaGroup } from "../formula-group.mjs";
 
 export function patchItemPrepareData() {
-    libWrapper.register(MODULE_NAME, "CONFIG.Item.entityClass.prototype.prepareData", function patchedPrepareData(wrapped, ...args) {
+    libWrapper.register(MODULE_NAME, "CONFIG.Item.documentClass.prototype.prepareData", function patchedPrepareData(wrapped, ...args) {
         wrapped(...args);
         const updates = _createMreFlags(this.data);
-        if (updates) mergeObject(this.data, updates);
+        if (updates) foundry.utils.mergeObject(this.data, updates);
     }, "WRAPPER");
 }
 
 export function patchItemSheetGetData() {
     libWrapper.register(MODULE_NAME, "game.dnd5e.applications.ItemSheet5e.prototype.getData", async function patchedGetData(wrapped, ...args) {
-        if (this.isEditable) await initializeFormulaGroups(this.entity);
+        if (this.isEditable) await initializeFormulaGroups(this.document);
         return wrapped(...args);
     }, "WRAPPER");
 }
 
 export async function initializeFormulaGroups(item) {
-    const updates = _createMreFlags(item._data);
+    const updates = _createMreFlags(item.data._source);
     if (updates) return item.update(updates);
 }
 
 function _createMreFlags(itemData) {
     const type = itemData.type;
-    let mreFlags = duplicate(itemData.flags?.[MODULE_NAME] ?? {});
+    let mreFlags = foundry.utils.deepClone(itemData.flags?.[MODULE_NAME] ?? {});
     const updates = {
         [`flags.${MODULE_NAME}`]: mreFlags
     };
 
     /** @type {{ parts: string[], versatile: string }} */
-    const itemDamage = duplicate(itemData.data?.damage ?? {});
+    const itemDamage = foundry.utils.deepClone(itemData.data?.damage ?? {});
     let changed = false;
 
     if (["loot", "class", "backpack"].includes(type)) return null;

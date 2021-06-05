@@ -7,7 +7,7 @@ Hooks.on("renderItemSheet5e", (itemSheet, html, _) => {
     html.find(".tab.details .damage-header").prepend(`<a title="${tooltip}" class="config-formula-groups"><i class="fas fa-tasks"></i></a>`);
 
     // Open the formula group config when the user clicks on the button
-    html.find(".config-formula-groups").click(() => new FormulaGroupConfig(itemSheet.entity, { editable: itemSheet.isEditable }).render(true) );
+    html.find(".config-formula-groups").click(() => new FormulaGroupConfig(itemSheet.document, { editable: itemSheet.isEditable }).render(true) );
 
     // Remove versatile fields
     html.find(`.tab.details input[name="data.damage.versatile"]`).closest(".form-group").remove();
@@ -17,19 +17,19 @@ Hooks.on("renderItemSheet5e", (itemSheet, html, _) => {
         // Only show the auto-roll checkbox button if actionType is populated
         const actionType = html.find(`.tab.details`).find(`[name="data.actionType"]`);
         actionType.wrap(`<div class="form-fields">`);
-        actionType.after(_makeAutoRollCheckboxElement(itemSheet.entity, "Attack", true));
+        actionType.after(_makeAutoRollCheckboxElement(itemSheet.document, "Attack", true));
     }
 
     const damageHeader = html.find(".tab.details .damage-header");
     damageHeader.wrap(`<div class="mre-damage-header-container">`);
-    damageHeader.after(_makeAutoRollCheckboxElement(itemSheet.entity, "Damage", true));
+    damageHeader.after(_makeAutoRollCheckboxElement(itemSheet.document, "Damage", true));
 
     const otherFormula = html.find(`.tab.details`).find(`[name="data.formula"]`);
-    otherFormula.after(_makeAutoRollCheckboxElement(itemSheet.entity, "Other", false));
+    otherFormula.after(_makeAutoRollCheckboxElement(itemSheet.document, "Other", false));
 
     // Handle "checkbox" button clicks
-    html.find(`.tab.details button.checkbox:not(.three-way)`).click((event) => _handleTwoWayCheckboxButtonPress(event, itemSheet.entity));
-    html.find(`.tab.details button.checkbox.three-way`).click((event) => _handleThreeWayCheckboxButtonPress(event, itemSheet.entity));
+    html.find(`.tab.details button.checkbox:not(.three-way)`).click((event) => _handleTwoWayCheckboxButtonPress(event, itemSheet.document));
+    html.find(`.tab.details button.checkbox.three-way`).click((event) => _handleThreeWayCheckboxButtonPress(event, itemSheet.document));
 });
 
 function _makeAutoRollCheckboxElement(item, target, threeWay) {

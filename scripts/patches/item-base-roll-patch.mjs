@@ -6,10 +6,10 @@ import { initializeFormulaGroups } from "./initialize-formula-groups.mjs";
 import { pause } from "../utils.mjs";
 
 export function patchItemBaseRoll() {
-    libWrapper.register(MODULE_NAME, "CONFIG.Item.entityClass.prototype.roll", async function patchedRoll(wrapped, ...args) {
+    libWrapper.register(MODULE_NAME, "CONFIG.Item.documentClass.prototype.roll", async function patchedRoll(wrapped, ...args) {
         await initializeFormulaGroups(this);
 
-        const capturedModifiers = duplicate(modifiers);
+        const capturedModifiers = foundry.utils.deepClone(modifiers);
 
         const autoRollCheckSetting = game.settings.get(MODULE_NAME, SETTING_NAMES.AUTO_CHECK);
         const autoRollDamageSetting = game.settings.get(MODULE_NAME, SETTING_NAMES.AUTO_DMG);
@@ -22,7 +22,7 @@ export function patchItemBaseRoll() {
         let originalCreateMessage = true;
         if (args.length) {
             originalCreateMessage = args[0].createMessage ?? originalCreateMessage;
-            mergeObject(args[0], { createMessage: false });
+            foundry.utils.mergeObject(args[0], { createMessage: false });
         } else {
             args.push({ createMessage: false });
         }
@@ -60,7 +60,7 @@ export function patchItemBaseRoll() {
                 messageData["flags.dnd5e.roll.itemId"] = this.id;
                 messageData.flavor = undefined;
                 messageData.roll = checkRoll;
-                messageData.type = CONST.CHAT_MESSAGE_TYPES.ROLL;
+                messageData.type = foundry.CONST.CHAT_MESSAGE_TYPES.ROLL;
                 messageData.sound = CONFIG.sounds.dice;
             } else if (expectRoll) {
                 return;
@@ -69,7 +69,7 @@ export function patchItemBaseRoll() {
 
         if (this.hasDamage) _replaceDamageButtons(messageData, this);
 
-        const result = originalCreateMessage ? await ChatMessage.create(messageData) : messageData;
+        const result = originalCreateMessage ? await _createMessage(messageData) : messageData;
 
         if (this.hasDamage && autoRollDamageWithOverride) {
             await pause(100);
@@ -178,4 +178,9 @@ function _replaceDamageButtons(messageData, item) {
     }
 
     messageData.content = content.prop("outerHTML");
+}
+
+function _createMessage(messageData) {
+    const msg = new ChatMessage(messageData);
+    return ChatMessage.create(msg.data);
 }
