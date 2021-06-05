@@ -120,6 +120,7 @@
     display: flex;
 }
 
+
 .dnd5e.sheet.item .mre-damage-header-container .damage-header,
 .tidy5e.sheet.item .mre-damage-header-container .damage-header {
     flex: 1;
@@ -128,8 +129,13 @@
 
 .dnd5e.sheet.item .mre-auto-roll,
 .tidy5e.sheet.item .mre-auto-roll {
+    display: flex;
     flex: 0 0 60px;
     max-height: 24px;
+}
+
+.tidy5e.sheet.item .mre-damage-header-container .mre-auto-roll {
+    margin: 3px;
 }
 
 .dnd5e.sheet.item .mre-auto-roll span.label,
@@ -146,21 +152,24 @@
     color: #7a7971;
 }
 
-.dnd5e.sheet.item .mre-damage-header-container .mre-auto-roll,
-.tidy5e.sheet.item .mre-damage-header-container .mre-auto-roll {
-    display: inline-block;
-}
-
 .dnd5e.sheet.item .mre-auto-roll button.checkbox,
 .tidy5e.sheet.item .mre-auto-roll button.checkbox {
+    flex: 1;
     position: relative;
-    width: 16px;
+    max-width: 16px;
     height: 16px;
     top: -2px;
     border: none;
     background: none;
-    margin: 5px 2px 5px 10px;
+    padding: 0;
+    margin: 5px;
     cursor: pointer;
+}
+
+.tidy5e.sheet.item .config-formula-groups {
+    color: #7a7971;
+    font-size: 16px;
+    margin-right: 4px;
 }
 
 .dnd5e.sheet.item .mre-auto-roll button.checkbox:hover,
