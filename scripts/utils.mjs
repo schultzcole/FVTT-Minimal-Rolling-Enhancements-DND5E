@@ -6,7 +6,7 @@ export const pause = (millis) => new Promise(resolve => setTimeout(resolve, mill
  */
 export function combineRolls(...rolls) {
     const roll = new Roll("0");
-    roll.data = duplicate(rolls[0].data);
+    roll.data = foundry.utils.deepClone(rolls[0].data);
     roll.results = rolls.reduce((prev, next) => prev.length ? [...prev, "+", ...next.results] : next.results, []);
     roll.terms = rolls.reduce((prev, next) => prev.length ? [...prev, "+", ...next.terms] : next.terms, []);
     roll._dice = rolls.reduce((prev, next) => prev.length ? [...prev, "+", ...next._dice] : next._dice, []);

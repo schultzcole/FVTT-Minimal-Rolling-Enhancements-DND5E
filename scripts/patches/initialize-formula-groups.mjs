@@ -6,7 +6,7 @@ export function patchItemPrepareData() {
     libWrapper.register(MODULE_NAME, "CONFIG.Item.documentClass.prototype.prepareData", function patchedPrepareData(wrapped, ...args) {
         wrapped(...args);
         const updates = _createMreFlags(this.data);
-        if (updates) mergeObject(this.data, updates);
+        if (updates) foundry.utils.mergeObject(this.data, updates);
     }, "WRAPPER");
 }
 
@@ -24,13 +24,13 @@ export async function initializeFormulaGroups(item) {
 
 function _createMreFlags(itemData) {
     const type = itemData.type;
-    let mreFlags = duplicate(itemData.flags?.[MODULE_NAME] ?? {});
+    let mreFlags = foundry.utils.deepClone(itemData.flags?.[MODULE_NAME] ?? {});
     const updates = {
         [`flags.${MODULE_NAME}`]: mreFlags
     };
 
     /** @type {{ parts: string[], versatile: string }} */
-    const itemDamage = duplicate(itemData.data?.damage ?? {});
+    const itemDamage = foundry.utils.deepClone(itemData.data?.damage ?? {});
     let changed = false;
 
     if (["loot", "class", "backpack"].includes(type)) return null;

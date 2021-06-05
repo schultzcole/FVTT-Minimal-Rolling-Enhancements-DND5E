@@ -16,7 +16,7 @@ export function patchItemRollDamage() {
 
         // Initialize incoming parameters
         if (!args[0]) args[0] = {};
-        let { event = duplicate(modifiers), formulaGroup = 0, critical = event[advModifier], options = {} } = args[0];
+        let { event = foundry.utils.deepClone(modifiers), formulaGroup = 0, critical = event[advModifier], options = {} } = args[0];
         if (!args[0].event) args[0].event = event;
 
         // Set up initial inner roll parameters
@@ -128,11 +128,11 @@ function _parseDamageDialog(form) {
 async function _rollDamageParts(itemDamage, groupDamageParts, innerRollDamage, { critical, event, spellLevel, versatile, options }) {
     const partRolls = [];
 
-    const originalItemDamageParts = duplicate(itemDamage.parts);
+    const originalItemDamageParts = foundry.utils.deepClone(itemDamage.parts);
 
     // Roll each of the item's damage parts separately.
     for (let [formula, type] of groupDamageParts) {
-        const partOptions = duplicate(options);
+        const partOptions = foundry.utils.deepClone(options);
         partOptions.chatMessage = false;
 
         // Override the item's damage so that the original roll damage function only rolls one "part" at a time.
@@ -200,9 +200,9 @@ async function _createCombinedDamageMessageData(item, content, flavor, rolls, cr
         roll: combinedRoll,
         speaker: ChatMessage.getSpeaker({actor: item.actor}),
         sound: CONFIG.sounds.dice,
-        type: CONST.CHAT_MESSAGE_TYPES.ROLL,
+        type: foundry.CONST.CHAT_MESSAGE_TYPES.ROLL,
         "flags.dnd5e.roll": {type: "damage", itemId: item.id },
-        "flags.mre-dnd5e.rolls": rolls.map(r => duplicate(r)),
+        "flags.mre-dnd5e.rolls": rolls.map(r => foundry.utils.deepClone(r)),
     };
 
     if (critical) {
@@ -213,8 +213,8 @@ async function _createCombinedDamageMessageData(item, content, flavor, rolls, cr
     ChatMessage.applyRollMode(messageData, rollMode);
 
     // Merge with data passed into the function call
-    mergeObject(messageData, options, { insertKeys: false });
-    mergeObject(messageData, options.messageData);
+    foundry.utils.mergeObject(messageData, options, { insertKeys: false });
+    foundry.utils.mergeObject(messageData, options.messageData);
 
     return messageData;
 }

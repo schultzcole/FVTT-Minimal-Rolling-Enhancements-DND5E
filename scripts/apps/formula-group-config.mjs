@@ -6,7 +6,7 @@ const MAX_FORMULA_GROUPS = 7;
 export class FormulaGroupConfig extends BaseEntitySheet {
     /** @override */
     static get defaultOptions() {
-        return mergeObject(super.defaultOptions, {
+        return foundry.utils.mergeObject(super.defaultOptions, {
             classes: [ "dnd5e", "mre-formula-group-config" ],
             template: "modules/mre-dnd5e/templates/formula-group-config.hbs",
             width: "auto",
@@ -38,7 +38,7 @@ export class FormulaGroupConfig extends BaseEntitySheet {
 
     _getFormulaGroupData() {
         /** @type FormulaGroup[] */
-        const groups = duplicate(this.entity.getFlag(MODULE_NAME, "formulaGroups"));
+        const groups = foundry.utils.deepClone(this.entity.getFlag(MODULE_NAME, "formulaGroups"));
         const totalFormulaCount = this.entity.data.data.damage.parts.length;
         return groups.map(g => ({
             label: g.label,
@@ -68,7 +68,7 @@ export class FormulaGroupConfig extends BaseEntitySheet {
     }
 
     async _handleAddFormulaGroup() {
-        const groups = duplicate(this.entity.data.flags[MODULE_NAME].formulaGroups);
+        const groups = foundry.utils.deepClone(this.entity.data.flags[MODULE_NAME].formulaGroups);
         groups.push(createNewFormulaGroup({ index: groups.length }));
         await this.entity.update({ [`flags.${MODULE_NAME}.formulaGroups`]: groups });
         this.position.width = "auto";
@@ -77,7 +77,7 @@ export class FormulaGroupConfig extends BaseEntitySheet {
 
     async _handleDeleteFormulaGroup(event) {
         const index = event.currentTarget.dataset.groupIndex;
-        const groups = duplicate(this.entity.data.flags[MODULE_NAME].formulaGroups);
+        const groups = foundry.utils.deepClone(this.entity.data.flags[MODULE_NAME].formulaGroups);
         groups.splice(index, 1);
         await this.entity.update({ [`flags.${MODULE_NAME}.formulaGroups`]: groups });
         this.position.width = "auto";
@@ -88,7 +88,7 @@ export class FormulaGroupConfig extends BaseEntitySheet {
     async _updateObject(event, formData) {
         if (!this.isEditable) return;
 
-        formData = expandObject(formData);
+        formData = foundry.utils.expandObject(formData);
 
         // If there are no formula groups in the form or no formulae to be in groups, quit early
         if (!formData.formulaGroupLabels?.length || !formData.formulaGroupContains) return;

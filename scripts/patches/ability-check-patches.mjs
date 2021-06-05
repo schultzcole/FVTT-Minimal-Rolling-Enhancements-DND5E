@@ -29,7 +29,7 @@ function generateD20RollPatch(optionsIndex) {
         let advModifier = getSettingLocalOrDefault(SETTING_NAMES.ADV_MOD);
         let disAdvModifier = getSettingLocalOrDefault(SETTING_NAMES.DISADV_MOD);
 
-        if (!options.event) options.event = duplicate(modifiers);
+        if (!options.event) options.event = foundry.utils.deepClone(modifiers);
 
         const optionsOverride = {
             advantage: options.event[advModifier],
@@ -42,7 +42,7 @@ function generateD20RollPatch(optionsIndex) {
         if (!options.event?.clientX || !options.event?.clientY) {
             optionsOverride.dialogOptions = { top: null, left: null };
         }
-        mergeObject(options, optionsOverride, { overwrite: false });
+        foundry.utils.mergeObject(options, optionsOverride, { overwrite: false });
 
         let fastForward = dialogBehaviorSetting === "skip"
             ? !options.event[noFastForwardModifier]

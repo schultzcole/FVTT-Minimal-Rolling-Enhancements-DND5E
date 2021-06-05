@@ -15,7 +15,7 @@ import { MODULE_NAME } from "./const.mjs";
 export function createNewFormulaGroup({  label=undefined, index=undefined, initialSet=[] }={}) {
     return {
         label: label ?? game.i18n.localize(formulaGroupNameKeys[index] ?? `${MODULE_NAME}.FORMULA-GROUP.NewFormulaGroup`),
-        formulaSet: duplicate(initialSet),
+        formulaSet: foundry.utils.deepClone(initialSet),
     }
 }
 

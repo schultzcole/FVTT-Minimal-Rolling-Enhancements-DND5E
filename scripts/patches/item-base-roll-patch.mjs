@@ -9,7 +9,7 @@ export function patchItemBaseRoll() {
     libWrapper.register(MODULE_NAME, "CONFIG.Item.documentClass.prototype.roll", async function patchedRoll(wrapped, ...args) {
         await initializeFormulaGroups(this);
 
-        const capturedModifiers = duplicate(modifiers);
+        const capturedModifiers = foundry.utils.deepClone(modifiers);
 
         const autoRollCheckSetting = game.settings.get(MODULE_NAME, SETTING_NAMES.AUTO_CHECK);
         const autoRollDamageSetting = game.settings.get(MODULE_NAME, SETTING_NAMES.AUTO_DMG);
@@ -22,7 +22,7 @@ export function patchItemBaseRoll() {
         let originalCreateMessage = true;
         if (args.length) {
             originalCreateMessage = args[0].createMessage ?? originalCreateMessage;
-            mergeObject(args[0], { createMessage: false });
+            foundry.utils.mergeObject(args[0], { createMessage: false });
         } else {
             args.push({ createMessage: false });
         }
@@ -60,7 +60,7 @@ export function patchItemBaseRoll() {
                 messageData["flags.dnd5e.roll.itemId"] = this.id;
                 messageData.flavor = undefined;
                 messageData.roll = checkRoll;
-                messageData.type = CONST.CHAT_MESSAGE_TYPES.ROLL;
+                messageData.type = foundry.CONST.CHAT_MESSAGE_TYPES.ROLL;
                 messageData.sound = CONFIG.sounds.dice;
             } else if (expectRoll) {
                 return;
