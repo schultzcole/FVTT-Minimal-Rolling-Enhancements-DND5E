@@ -4,12 +4,12 @@ import { getSettingLocalOrDefault, SETTING_NAMES } from "../settings.mjs";
 import { modifiers } from "../modifiers.mjs";
 
 const d20RollsToPatch = [
-    { path: "CONFIG.Item.entityClass.prototype.rollAttack", optionsIndex: 0 },
-    { path: "CONFIG.Item.entityClass.prototype.rollToolCheck", optionsIndex: 0 },
-    { path: "CONFIG.Actor.entityClass.prototype.rollSkill", optionsIndex: 1 },
-    { path: "CONFIG.Actor.entityClass.prototype.rollAbilityTest", optionsIndex: 1 },
-    { path: "CONFIG.Actor.entityClass.prototype.rollAbilitySave", optionsIndex: 1 },
-    { path: "CONFIG.Actor.entityClass.prototype.rollDeathSave", optionsIndex: 0 },
+    { path: "CONFIG.Item.documentClass.prototype.rollAttack", optionsIndex: 0 },
+    { path: "CONFIG.Item.documentClass.prototype.rollToolCheck", optionsIndex: 0 },
+    { path: "CONFIG.Actor.documentClass.prototype.rollSkill", optionsIndex: 1 },
+    { path: "CONFIG.Actor.documentClass.prototype.rollAbilityTest", optionsIndex: 1 },
+    { path: "CONFIG.Actor.documentClass.prototype.rollAbilitySave", optionsIndex: 1 },
+    { path: "CONFIG.Actor.documentClass.prototype.rollDeathSave", optionsIndex: 0 },
 ]
 
 export function patchAbilityChecks() {

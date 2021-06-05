@@ -6,7 +6,7 @@ import { initializeFormulaGroups } from "./initialize-formula-groups.mjs";
 import { pause } from "../utils.mjs";
 
 export function patchItemBaseRoll() {
-    libWrapper.register(MODULE_NAME, "CONFIG.Item.entityClass.prototype.roll", async function patchedRoll(wrapped, ...args) {
+    libWrapper.register(MODULE_NAME, "CONFIG.Item.documentClass.prototype.roll", async function patchedRoll(wrapped, ...args) {
         await initializeFormulaGroups(this);
 
         const capturedModifiers = duplicate(modifiers);

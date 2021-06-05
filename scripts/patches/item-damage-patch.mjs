@@ -5,7 +5,7 @@ import { modifiers } from "../modifiers.mjs";
 import { combineRolls } from "../utils.mjs";
 
 export function patchItemRollDamage() {
-    libWrapper.register(MODULE_NAME, "CONFIG.Item.entityClass.prototype.rollDamage", async function patchedRollDamage(wrapped, ...args) {
+    libWrapper.register(MODULE_NAME, "CONFIG.Item.documentClass.prototype.rollDamage", async function patchedRollDamage(wrapped, ...args) {
         // Check whether this item is capable of rolling damage
         if (!this.data.data.damage?.parts) throw new Error("You cannot roll damage for this item.");
 

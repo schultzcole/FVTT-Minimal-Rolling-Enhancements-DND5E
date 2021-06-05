@@ -3,7 +3,7 @@ import { MODULE_NAME } from "../const.mjs";
 import { createNewFormulaGroup } from "../formula-group.mjs";
 
 export function patchItemPrepareData() {
-    libWrapper.register(MODULE_NAME, "CONFIG.Item.entityClass.prototype.prepareData", function patchedPrepareData(wrapped, ...args) {
+    libWrapper.register(MODULE_NAME, "CONFIG.Item.documentClass.prototype.prepareData", function patchedPrepareData(wrapped, ...args) {
         wrapped(...args);
         const updates = _createMreFlags(this.data);
         if (updates) mergeObject(this.data, updates);
