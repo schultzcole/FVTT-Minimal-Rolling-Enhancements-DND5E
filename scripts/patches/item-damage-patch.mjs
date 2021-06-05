@@ -76,7 +76,10 @@ export function patchItemRollDamage() {
 
         const messageData = await _createCombinedDamageMessageData(this, renderedContent, title, partRolls.map(p => p.roll), critical, rollMode, options);
 
-        if (options.chatMessage ?? true) await ChatMessage.create(messageData);
+        if (options.chatMessage ?? true) {
+            const msg = new ChatMessage(messageData);
+            await ChatMessage.create(msg.data);
+        }
 
         // Return the array of Roll objects
         return combineRolls(...partRolls.map(p => p.roll));

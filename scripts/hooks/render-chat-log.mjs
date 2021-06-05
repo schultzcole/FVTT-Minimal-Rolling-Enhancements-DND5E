@@ -2,7 +2,7 @@ Hooks.on("renderChatLog", (app, html, data) => _handleRenderChatLog(html));
 Hooks.on("renderChatPopout", (app, html, data) => _handleRenderChatLog(html));
 
 function _handleRenderChatLog(html) {
-    html.on('click', '.card-buttons button', (event) => {
+    html.on('click', '.card-buttons button', async (event) => {
         const button = event.currentTarget;
         const action = button.dataset.action;
 
@@ -13,7 +13,7 @@ function _handleRenderChatLog(html) {
         const message = game.messages.get(messageId);
 
         // Recover the actor for the chat card
-        const actor = CONFIG.Item.documentClass._getChatCardActor(card);
+        const actor = await CONFIG.Item.documentClass._getChatCardActor(card);
         if ( !actor ) return;
 
         // Get the Item from stored flag data or by the item ID on the Actor

@@ -69,7 +69,7 @@ export function patchItemBaseRoll() {
 
         if (this.hasDamage) _replaceDamageButtons(messageData, this);
 
-        const result = originalCreateMessage ? await ChatMessage.create(messageData) : messageData;
+        const result = originalCreateMessage ? await _createMessage(messageData) : messageData;
 
         if (this.hasDamage && autoRollDamageWithOverride) {
             await pause(100);
@@ -178,4 +178,9 @@ function _replaceDamageButtons(messageData, item) {
     }
 
     messageData.content = content.prop("outerHTML");
+}
+
+function _createMessage(messageData) {
+    const msg = new ChatMessage(messageData);
+    return ChatMessage.create(msg.data);
 }
