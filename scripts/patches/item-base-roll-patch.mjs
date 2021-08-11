@@ -80,7 +80,7 @@ export function patchItemBaseRoll() {
             const options = { event: capturedModifiers, spellLevel };
             if (args.length && Number.isNumeric(args[0].spellLevel)) options.spellLevel = args[0].spellLevel;
             if (checkRoll) {
-                options.critical = checkRoll.results[0] >= checkRoll.terms[0].options.critical;
+                options.critical = checkRoll.dice[0].results[0].result >= checkRoll.terms[0].options.critical;
             }
             await this.rollDamage(options);
         }
