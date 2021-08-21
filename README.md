@@ -1,5 +1,8 @@
 # Minimal Rolling Enhancements (MRE) for D&D5e
 
+> ### Maintenance Mode
+> I have forked this from the original repository to keep it going but am not actively improving it.
+
 Some minimalist enhancements to the core D&D5e rolling workflow.
 MRE is intended to stay as close as possible to core behavior while improving convenience.
 A key philosophy for this module is to remain non-disruptive to minimize conflicts with system and core updates.

@@ -2,8 +2,22 @@
   "name": "mre-dnd5e",
   "title": "Minimal Rolling Enhancements for D&D5e",
   "description": "Some minimalist enhancements to the core D&D5e rolling workflow. Attempts to stay as close to core as possible while improving convenience.",
-  "version": "2.0.0",
-  "author": "Cole Schultz (cole#9640)",
+  "version": "2.0.1",
+  "author": "Cole Schultz, Andrew Krigline",
+  "authors": [
+    {
+      "name": "Cole Schultz",
+      "discord": "cole#9640",
+      "ko-fi": "schultzcole"
+    },
+    {
+      "name": "Andrew Krigline",
+      "discord": "Calego#0914",
+      "url": "https://github.com/ElfFriend-DnD",
+      "ko-fi": "elffriend",
+      "patreon": "ElfFriend_DnD"
+    }
+  ],
   "systems": [ "dnd5e" ],
   "esmodules": [
     "./setup.js",
@@ -22,12 +36,12 @@
     }
   ],
   "minimumCoreVersion": "0.8.5",
-  "compatibleCoreVersion": "0.8.6",
-	"url": "https://github.com/schultzcole/FVTT-Minimal-Rolling-Enhancements-DND5E",
-	"manifest": "https://raw.githubusercontent.com/schultzcole/FVTT-Minimal-Rolling-Enhancements-DND5E/master/module.json",
-	"download": "https://github.com/schultzcole/FVTT-Minimal-Rolling-Enhancements-DND5E/archive/2.0.0.zip",
-	"license": "https://github.com/schultzcole/FVTT-Minimal-Rolling-Enhancements-DND5E/blob/2.0.0/LICENSE",
-	"readme": "https://github.com/schultzcole/FVTT-Minimal-Rolling-Enhancements-DND5E/blob/2.0.0/README.md",
-	"changelog": "https://github.com/schultzcole/FVTT-Minimal-Rolling-Enhancements-DND5E/blob/2.0.0/CHANGELOG.md"
+  "compatibleCoreVersion": "0.8.9",
+  "url": "https://github.com/ElfFriend-DnD/FVTT-Minimal-Rolling-Enhancements-DND5E",
+  "manifest": "https://github.com/ElfFriend-DnD/FVTT-Minimal-Rolling-Enhancements-DND5E/releases/latest/download/module.json",
+  "download": "https://github.com/ElfFriend-DnD/FVTT-Minimal-Rolling-Enhancements-DND5E/releases/latest/download/module.zip",
+  "license": "https://github.com/ElfFriend-DnD/FVTT-Minimal-Rolling-Enhancements-DND5E/raw/master/LICENSE",
+  "readme": "https://github.com/ElfFriend-DnD/FVTT-Minimal-Rolling-Enhancements-DND5E/raw/master/README.md",
+  "changelog": "https://github.com/ElfFriend-DnD/FVTT-Minimal-Rolling-Enhancements-DND5E/raw/master/CHANGELOG.md"
 }
 

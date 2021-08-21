@@ -204,13 +204,15 @@ async function _createCombinedDamageMessageData(item, content, flavor, rolls, cr
         speaker: ChatMessage.getSpeaker({actor: item.actor}),
         sound: CONFIG.sounds.dice,
         type: foundry.CONST.CHAT_MESSAGE_TYPES.ROLL,
-        "flags.dnd5e.roll": {type: "damage", itemId: item.id },
-        "flags.mre-dnd5e.rolls": rolls.map(r => foundry.utils.deepClone(r)),
+        flags: {
+            ["dnd5e.roll"]: {type: "damage", itemId: item.id },
+            ["mre-dnd5e.rolls"]: rolls.map(r => foundry.utils.deepClone(r)),
+        }
     };
 
     if (critical) {
         messageData.flavor += ` (${game.i18n.localize("DND5E.Critical")})`;
-        messageData["flags.dnd5e.roll"].critical = true;
+        messageData.flags["dnd5e.roll"].critical = true;
     }
 
     ChatMessage.applyRollMode(messageData, rollMode);

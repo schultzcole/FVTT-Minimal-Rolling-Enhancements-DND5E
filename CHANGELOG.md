@@ -1,5 +1,14 @@
 # CHANGELOG
 
+## [2.0.1] 2021-08-20
+
+Fixes some Flags and Dice
+
+### FIXED
+
+- Updates the damage workflow to fit new Dice results.
+- Fixes flag creation on chat messages.
+
 ## [2.0.0] 2021-06-05
 
 *Core 0.8.x and dnd5e 1.3.x compatibility*
