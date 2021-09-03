@@ -66,7 +66,7 @@ export function patchItemRollDamage() {
         }
 
         // Add a situational bonus if one was provided
-        if (bonus) groupDamageParts.push([ bonus, "bonus" ]);
+        if (bonus) groupDamageParts.push([bonus, "bonus"]);
 
         // Roll the filtered group damage parts
         const partRolls = await _rollDamageParts(this.data.data.damage, groupDamageParts, wrapped, args[0]);
@@ -90,7 +90,7 @@ export function patchItemRollDamage() {
  * @returns {Promise<{ critical: Boolean, bonus: Number, rollMode: String }>}
  * @private
  */
-async function _damageDialog({ title, rollMode, dialogOptions }={}) {
+async function _damageDialog({ title, rollMode, dialogOptions } = {}) {
     const template = "systems/dnd5e/templates/chat/roll-dialog.html";
     const dialogData = {
         formula: "",
@@ -134,7 +134,7 @@ async function _rollDamageParts(itemDamage, groupDamageParts, innerRollDamage, {
     const originalItemDamageParts = foundry.utils.deepClone(itemDamage.parts);
 
     // Roll each of the item's damage parts separately.
-    for (let [formula, type] of groupDamageParts) {
+    for (let [formula, type] of groupDamageParts.filter(item => !!item)) {
         const partOptions = foundry.utils.deepClone(options);
         partOptions.chatMessage = false;
 
@@ -201,11 +201,11 @@ async function _createCombinedDamageMessageData(item, content, flavor, rolls, cr
         content,
         flavor,
         roll: combinedRoll,
-        speaker: ChatMessage.getSpeaker({actor: item.actor}),
+        speaker: ChatMessage.getSpeaker({ actor: item.actor }),
         sound: CONFIG.sounds.dice,
         type: foundry.CONST.CHAT_MESSAGE_TYPES.ROLL,
         flags: {
-            ["dnd5e.roll"]: {type: "damage", itemId: item.id },
+            ["dnd5e.roll"]: { type: "damage", itemId: item.id },
             ["mre-dnd5e.rolls"]: rolls.map(r => foundry.utils.deepClone(r)),
         }
     };
