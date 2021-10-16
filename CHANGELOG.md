@@ -1,5 +1,21 @@
 # CHANGELOG
 
+## [3.0.0] 2021-10-16
+Big Refactor of the patches to reduce complexity. Behavior for users is largely unchanged with one exception:
+
+### Auto Roll Attack
+Item Card no longer replaces the attack button (or use tool button) with the roll outcome for automatic item checks, instead a standard 5e attack roll/ability check card is created. This has several benefits:
+
+- Spells like Spiritual Weapon which warrant several attack rolls after being popped out are easier to use.
+- There is dramatically less complexity in the Item#roll override.
+- Allows modules like Automated Animations to do less work to detect an Attack Roll.
+
+## [2.0.4] 2021-09-03
+I'm not super sure how #2's item got configured that way but at least now we won't choke on it.
+
+## [2.0.2] 2021-08-28
+Avoid crash on temporary item creation. Thanks @TheGiddyLimit
+
 ## [2.0.1] 2021-08-20
 
 Fixes some Flags and Dice

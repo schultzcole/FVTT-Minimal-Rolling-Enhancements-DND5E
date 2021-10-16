@@ -35,7 +35,7 @@
       "path": "lang/en.json"
     }
   ],
-  "minimumCoreVersion": "0.8.5",
+  "minimumCoreVersion": "0.8.9",
   "compatibleCoreVersion": "0.8.9",
   "url": "https://github.com/ElfFriend-DnD/FVTT-Minimal-Rolling-Enhancements-DND5E",
   "manifest": "https://github.com/ElfFriend-DnD/FVTT-Minimal-Rolling-Enhancements-DND5E/releases/latest/download/module.json",
