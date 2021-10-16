@@ -1,11 +1,11 @@
 import { libWrapper } from "../../lib/libWrapper/shim.js";
 import { MODULE_NAME } from "../const.mjs";
 import { getSettingLocalOrDefault, SETTING_NAMES } from "../settings.mjs";
-import { modifiers } from "../modifiers.mjs";
 import { combineRolls } from "../utils.mjs";
 
+// intentionally does not listen to global modifiers so automatic damage rolls do not inherit Advantage as Critical
 export function patchItemRollDamage() {
-    libWrapper.register(MODULE_NAME, "CONFIG.Item.documentClass.prototype.rollDamage", async function patchedRollDamage(wrapped, ...args) {
+    libWrapper.register(MODULE_NAME, "CONFIG.Item.documentClass.prototype.rollDamage", async function patchedRollDamage(wrapped, config, ...rest) {
         // Check whether this item is capable of rolling damage
         if (!this.data.data.damage?.parts) throw new Error("You cannot roll damage for this item.");
 
@@ -15,9 +15,11 @@ export function patchItemRollDamage() {
         let advModifier = getSettingLocalOrDefault(SETTING_NAMES.ADV_MOD);
 
         // Initialize incoming parameters
-        if (!args[0]) args[0] = {};
-        let { event = foundry.utils.deepClone(modifiers), formulaGroup = 0, critical = event[advModifier], options = {} } = args[0];
-        if (!args[0].event) args[0].event = event;
+        if (!config) {
+            config = {}
+        };
+
+        let { formulaGroup = 0, event = {}, critical = event[advModifier], options = {} } = config;
 
         // Set up initial inner roll parameters
         const actionTypeDamageType = this.data.data.actionType === "heal"
@@ -46,9 +48,9 @@ export function patchItemRollDamage() {
         }
 
         // Skip core dnd5e dialog
-        if (!args[0].options) args[0].options = {};
-        args[0].options.fastForward = true;
-        args[0].critical = critical;
+        if (!config.options) config.options = {};
+        config.options.fastForward = true;
+        config.critical = critical;
 
         // Prepare chosen formula group
         const groups = this.getFlag(MODULE_NAME, "formulaGroups");
@@ -69,7 +71,7 @@ export function patchItemRollDamage() {
         if (bonus) groupDamageParts.push([bonus, "bonus"]);
 
         // Roll the filtered group damage parts
-        const partRolls = await _rollDamageParts(this.data.data.damage, groupDamageParts, wrapped, args[0]);
+        const partRolls = await _rollDamageParts(this.data.data.damage, groupDamageParts, wrapped, config, ...rest);
 
         // Prepare the chat message content
         const renderedContent = await _renderCombinedDamageRollContent(this, partRolls);
@@ -128,7 +130,7 @@ function _parseDamageDialog(form) {
     } : {};
 }
 
-async function _rollDamageParts(itemDamage, groupDamageParts, innerRollDamage, { critical, event, spellLevel, versatile, options }) {
+async function _rollDamageParts(itemDamage, groupDamageParts, innerRollDamage, { critical, event, spellLevel, versatile, options }, ...rest) {
     const partRolls = [];
 
     const originalItemDamageParts = foundry.utils.deepClone(itemDamage.parts);
@@ -147,7 +149,7 @@ async function _rollDamageParts(itemDamage, groupDamageParts, innerRollDamage, {
             spellLevel,
             versatile,
             options: partOptions,
-        });
+        }, ...rest);
         if (!roll) continue;
         const flavor = type === "bonus"
             ? game.i18n.localize("DND5E.RollSituationalBonus").slice(0, -1)

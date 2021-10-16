@@ -1,4 +1,5 @@
-export const modifiers = { altKey: false, ctrlKey: false, metaKey: false, shiftKey: false, clientX: null, clientY: null };
+const blankModifiers = { altKey: false, ctrlKey: false, metaKey: false, shiftKey: false, clientX: null, clientY: null };
+export let modifiers = { ...blankModifiers };
 
 const updateModifiers = event => {
     modifiers.altKey = event.altKey;
@@ -16,4 +17,8 @@ document.addEventListener("mousedown", event => {
 document.addEventListener("mouseup", () => {
     modifiers.clientX = null;
     modifiers.clientY = null;
+});
+
+window.addEventListener('blur', () => {
+    modifiers = {...blankModifiers};
 });
