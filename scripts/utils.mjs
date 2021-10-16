@@ -1,5 +1,3 @@
-export const pause = (millis) => new Promise(resolve => setTimeout(resolve, millis));
-
 /**
  * Combines multiple Roll objects into a single merged Roll.
  * @param {Roll} rolls
