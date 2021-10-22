@@ -1,14 +1,9 @@
 import { libWrapper } from "../../lib/libWrapper/shim.js";
 import { MODULE_NAME } from "../const.mjs";
-import { initializeFormulaGroups } from "./initialize-formula-groups.mjs";
 
 // When I create an Item chat card, replace the damage buttons with our custom ones.
 export function patchItemDisplayCard() {
     libWrapper.register(MODULE_NAME, "CONFIG.Item.documentClass.prototype.displayCard", async function patchedDisplayCard(wrapped, options, ...rest) {
-        const initializedItem = await initializeFormulaGroups(this);
-
-        const item = initializedItem ?? this;
-
         // If the caller above us set createMessage to false, we should not create a chat card and instead just return our message data.
         const shouldCreateMessage = options?.createMessage ?? true;
 
@@ -22,13 +17,13 @@ export function patchItemDisplayCard() {
         if (!messageData) return;
 
         // inject spell level as a flag on the messageData
-        const spellLevel = item.data.data.level;
+        const spellLevel = this.data.data.level;
         messageData.flags[MODULE_NAME] = {
             ...messageData.flags[MODULE_NAME],
             spellLevel
         };
 
-        if (item.hasDamage) _replaceDamageButtons(messageData, item);
+        if (this.hasDamage) _replaceDamageButtons(messageData, this);
 
         const result = shouldCreateMessage ? await ChatMessage.create(messageData) : messageData;
 

@@ -9,6 +9,8 @@ import { initializeFormulaGroups } from "./initialize-formula-groups.mjs";
  */
 export function patchItemBaseRoll() {
     libWrapper.register(MODULE_NAME, "CONFIG.Item.documentClass.prototype.roll", async function patchedRoll(wrapped, config, ...args) {
+        await initializeFormulaGroups(this);
+
         const autoRollCheckSetting = game.settings.get(MODULE_NAME, SETTING_NAMES.AUTO_CHECK);
         const autoRollDamageSetting = game.settings.get(MODULE_NAME, SETTING_NAMES.AUTO_DMG);
         const autoRollCheckWithOverride = this.getFlag(MODULE_NAME, "autoRollAttack") ?? autoRollCheckSetting;
@@ -27,8 +29,6 @@ export function patchItemBaseRoll() {
         if ((!autoRollCheckWithOverride && !autoRollDamageWithOverride && !autoRollOther) || !chatMessage) {
             return chatMessage;
         }
-
-        await initializeFormulaGroups(this);
 
         // Make a roll if auto rolls is on
         let checkRoll;
