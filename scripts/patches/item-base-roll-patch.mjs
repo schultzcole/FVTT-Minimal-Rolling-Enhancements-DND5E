@@ -55,5 +55,7 @@ export function patchItemBaseRoll() {
         if (this.data.data.formula?.length && autoRollOther) {
             await this.rollFormula();
         }
+
+        return chatMessage;
     }, "WRAPPER");
 }
