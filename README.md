@@ -1,5 +1,11 @@
 # Minimal Rolling Enhancements (MRE) for D&D5e
 
+![Foundry Core Compatible Version](https://img.shields.io/badge/dynamic/json.svg?url=https%3A%2F%2Fraw.githubusercontent.com%2FElfFriend-DnD%2FFVTT-Minimal-Rolling-Enhancements-DND5E%2Fmaster%2Fmodule.json&label=Foundry%20Version&query=$.compatibleCoreVersion&colorB=orange)
+![Latest Release Download Count](https://img.shields.io/badge/dynamic/json?label=Downloads@latest&query=assets%5B1%5D.download_count&url=https%3A%2F%2Fapi.github.com%2Frepos%2FElfFriend-DnD%2FFVTT-Minimal-Rolling-Enhancements-DND5E%2Freleases%2Flatest)
+![Forge Installs](https://img.shields.io/badge/dynamic/json?label=Forge%20Installs&query=package.installs&suffix=%25&url=https%3A%2F%2Fforge-vtt.com%2Fapi%2Fbazaar%2Fpackage%2Fmre-dnd5e&colorB=4aa94a)
+[![Foundry Hub Endorsements](https://img.shields.io/endpoint?logoColor=white&url=https%3A%2F%2Fwww.foundryvtt-hub.com%2Fwp-json%2Fhubapi%2Fv1%2Fpackage%2Fmre-dnd5e%2Fshield%2Fendorsements)](https://www.foundryvtt-hub.com/package/mre-dnd5e/)
+[![Foundry Hub Comments](https://img.shields.io/endpoint?logoColor=white&url=https%3A%2F%2Fwww.foundryvtt-hub.com%2Fwp-json%2Fhubapi%2Fv1%2Fpackage%2Fmre-dnd5e%2Fshield%2Fcomments)](https://www.foundryvtt-hub.com/package/mre-dnd5e/)
+
 Some minimalist enhancements to the core D&D5e rolling workflow.
 MRE is intended to stay as close as possible to core behavior while improving convenience.
 A key philosophy for this module is to remain non-disruptive to minimize conflicts with system and core updates.
@@ -34,10 +40,6 @@ You are not required to install libWrapper for MRE to work correctly, however in
 ### [Items with Rollable Tables](https://github.com/ElfFriend-DnD/foundryvtt-items-with-rolltables-5e)
 
 Fully supported, including options to automatically roll the rollable table when the item is rolled.
-
-### PopOut!
-
-Using Alt/Shift/Control modifier keys from popped out sheets to bypass item roll dialogs is not supported.
 
 ## License
 
