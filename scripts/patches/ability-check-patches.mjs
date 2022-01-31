@@ -20,7 +20,8 @@ export function patchAbilityChecks() {
 // Patches a d20 roll to use the modifier hotkeys set in the module settings
 function generateD20RollPatch(optionsIndex) {
     return function(wrapper, ...args) {
-        let currentGlobalEvent = event; // black magic global event the browser keeps track of
+        debugger;
+        let currentGlobalEvent = event ?? {}; // black magic global event the browser keeps track of
         let options = args[optionsIndex];
         if (!options) args[optionsIndex] = options = {};
 
@@ -48,7 +49,7 @@ function generateD20RollPatch(optionsIndex) {
         let fastForward = evt[noFastForwardModifier];
         if (dialogBehaviorSetting === "skip") fastForward = !fastForward;
 
-        options.fastForward = options.advantage || options.disadvantage || fastForward;
+        options.fastForward = options.fastForward ?? (options.advantage || options.disadvantage || fastForward);
 
         return wrapper(...args);
     }
