@@ -20,7 +20,6 @@ export function patchAbilityChecks() {
 // Patches a d20 roll to use the modifier hotkeys set in the module settings
 function generateD20RollPatch(optionsIndex) {
     return function(wrapper, ...args) {
-        debugger;
         let currentGlobalEvent = event ?? {}; // black magic global event the browser keeps track of
         let options = args[optionsIndex];
         if (!options) args[optionsIndex] = options = {};
