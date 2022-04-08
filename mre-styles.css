@@ -36,11 +36,13 @@
     opacity: 0.9;
 }
 
-.dnd5e.chat-card .dice-roll {
+.dnd5e.chat-card .dice-roll,
+.sw5e.chat-card .dice-roll {
     font-size: 14px;
 }
 
-.dnd5e.chat-card.mre-item-card .card-roll {
+.dnd5e.chat-card.mre-item-card .card-roll,
+.sw5e.chat-card.mre-item-card .card-roll {
     margin-top: .5rem;
 }
 
@@ -116,18 +118,21 @@
 }
 
 .dnd5e.sheet.item .mre-damage-header-container,
+.sw5e.sheet.item .mre-damage-header-container,
 .tidy5e.sheet.item .mre-damage-header-container {
     display: flex;
 }
 
 
 .dnd5e.sheet.item .mre-damage-header-container .damage-header,
+.sw5e.sheet.item .mre-damage-header-container .damage-header,
 .tidy5e.sheet.item .mre-damage-header-container .damage-header {
     flex: 1;
     display: inline-block;
 }
 
 .dnd5e.sheet.item .mre-auto-roll,
+.sw5e.sheet.item .mre-auto-roll,
 .tidy5e.sheet.item .mre-auto-roll {
     display: flex;
     flex: 0 0 60px;
@@ -139,6 +144,7 @@
 }
 
 .dnd5e.sheet.item .mre-auto-roll span.label,
+.sw5e.sheet.item .mre-auto-roll span.label,
 .tidy5e.sheet.item .mre-auto-roll span.label {
     display: inline-block;
     position: relative;
@@ -153,6 +159,7 @@
 }
 
 .dnd5e.sheet.item .mre-auto-roll button.checkbox,
+.sw5e.sheet.item .mre-auto-roll button.checkbox,
 .tidy5e.sheet.item .mre-auto-roll button.checkbox {
     flex: 1;
     position: relative;
@@ -173,12 +180,14 @@
 }
 
 .dnd5e.sheet.item .mre-auto-roll button.checkbox:hover,
+.sw5e.sheet.item .mre-auto-roll button.checkbox:hover,
 .tidy5e.sheet.item .mre-auto-roll button.checkbox:hover {
     box-shadow: none;
     text-shadow: 0 0 8px red;
 }
 
 .dnd5e.sheet.item .mre-auto-roll button.checkbox:before,
+.sw5e.sheet.item .mre-auto-roll button.checkbox:before,
 .tidy5e.sheet.item .mre-auto-roll button.checkbox:before {
     font-family: "Font Awesome 5 Free";
     display: inline-block;
@@ -196,17 +205,20 @@
 }
 
 .dnd5e.sheet.item .mre-auto-roll button.checkbox.unchecked:before,
+.sw5e.sheet.item .mre-auto-roll button.checkbox.unchecked:before,
 .tidy5e.sheet.item .mre-auto-roll button.checkbox.unchecked:before {
     content: "\f057"; /* times */
 }
 
 .dnd5e.sheet.item .mre-auto-roll button.checkbox.indeterminate:before,
+.sw5e.sheet.item .mre-auto-roll button.checkbox.indeterminate:before,
 .tidy5e.sheet.item .mre-auto-roll button.checkbox.indeterminate:before {
     content: "\f111"; /* minus */
     font-weight: 400;
 }
 
 .dnd5e.sheet.item .mre-auto-roll button.checkbox.checked:before,
+.sw5e.sheet.item .mre-auto-roll button.checkbox.checked:before,
 .tidy5e.sheet.item .mre-auto-roll button.checkbox.checked:before {
     content: "\f058"; /* check */
 }

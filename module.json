@@ -18,7 +18,7 @@
       "patreon": "ElfFriend_DnD"
     }
   ],
-  "system": [ "dnd5e" ],
+  "system": [ "dnd5e", "sw5e" ],
   "esmodules": [
     "./setup.js",
     "./scripts/hooks/render-item-5e-sheet.mjs",

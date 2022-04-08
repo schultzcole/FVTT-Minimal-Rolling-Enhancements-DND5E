@@ -11,7 +11,7 @@ export function patchItemPrepareData() {
 }
 
 export function patchItemSheetGetData() {
-    libWrapper.register(MODULE_NAME, "game.dnd5e.applications.ItemSheet5e.prototype.getData", async function patchedGetData(wrapped, ...args) {
+    libWrapper.register(MODULE_NAME, `game.${game.system.id}.applications.ItemSheet5e.prototype.getData`, async function patchedGetData(wrapped, ...args) {
         if (this.isEditable && this.document.id != null) await initializeFormulaGroups(this.document);
         return wrapped(...args);
     }, "WRAPPER");
