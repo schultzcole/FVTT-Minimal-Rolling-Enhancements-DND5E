@@ -148,6 +148,9 @@
 .tidy5e.sheet.item .mre-auto-roll input[type=checkbox] {
     margin: 0 2px;
     cursor: pointer;
+    flex: 0 0 16px;
+    width: 16px;
+    height: 16px;
 }
 
 .dnd5e.sheet.item .mre-auto-roll span.label,
