@@ -153,6 +153,13 @@
     height: 16px;
 }
 
+.sheet.item .locked label.mre-auto-roll {
+    cursor: default;
+}
+.sheet.item .locked label.mre-auto-roll input[type=checkbox] {
+    cursor: default;
+}
+
 .dnd5e.sheet.item .mre-auto-roll span.label,
 .sw5e.sheet.item .mre-auto-roll span.label,
 .tidy5e.sheet.item .mre-auto-roll span.label {
