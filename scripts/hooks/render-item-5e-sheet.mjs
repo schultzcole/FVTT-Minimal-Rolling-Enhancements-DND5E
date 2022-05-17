@@ -39,18 +39,18 @@ Hooks.on('items-with-rolltables-5e.sheetMutated', (itemSheet, html) => {
 
 function _makeAutoRollCheckboxElement(item, target, threeWay) {
     const text = game.i18n.localize(`${MODULE_NAME}.AUTO-ROLL.AutoRoll`);
-    const element = $(`<label class="mre-auto-roll"><input type="checkbox" /><span class="label">${text}</span></label>`)
+    const element = $(`<label class="mre-auto-roll"><input type="checkbox" /><span class="label">${text}</span></label>`);
 
     const flag = item.getFlag(MODULE_NAME, `autoRoll${target}`);
     const tooltip = threeWay ? _threeWayTooltip(flag) : _twoWayTooltip(flag);
-    element.prop("title", game.i18n.localize(tooltip.tooltip));
+    element.prop("title", game.i18n.localize(tooltip));
 
     const checkbox = element.find("input[type=checkbox]")[0];
     checkbox.checked = flag;
     checkbox.dataset.autoRollTarget = target;
     if (threeWay) {
         checkbox.indeterminate = flag === undefined;
-        checkbox.dataset.state = _state(flag);
+        checkbox.dataset.state = _threeWayState(flag);
         checkbox.classList.add("three-way");
     }
 
@@ -67,7 +67,7 @@ function _threeWayTooltip(nullableBool) {
     else return `${MODULE_NAME}.AUTO-ROLL.OverrideFalse`;
 }
 
-function _state(nullableBool) {
+function _threeWayState(nullableBool) {
     if (nullableBool === undefined) return 0;
     if (nullableBool) return 1;
     else return 2;
@@ -95,14 +95,15 @@ function _handleThreeWayCheckboxButtonPress(event, item) {
     const prevState = isFinite(el.dataset.state) ? parseInt(el.dataset.state) : 1;
 
     switch (prevState) {
-        case 0: // checkbox changing from checked to unchecked
+        case 0: // checkbox changing from indeterminate to checked
+            item.setFlag(MODULE_NAME, `autoRoll${target}`, true);
+            break
+        case 1: // checkbox changing from checked to unchecked
             item.setFlag(MODULE_NAME, `autoRoll${target}`, false);
             break;
-        case 1: // checkbox changing from unchecked to indeterminate
+        case 2: // checkbox changing from unchecked to indeterminate
             item.unsetFlag(MODULE_NAME, `autoRoll${target}`);
             break;
-        case 2: // checkbox changing from indeterminate to checked
-            item.setFlag(MODULE_NAME, `autoRoll${target}`, true);
 
     }
 
