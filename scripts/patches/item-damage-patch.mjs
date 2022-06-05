@@ -89,7 +89,7 @@ export function patchItemRollDamage() {
         // Prepare the chat message content
         const renderedContent = await _renderCombinedDamageRollContent(this, partRolls);
 
-        const messageData = await _createCombinedDamageMessageData(this, renderedContent, title, partRolls.map(p => p.roll), critical, rollMode, options);
+        const messageData = await _createCombinedDamageMessageData(this, renderedContent, title, partRolls.map(p => p.roll), critical, rollMode, formulaGroup, options);
 
         if (options.chatMessage ?? true) {
             const msg = new ChatMessage(messageData);
@@ -235,7 +235,7 @@ async function _renderCombinedDamageRollContent(item, rolls) {
     return container.prop("outerHTML");
 }
 
-async function _createCombinedDamageMessageData(item, content, flavor, rolls, critical, rollMode, options) {
+async function _createCombinedDamageMessageData(item, content, flavor, rolls, critical, rollMode, formulaGroup, options) {
     // This decoy roll is used to convince foundry that the message has ROLL type
     const combinedRoll = combineRolls(...rolls);
 
@@ -251,6 +251,7 @@ async function _createCombinedDamageMessageData(item, content, flavor, rolls, cr
         flags: {
             [`${game.system.id}.roll`]: { type: "damage", itemId: item.id },
             ["mre-dnd5e.rolls"]: rolls.map(r => foundry.utils.deepClone(r)),
+            ["mre-dnd5e.formulaGroup"]: formulaGroup 
         }
     };
 
